@@ -1,0 +1,24 @@
+cat <<EOL > .gitignore
+# Environment & secrets
+.env
+.venv
+*.sqlite
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# IDE / OS files
+.DS_Store
+.vscode/
+.idea/
+EOL
