@@ -264,14 +264,8 @@ export const DashboardProvider = ({ children }) => {
     loadReports();
     loadSessions();
 
-    // Poll for updates every 30 seconds instead of SSE
-    const interval = setInterval(() => {
-      loadDashboardData();
-    }, 30000);
-
-    return () => {
-      clearInterval(interval);
-    };
+    // Removed automatic polling to prevent page reloads
+    // Users can manually refresh data when needed
   }, []);
 
   // Reload reports when sessionId changes

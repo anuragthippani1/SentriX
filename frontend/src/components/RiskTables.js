@@ -1,21 +1,21 @@
-import React from 'react';
-import { AlertTriangle, Clock, MapPin, ExternalLink } from 'lucide-react';
+import React from "react";
+import { AlertTriangle, Clock, MapPin, ExternalLink } from "lucide-react";
 
 const RiskTables = ({ politicalRisks, scheduleRisks }) => {
   const getRiskBadgeColor = (level) => {
-    if (level >= 4) return 'bg-red-100 text-red-800';
-    if (level === 3) return 'bg-orange-100 text-orange-800';
-    if (level === 2) return 'bg-yellow-100 text-yellow-800';
-    if (level === 1) return 'bg-green-100 text-green-800';
-    return 'bg-gray-100 text-gray-800';
+    if (level >= 4) return "bg-red-100 text-red-800";
+    if (level === 3) return "bg-orange-100 text-orange-800";
+    if (level === 2) return "bg-yellow-100 text-yellow-800";
+    if (level === 1) return "bg-green-100 text-green-800";
+    return "bg-gray-100 text-gray-800";
   };
 
   const getRiskLabel = (level) => {
-    if (level >= 4) return 'Critical';
-    if (level === 3) return 'High';
-    if (level === 2) return 'Medium';
-    if (level === 1) return 'Low';
-    return 'Unknown';
+    if (level >= 4) return "Critical";
+    if (level === 3) return "High";
+    if (level === 2) return "Medium";
+    if (level === 1) return "Low";
+    return "Unknown";
   };
 
   return (
@@ -27,7 +27,9 @@ const RiskTables = ({ politicalRisks, scheduleRisks }) => {
             <AlertTriangle className="h-5 w-5 mr-2 text-orange-500" />
             Political Risk Analysis
           </h3>
-          <p className="text-sm text-gray-600">Latest geopolitical events and policy changes</p>
+          <p className="text-sm text-gray-600">
+            Latest geopolitical events and policy changes
+          </p>
         </div>
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
@@ -57,19 +59,31 @@ const RiskTables = ({ politicalRisks, scheduleRisks }) => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <MapPin className="h-4 w-4 text-gray-400 mr-2" />
-                        <span className="text-sm font-medium text-gray-900">{risk.country}</span>
+                        <span className="text-sm font-medium text-gray-900">
+                          {risk.country}
+                        </span>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="text-sm text-gray-900">{risk.risk_type}</span>
+                      <span className="text-sm text-gray-900">
+                        {risk.risk_type}
+                      </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getRiskBadgeColor(risk.likelihood_score)}`}>
-                        {getRiskLabel(risk.likelihood_score)} ({risk.likelihood_score}/5)
+                      <span
+                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getRiskBadgeColor(
+                          risk.likelihood_score
+                        )}`}
+                      >
+                        {getRiskLabel(risk.likelihood_score)} (
+                        {risk.likelihood_score}/5)
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="text-sm text-gray-900 max-w-xs truncate" title={risk.reasoning}>
+                      <span
+                        className="text-sm text-gray-900 max-w-xs truncate"
+                        title={risk.reasoning}
+                      >
                         {risk.reasoning}
                       </span>
                     </td>
@@ -81,21 +95,25 @@ const RiskTables = ({ politicalRisks, scheduleRisks }) => {
                           rel="noopener noreferrer"
                           className="text-blue-600 hover:text-blue-800 text-sm flex items-center"
                         >
-                          {risk.source_title.length > 30 
-                            ? `${risk.source_title.substring(0, 30)}...` 
-                            : risk.source_title
-                          }
+                          {risk.source_title.length > 30
+                            ? `${risk.source_title.substring(0, 30)}...`
+                            : risk.source_title}
                           <ExternalLink className="h-3 w-3 ml-1" />
                         </a>
                       ) : (
-                        <span className="text-sm text-gray-500">{risk.source_title}</span>
+                        <span className="text-sm text-gray-500">
+                          {risk.source_title}
+                        </span>
                       )}
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="5" className="px-6 py-4 text-center text-gray-500">
+                  <td
+                    colSpan="5"
+                    className="px-6 py-4 text-center text-gray-500"
+                  >
                     No political risks identified
                   </td>
                 </tr>
@@ -112,7 +130,9 @@ const RiskTables = ({ politicalRisks, scheduleRisks }) => {
             <Clock className="h-5 w-5 mr-2 text-blue-500" />
             Schedule Risk Analysis
           </h3>
-          <p className="text-sm text-gray-600">Equipment delivery delays and timeline risks</p>
+          <p className="text-sm text-gray-600">
+            Equipment delivery delays and timeline risks
+          </p>
         </div>
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
@@ -140,21 +160,37 @@ const RiskTables = ({ politicalRisks, scheduleRisks }) => {
                 scheduleRisks.map((risk, index) => (
                   <tr key={index} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="text-sm font-medium text-gray-900">{risk.equipment_id}</span>
+                      <span className="text-sm font-medium text-gray-900">
+                        {risk.equipment_id}
+                      </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <MapPin className="h-4 w-4 text-gray-400 mr-2" />
-                        <span className="text-sm text-gray-900">{risk.country}</span>
+                        <span className="text-sm text-gray-900">
+                          {risk.country}
+                        </span>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`text-sm font-medium ${risk.delay_days > 0 ? 'text-red-600' : 'text-green-600'}`}>
-                        {risk.delay_days > 0 ? `+${risk.delay_days} days` : 'On time'}
+                      <span
+                        className={`text-sm font-medium ${
+                          risk.delay_days > 0
+                            ? "text-red-600"
+                            : "text-green-600"
+                        }`}
+                      >
+                        {risk.delay_days > 0
+                          ? `+${risk.delay_days} days`
+                          : "On time"}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getRiskBadgeColor(risk.risk_level)}`}>
+                      <span
+                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getRiskBadgeColor(
+                          risk.risk_level
+                        )}`}
+                      >
                         {getRiskLabel(risk.risk_level)} ({risk.risk_level}/5)
                       </span>
                     </td>
@@ -174,7 +210,10 @@ const RiskTables = ({ politicalRisks, scheduleRisks }) => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="5" className="px-6 py-4 text-center text-gray-500">
+                  <td
+                    colSpan="5"
+                    className="px-6 py-4 text-center text-gray-500"
+                  >
                     No schedule risks identified
                   </td>
                 </tr>

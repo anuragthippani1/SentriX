@@ -1,24 +1,25 @@
-import React from 'react';
-import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
-import { Tooltip } from 'recharts';
+import React from "react";
+import { ComposableMap, Geographies, Geography } from "react-simple-maps";
+import { Tooltip } from "recharts";
 
-const geoUrl = "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson";
+const geoUrl =
+  "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson";
 
 const WorldMap = ({ worldRiskData }) => {
   const getRiskColor = (riskLevel) => {
-    if (riskLevel >= 4) return '#7C2D12'; // Critical - Dark red
-    if (riskLevel === 3) return '#EF4444'; // High - Red
-    if (riskLevel === 2) return '#F59E0B'; // Medium - Yellow
-    if (riskLevel === 1) return '#10B981'; // Low - Green
-    return '#E5E7EB'; // No data - Gray
+    if (riskLevel >= 4) return "#7C2D12"; // Critical - Dark red
+    if (riskLevel === 3) return "#EF4444"; // High - Red
+    if (riskLevel === 2) return "#F59E0B"; // Medium - Yellow
+    if (riskLevel === 1) return "#10B981"; // Low - Green
+    return "#E5E7EB"; // No data - Gray
   };
 
   const getRiskLabel = (riskLevel) => {
-    if (riskLevel >= 4) return 'Critical Risk';
-    if (riskLevel === 3) return 'High Risk';
-    if (riskLevel === 2) return 'Medium Risk';
-    if (riskLevel === 1) return 'Low Risk';
-    return 'No Data';
+    if (riskLevel >= 4) return "Critical Risk";
+    if (riskLevel === 3) return "High Risk";
+    if (riskLevel === 2) return "Medium Risk";
+    if (riskLevel === 1) return "Low Risk";
+    return "No Data";
   };
 
   return (
@@ -26,7 +27,7 @@ const WorldMap = ({ worldRiskData }) => {
       <ComposableMap
         projectionConfig={{
           scale: 120,
-          center: [0, 20]
+          center: [0, 20],
         }}
         width={600}
         height={400}
@@ -36,8 +37,9 @@ const WorldMap = ({ worldRiskData }) => {
             geographies.map((geo) => {
               const countryName = geo.properties.NAME || geo.properties.NAME_EN;
               const riskLevel = worldRiskData[countryName]?.risk_level || 0;
-              const riskFactors = worldRiskData[countryName]?.risk_factors || [];
-              
+              const riskFactors =
+                worldRiskData[countryName]?.risk_factors || [];
+
               return (
                 <Geography
                   key={geo.rsmKey}
@@ -48,17 +50,17 @@ const WorldMap = ({ worldRiskData }) => {
                   style={{
                     default: {
                       fill: getRiskColor(riskLevel),
-                      outline: 'none',
+                      outline: "none",
                     },
                     hover: {
                       fill: getRiskColor(riskLevel),
-                      outline: 'none',
-                      stroke: '#1E40AF',
+                      outline: "none",
+                      stroke: "#1E40AF",
                       strokeWidth: 2,
                     },
                     pressed: {
                       fill: getRiskColor(riskLevel),
-                      outline: 'none',
+                      outline: "none",
                     },
                   }}
                   onMouseEnter={() => {
@@ -74,15 +76,15 @@ const WorldMap = ({ worldRiskData }) => {
       {/* Legend */}
       <div className="mt-4 flex flex-wrap justify-center gap-4">
         {[
-          { level: 0, label: 'No Data', color: '#E5E7EB' },
-          { level: 1, label: 'Low Risk', color: '#10B981' },
-          { level: 2, label: 'Medium Risk', color: '#F59E0B' },
-          { level: 3, label: 'High Risk', color: '#EF4444' },
-          { level: 4, label: 'Critical Risk', color: '#7C2D12' }
+          { level: 0, label: "No Data", color: "#E5E7EB" },
+          { level: 1, label: "Low Risk", color: "#10B981" },
+          { level: 2, label: "Medium Risk", color: "#F59E0B" },
+          { level: 3, label: "High Risk", color: "#EF4444" },
+          { level: 4, label: "Critical Risk", color: "#7C2D12" },
         ].map(({ level, label, color }) => (
           <div key={level} className="flex items-center space-x-2">
-            <div 
-              className="w-4 h-4 rounded" 
+            <div
+              className="w-4 h-4 rounded"
               style={{ backgroundColor: color }}
             />
             <span className="text-sm text-gray-600">{label}</span>
@@ -101,7 +103,11 @@ const WorldMap = ({ worldRiskData }) => {
         <div className="bg-gray-50 p-3 rounded">
           <div className="font-medium text-gray-900">High Risk Countries</div>
           <div className="text-2xl font-bold text-red-600">
-            {Object.values(worldRiskData).filter(data => data.risk_level >= 3).length}
+            {
+              Object.values(worldRiskData).filter(
+                (data) => data.risk_level >= 3
+              ).length
+            }
           </div>
         </div>
       </div>

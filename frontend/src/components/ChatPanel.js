@@ -1,20 +1,41 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User, Loader, Upload, FilePlus2, Copy, CheckCircle, AlertCircle, Clock } from 'lucide-react';
-import { useDashboard } from '../context/DashboardContext';
+import React, { useState, useRef, useEffect } from "react";
+import {
+  Send,
+  Bot,
+  User,
+  Loader,
+  Upload,
+  FilePlus2,
+  Copy,
+  CheckCircle,
+  AlertCircle,
+  Clock,
+} from "lucide-react";
+import { useDashboard } from "../context/DashboardContext";
 
 const ChatPanel = () => {
-  const { chatMessages, sendChatMessage, uploadShipmentData, generateCombinedReport } = useDashboard();
-  const [inputMessage, setInputMessage] = useState('');
+  const {
+    chatMessages,
+    sendChatMessage,
+    uploadShipmentData,
+    generateCombinedReport,
+  } = useDashboard();
+  const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [copiedMessageId, setCopiedMessageId] = useState(null);
-  const [routeForm, setRouteForm] = useState({ from: '', to: '', cargo: '', priority: 'cost' });
+  const [routeForm, setRouteForm] = useState({
+    from: "",
+    to: "",
+    cargo: "",
+    priority: "cost",
+  });
   const [showRouteForm, setShowRouteForm] = useState(false);
   const [routeAnalysis, setRouteAnalysis] = useState(null);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
@@ -26,21 +47,26 @@ const ChatPanel = () => {
     if (!inputMessage.trim() || isLoading) return;
 
     const message = inputMessage.toLowerCase();
-    
+
     // Check if user wants route analysis
-    if (message.includes('route') || message.includes('shipping') || message.includes('from') || message.includes('to')) {
+    if (
+      message.includes("route") ||
+      message.includes("shipping") ||
+      message.includes("from") ||
+      message.includes("to")
+    ) {
       setShowRouteForm(true);
-      setInputMessage('');
+      setInputMessage("");
       return;
     }
 
     setIsLoading(true);
     setIsTyping(true);
-    
+
     // Simulate typing delay
     setTimeout(async () => {
       await sendChatMessage(inputMessage);
-      setInputMessage('');
+      setInputMessage("");
       setIsLoading(false);
       setIsTyping(false);
     }, 1000);
@@ -52,20 +78,22 @@ const ChatPanel = () => {
 
     setIsLoading(true);
     setIsTyping(true);
-    
-    const routeQuery = `Route from ${routeForm.from} to ${routeForm.to} with ${routeForm.cargo || 'general cargo'} (priority: ${routeForm.priority})`;
-    
+
+    const routeQuery = `Route from ${routeForm.from} to ${routeForm.to} with ${
+      routeForm.cargo || "general cargo"
+    } (priority: ${routeForm.priority})`;
+
     setTimeout(async () => {
       const response = await sendChatMessage(routeQuery);
-      
+
       // Generate comprehensive route analysis
       const analysis = generateRouteAnalysis(routeForm);
       setRouteAnalysis(analysis);
-      
+
       setIsLoading(false);
       setIsTyping(false);
       setShowRouteForm(false);
-      setRouteForm({ from: '', to: '', cargo: '', priority: 'cost' });
+      setRouteForm({ from: "", to: "", cargo: "", priority: "cost" });
     }, 2000);
   };
 
@@ -76,7 +104,7 @@ const ChatPanel = () => {
       setIsLoading(true);
       const text = await file.text();
       const json = JSON.parse(text);
-      const dataArray = Array.isArray(json) ? json : (json.data || []);
+      const dataArray = Array.isArray(json) ? json : json.data || [];
       await uploadShipmentData(dataArray);
       // Assuming setChatMessages is available from useDashboard context or passed as prop
       // For now, we'll simulate an update to show the message
@@ -88,7 +116,7 @@ const ChatPanel = () => {
       // setChatMessages(prev => [...prev, { id: Date.now()+3, type: 'bot', content: 'Upload failed. Ensure valid JSON array of shipments.', timestamp: new Date().toISOString() }]);
     } finally {
       setIsLoading(false);
-      e.target.value = '';
+      e.target.value = "";
     }
   };
 
@@ -114,7 +142,7 @@ const ChatPanel = () => {
     "Show me the risk summary",
     "Generate a comprehensive report",
     "Route from Shanghai to Los Angeles",
-    "Shipping analysis Singapore to Rotterdam"
+    "Shipping analysis Singapore to Rotterdam",
   ];
 
   const handleQuickQuestion = (question) => {
@@ -129,11 +157,11 @@ const ChatPanel = () => {
 
   const generateRouteAnalysis = (form) => {
     const { from, to, cargo, priority } = form;
-    
+
     // Mock comprehensive route analysis
     const analysis = {
       route: `${from} → ${to}`,
-      cargo: cargo || 'General Cargo',
+      cargo: cargo || "General Cargo",
       priority: priority,
       distance: Math.floor(Math.random() * 5000) + 3000, // nautical miles
       transitTime: Math.floor(Math.random() * 20) + 10, // days
@@ -148,26 +176,31 @@ const ChatPanel = () => {
       fuelCost: Math.floor(Math.random() * 500000) + 200000, // USD
       totalCost: Math.floor(Math.random() * 800000) + 400000, // USD
       alternativeRoutes: [
-        { name: 'Direct Route', time: '12 days', cost: 'High', risk: 'Medium' },
-        { name: 'Via Panama Canal', time: '18 days', cost: 'Medium', risk: 'Low' },
-        { name: 'Via Suez Canal', time: '22 days', cost: 'Low', risk: 'High' }
+        { name: "Direct Route", time: "12 days", cost: "High", risk: "Medium" },
+        {
+          name: "Via Panama Canal",
+          time: "18 days",
+          cost: "Medium",
+          risk: "Low",
+        },
+        { name: "Via Suez Canal", time: "22 days", cost: "Low", risk: "High" },
       ],
       weatherForecast: [
-        { day: 1, condition: 'Clear', wind: '15 kts', waves: '1.2m' },
-        { day: 2, condition: 'Partly Cloudy', wind: '18 kts', waves: '1.5m' },
-        { day: 3, condition: 'Storm', wind: '25 kts', waves: '2.8m' },
-        { day: 4, condition: 'Clear', wind: '12 kts', waves: '1.0m' }
+        { day: 1, condition: "Clear", wind: "15 kts", waves: "1.2m" },
+        { day: 2, condition: "Partly Cloudy", wind: "18 kts", waves: "1.5m" },
+        { day: 3, condition: "Storm", wind: "25 kts", waves: "2.8m" },
+        { day: 4, condition: "Clear", wind: "12 kts", waves: "1.0m" },
       ],
       safetyPrecautions: [
-        'Monitor weather forecasts continuously',
-        'Maintain communication with coast guard',
-        'Follow ISPS security protocols',
-        'Ensure cargo is properly secured',
-        'Have emergency response plans ready',
-        'Regular equipment maintenance checks'
-      ]
+        "Monitor weather forecasts continuously",
+        "Maintain communication with coast guard",
+        "Follow ISPS security protocols",
+        "Ensure cargo is properly secured",
+        "Have emergency response plans ready",
+        "Regular equipment maintenance checks",
+      ],
     };
-    
+
     return analysis;
   };
 
@@ -176,15 +209,27 @@ const ChatPanel = () => {
       {/* Header */}
       <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">SentriX Assistant</h3>
-          <p className="text-sm text-gray-600">Ask me about supply chain risks</p>
+          <h3 className="text-lg font-semibold text-gray-900">
+            SentriX Assistant
+          </h3>
+          <p className="text-sm text-gray-600">
+            Ask me about supply chain risks
+          </p>
         </div>
         <div className="flex items-center gap-2">
           <label className="inline-flex items-center px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 rounded cursor-pointer">
             <Upload className="h-3 w-3 mr-1" /> Upload JSON
-            <input type="file" accept="application/json" className="hidden" onChange={handleFileUpload} />
+            <input
+              type="file"
+              accept="application/json"
+              className="hidden"
+              onChange={handleFileUpload}
+            />
           </label>
-          <button onClick={handleGenerateCombined} className="inline-flex items-center px-2 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700">
+          <button
+            onClick={handleGenerateCombined}
+            className="inline-flex items-center px-2 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
             <FilePlus2 className="h-3 w-3 mr-1" /> Combined Report
           </button>
         </div>
@@ -194,35 +239,49 @@ const ChatPanel = () => {
       {showRouteForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-96 max-w-md mx-4">
-            <h3 className="text-lg font-semibold mb-4">🚢 Route Analysis Request</h3>
+            <h3 className="text-lg font-semibold mb-4">
+              🚢 Route Analysis Request
+            </h3>
             <form onSubmit={handleRouteSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">From Port/City</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  From Port/City
+                </label>
                 <input
                   type="text"
                   value={routeForm.from}
-                  onChange={(e) => setRouteForm({...routeForm, from: e.target.value})}
+                  onChange={(e) =>
+                    setRouteForm({ ...routeForm, from: e.target.value })
+                  }
                   placeholder="e.g., Shanghai, Singapore, Rotterdam"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">To Port/City</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  To Port/City
+                </label>
                 <input
                   type="text"
                   value={routeForm.to}
-                  onChange={(e) => setRouteForm({...routeForm, to: e.target.value})}
+                  onChange={(e) =>
+                    setRouteForm({ ...routeForm, to: e.target.value })
+                  }
                   placeholder="e.g., Los Angeles, Hamburg, Dubai"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Cargo Type</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Cargo Type
+                </label>
                 <select
                   value={routeForm.cargo}
-                  onChange={(e) => setRouteForm({...routeForm, cargo: e.target.value})}
+                  onChange={(e) =>
+                    setRouteForm({ ...routeForm, cargo: e.target.value })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">General Cargo</option>
@@ -233,10 +292,14 @@ const ChatPanel = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Priority</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Priority
+                </label>
                 <select
                   value={routeForm.priority}
-                  onChange={(e) => setRouteForm({...routeForm, priority: e.target.value})}
+                  onChange={(e) =>
+                    setRouteForm({ ...routeForm, priority: e.target.value })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="cost">Cost Optimization</option>
@@ -270,7 +333,9 @@ const ChatPanel = () => {
         {chatMessages.length === 0 ? (
           <div className="text-center text-gray-500">
             <Bot className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-            <p className="text-sm">Start a conversation about supply chain risks</p>
+            <p className="text-sm">
+              Start a conversation about supply chain risks
+            </p>
             <div className="mt-4 space-y-2">
               <p className="text-xs text-gray-400">Quick questions:</p>
               {quickQuestions.map((question, index) => (
@@ -294,20 +359,28 @@ const ChatPanel = () => {
           chatMessages.map((message) => (
             <div
               key={message.id}
-              className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+              className={`flex ${
+                message.type === "user" ? "justify-end" : "justify-start"
+              }`}
             >
               <div
                 className={`max-w-xs lg:max-w-lg px-4 py-3 rounded-lg ${
-                  message.type === 'user'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-900'
+                  message.type === "user"
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-100 text-gray-900"
                 }`}
               >
                 <div className="flex items-start space-x-2">
-                  {message.type === 'bot' && <Bot className="h-4 w-4 mt-0.5 flex-shrink-0" />}
-                  {message.type === 'user' && <User className="h-4 w-4 mt-0.5 flex-shrink-0" />}
+                  {message.type === "bot" && (
+                    <Bot className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                  )}
+                  {message.type === "user" && (
+                    <User className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                  )}
                   <div className="flex-1">
-                    <div className="whitespace-pre-wrap text-sm">{message.content}</div>
+                    <div className="whitespace-pre-wrap text-sm">
+                      {message.content}
+                    </div>
                     {message.data && message.data.report && (
                       <div className="mt-2 p-2 bg-white bg-opacity-20 rounded text-xs">
                         <p className="font-medium">Report Generated</p>
@@ -334,30 +407,52 @@ const ChatPanel = () => {
             </div>
           ))
         )}
-        
+
         {/* Route Analysis Display */}
         {routeAnalysis && (
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4">
-            <h4 className="font-semibold text-blue-900 mb-3">🚢 Route Analysis: {routeAnalysis.route}</h4>
+            <h4 className="font-semibold text-blue-900 mb-3">
+              🚢 Route Analysis: {routeAnalysis.route}
+            </h4>
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Distance:</span>
-                  <span className="font-medium">{routeAnalysis.distance} nm</span>
+                  <span className="font-medium">
+                    {routeAnalysis.distance} nm
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Transit Time:</span>
-                  <span className="font-medium">{routeAnalysis.transitTime} days</span>
+                  <span className="font-medium">
+                    {routeAnalysis.transitTime} days
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Political Risk:</span>
-                  <span className={`font-medium ${routeAnalysis.politicalRisk <= 2 ? 'text-green-600' : routeAnalysis.politicalRisk <= 3 ? 'text-yellow-600' : 'text-red-600'}`}>
+                  <span
+                    className={`font-medium ${
+                      routeAnalysis.politicalRisk <= 2
+                        ? "text-green-600"
+                        : routeAnalysis.politicalRisk <= 3
+                        ? "text-yellow-600"
+                        : "text-red-600"
+                    }`}
+                  >
                     {routeAnalysis.politicalRisk}/5
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Weather Risk:</span>
-                  <span className={`font-medium ${routeAnalysis.weatherRisk <= 2 ? 'text-green-600' : routeAnalysis.weatherRisk <= 3 ? 'text-yellow-600' : 'text-red-600'}`}>
+                  <span
+                    className={`font-medium ${
+                      routeAnalysis.weatherRisk <= 2
+                        ? "text-green-600"
+                        : routeAnalysis.weatherRisk <= 3
+                        ? "text-yellow-600"
+                        : "text-red-600"
+                    }`}
+                  >
                     {routeAnalysis.weatherRisk}/5
                   </span>
                 </div>
@@ -365,26 +460,34 @@ const ChatPanel = () => {
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Visibility:</span>
-                  <span className="font-medium">{routeAnalysis.visibility} km</span>
+                  <span className="font-medium">
+                    {routeAnalysis.visibility} km
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Wind Speed:</span>
-                  <span className="font-medium">{routeAnalysis.windSpeed} kts</span>
+                  <span className="font-medium">
+                    {routeAnalysis.windSpeed} kts
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Wave Height:</span>
-                  <span className="font-medium">{routeAnalysis.waveHeight}m</span>
+                  <span className="font-medium">
+                    {routeAnalysis.waveHeight}m
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Sea Temp:</span>
-                  <span className="font-medium">{routeAnalysis.seaTemperature}°C</span>
+                  <span className="font-medium">
+                    {routeAnalysis.seaTemperature}°C
+                  </span>
                 </div>
               </div>
             </div>
             <div className="mt-4 pt-3 border-t border-blue-200">
               <p className="text-sm text-blue-800">
-                💰 Total Cost: ${routeAnalysis.totalCost.toLocaleString()} | 
-                🛡️ Safety Score: {Math.floor(Math.random() * 2) + 8}/10
+                💰 Total Cost: ${routeAnalysis.totalCost.toLocaleString()} | 🛡️
+                Safety Score: {Math.floor(Math.random() * 2) + 8}/10
               </p>
             </div>
           </div>
@@ -399,8 +502,14 @@ const ChatPanel = () => {
                   <>
                     <div className="flex space-x-1">
                       <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                      <div
+                        className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                        style={{ animationDelay: "0.1s" }}
+                      ></div>
+                      <div
+                        className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                        style={{ animationDelay: "0.2s" }}
+                      ></div>
                     </div>
                     <span className="text-sm">Typing...</span>
                   </>
