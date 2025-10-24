@@ -8,6 +8,10 @@ import LoadingSpinner from "./LoadingSpinner";
 const Dashboard = () => {
   const { dashboardData, sessionId, currentSession } = useDashboard();
 
+  // Debug: Log dashboard data
+  console.log("Dashboard - dashboardData:", dashboardData);
+  console.log("Dashboard - worldRiskData:", dashboardData.worldRiskData);
+
   if (dashboardData.loading) {
     return <LoadingSpinner />;
   }
