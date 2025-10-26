@@ -8,10 +8,6 @@ const WorldMap = ({ worldRiskData = {} }) => {
   const [tooltipContent, setTooltipContent] = useState("");
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
-  // Debug: Log the worldRiskData to verify it's being passed
-  console.log("WorldMap received worldRiskData:", worldRiskData);
-  console.log("Number of countries:", Object.keys(worldRiskData).length);
-
   // Country name mapping to normalize different naming conventions
   const countryNameMapping = {
     "United States of America": "United States",

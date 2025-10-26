@@ -22,13 +22,19 @@ load_dotenv()  # load variables from backend/.env if present
 
 app = FastAPI(title="SentriX API", version="1.0.0")
 
-# CORS middleware
+# CORS middleware - Allow all local development origins
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:3001",
+        "http://127.0.0.1:3001"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 # Initialize agents
@@ -309,21 +315,23 @@ async def get_dashboard_data():
         }
         
         # Try to get dynamic data from agents, but merge with our base data
-        try:
-            countries = await scheduler_agent.extract_countries()
-            political_risks = await political_risk_agent.analyze_risks(countries)
-            schedule_risks = await scheduler_agent.analyze_schedule_risks()
-            
-            # Merge agent-generated data with our comprehensive base
-            for risk in political_risks:
-                if risk.country in world_risk_data:
-                    world_risk_data[risk.country]["details"] = risk.reasoning
-                    world_risk_data[risk.country]["risk_level"] = max(
-                        world_risk_data[risk.country]["risk_level"], 
-                        risk.likelihood_score
-                    )
-        except:
-            pass  # Use base data if agents fail
+        # NOTE: Agent calls disabled for faster dashboard loading
+        # Uncomment below to enable dynamic risk analysis (slower)
+        # try:
+        #     countries = await scheduler_agent.extract_countries()
+        #     political_risks = await political_risk_agent.analyze_risks(countries)
+        #     schedule_risks = await scheduler_agent.analyze_schedule_risks()
+        #     
+        #     # Merge agent-generated data with our comprehensive base
+        #     for risk in political_risks:
+        #         if risk.country in world_risk_data:
+        #             world_risk_data[risk.country]["details"] = risk.reasoning
+        #             world_risk_data[risk.country]["risk_level"] = max(
+        #                 world_risk_data[risk.country]["risk_level"], 
+        #                 risk.likelihood_score
+        #             )
+        # except:
+        #     pass  # Use base data if agents fail
         
         # Return comprehensive data with sample political and schedule risks
         return {

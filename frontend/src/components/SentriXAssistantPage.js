@@ -21,3 +21,4 @@ const SentriXAssistantPage = () => {
 };
 
 export default SentriXAssistantPage;
+

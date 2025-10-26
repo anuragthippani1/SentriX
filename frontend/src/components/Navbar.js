@@ -7,7 +7,7 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
   const location = useLocation();
 
   const navItems = [
-    { id: "dashboard", label: "Dashboard", icon: Brain, path: "/" },
+    { id: "dashboard", label: "Dashboard", icon: Brain, path: "/dashboard" },
     {
       id: "assistant",
       label: "SentriX Assistant",
@@ -33,14 +33,18 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
     <nav className="bg-white shadow-sm border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
+          {/* Logo - Clickable to go home */}
           <div className="flex items-center">
-            <div className="flex-shrink-0 flex items-center">
+            <Link
+              to="/"
+              onClick={() => setCurrentPage("home")}
+              className="flex-shrink-0 flex items-center hover:opacity-80 transition"
+            >
               <img src="/logo.png" alt="SentriX Logo" className="h-8 w-8" />
               <span className="ml-2 text-xl font-bold text-gray-900">
                 SentriX
               </span>
-            </div>
+            </Link>
           </div>
 
           {/* Navigation Links */}
