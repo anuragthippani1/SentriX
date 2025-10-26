@@ -17,12 +17,103 @@
     }
   }
 
+  /* Floating animation for icons */
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  /* Slow spinning animation */
+  .animate-spin-slow {
+    animation: spin 8s linear infinite;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Shimmer effect */
+  .animate-shimmer {
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  /* Slow bounce */
+  .animate-bounce-slow {
+    animation: bounce-slow 2s ease-in-out infinite;
+  }
+
+  @keyframes bounce-slow {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+
+  /* Pulse glow */
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+    }
+    50% {
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.8);
+    }
+  }
+
+  /* Delays */
   .delay-700 {
     animation-delay: 700ms;
   }
 
   .delay-1000 {
     animation-delay: 1000ms;
+  }
+
+  .delay-\[0ms\] {
+    transition-delay: 0ms;
+  }
+
+  .delay-\[100ms\] {
+    transition-delay: 100ms;
+  }
+
+  .delay-\[200ms\] {
+    transition-delay: 200ms;
+  }
+
+  .delay-\[300ms\] {
+    transition-delay: 300ms;
+  }
+
+  .delay-\[400ms\] {
+    transition-delay: 400ms;
   }
 
   .bg-grid-pattern {
