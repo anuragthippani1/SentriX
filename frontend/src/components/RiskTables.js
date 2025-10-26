@@ -1,5 +1,5 @@
 import React from "react";
-import { AlertTriangle, Clock, MapPin, ExternalLink } from "lucide-react";
+import { AlertTriangle, Clock, MapPin, ExternalLink, Package, TrendingDown } from "lucide-react";
 
 const RiskTables = ({ politicalRisks, scheduleRisks }) => {
   const getRiskBadgeColor = (level) => {
@@ -21,15 +21,19 @@ const RiskTables = ({ politicalRisks, scheduleRisks }) => {
   return (
     <div className="space-y-6">
       {/* Political Risk Table */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900 flex items-center">
-            <AlertTriangle className="h-5 w-5 mr-2 text-orange-500" />
-            Political Risk Analysis
-          </h3>
-          <p className="text-sm text-gray-600">
-            Latest geopolitical events and policy changes
-          </p>
+      <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+        <div className="bg-gradient-to-r from-orange-500 to-red-600 px-6 py-4">
+          <div className="flex items-center space-x-3">
+            <AlertTriangle className="h-6 w-6 text-white" />
+            <div>
+              <h3 className="text-xl font-bold text-white">
+                Political Risk Analysis
+              </h3>
+              <p className="text-sm text-orange-100">
+                Latest geopolitical events and policy changes
+              </p>
+            </div>
+          </div>
         </div>
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
@@ -124,15 +128,19 @@ const RiskTables = ({ politicalRisks, scheduleRisks }) => {
       </div>
 
       {/* Schedule Risk Table */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900 flex items-center">
-            <Clock className="h-5 w-5 mr-2 text-blue-500" />
-            Schedule Risk Analysis
-          </h3>
-          <p className="text-sm text-gray-600">
-            Equipment delivery delays and timeline risks
-          </p>
+      <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+        <div className="bg-gradient-to-r from-blue-500 to-indigo-600 px-6 py-4">
+          <div className="flex items-center space-x-3">
+            <Package className="h-6 w-6 text-white" />
+            <div>
+              <h3 className="text-xl font-bold text-white">
+                Schedule Risk Analysis
+              </h3>
+              <p className="text-sm text-blue-100">
+                Equipment delivery delays and timeline risks
+              </p>
+            </div>
+          </div>
         </div>
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
