@@ -129,7 +129,8 @@ class ReportingAgent:
             created_at=datetime.now(),
             title=f"Shipping Route Analysis: {origin.title()} → {destination.title()}",
             executive_summary=executive_summary,
-            recommendations=recommendations
+            recommendations=recommendations,
+            route_analysis=route_analysis  # Store the full detailed analysis
         )
         
         return report
@@ -386,60 +387,103 @@ class ReportingAgent:
         story.append(meta_table)
         story.append(PageBreak())
         
-        # Executive Summary
-        story.append(Paragraph("📊 Executive Summary", heading2_style))
-        story.append(Spacer(1, 8))
-        
-        summary_para = Paragraph(report.executive_summary, body_style)
-        summary_data = [[summary_para]]
-        summary_table = Table(summary_data, colWidths=[6.5*inch])
-        summary_table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, -1), colors.HexColor('#f8fafc')),
-            ('BORDER', (0, 0), (-1, -1), 2, accent_color),
-            ('TOPPADDING', (0, 0), (-1, -1), 15),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 15),
-            ('LEFTPADDING', (0, 0), (-1, -1), 15),
-            ('RIGHTPADDING', (0, 0), (-1, -1), 15),
-        ]))
-        story.append(summary_table)
-        story.append(Spacer(1, 20))
-        
-        # Key Highlights
-        story.append(Paragraph("🎯 Key Highlights", heading2_style))
-        story.append(Spacer(1, 8))
-        
-        highlights = [
-            "✓ Total Distance: 5,794 nautical miles (10,730 km)",
-            "✓ Estimated Duration: 12-15 days",
-            "✓ Average Speed: 20 knots (37 km/h)",
-            "✓ Route Status: APPROVED",
-            "✓ Confidence Level: 92% (High)",
-            "✓ Primary Risks: Weather (Medium), Port Congestion (Medium)"
-        ]
-        
-        for highlight in highlights:
-            story.append(Paragraph(highlight, body_style))
-        story.append(Spacer(1, 20))
-        
-        # Recommendations
-        if report.recommendations:
-            story.append(Paragraph("💡 Key Recommendations", heading2_style))
-            story.append(Spacer(1, 10))
+        # Full Route Analysis
+        if report.route_analysis:
+            story.append(Paragraph("📋 Complete Route Analysis", heading2_style))
+            story.append(Spacer(1, 12))
             
-            rec_style = ParagraphStyle(
-                'Recommendation',
+            # Parse the route analysis and format it for PDF
+            analysis_lines = report.route_analysis.split('\n')
+            
+            # Custom styles for route analysis
+            section_heading_style = ParagraphStyle(
+                'SectionHeading',
                 parent=styles['Normal'],
-                fontSize=9,
-                textColor=colors.HexColor('#1f2937'),
-                leftIndent=15,
-                spaceAfter=6,
-                leading=13
+                fontSize=11,
+                textColor=primary_color,
+                fontName='Helvetica-Bold',
+                spaceAfter=8,
+                spaceBefore=12
             )
             
-            for i, rec in enumerate(report.recommendations, 1):
-                bullet = "●"
-                rec_text = f"{bullet} {rec}"
-                story.append(Paragraph(rec_text, rec_style))
+            subsection_style = ParagraphStyle(
+                'SubSection',
+                parent=styles['Normal'],
+                fontSize=10,
+                textColor=colors.HexColor('#1f2937'),
+                fontName='Helvetica-Bold',
+                spaceAfter=6,
+                spaceBefore=8
+            )
+            
+            detail_style = ParagraphStyle(
+                'Detail',
+                parent=styles['Normal'],
+                fontSize=9,
+                textColor=colors.HexColor('#374151'),
+                spaceAfter=4,
+                leading=12
+            )
+            
+            for line in analysis_lines:
+                line = line.strip()
+                if not line or line.startswith('━'):  # Skip empty lines and separators
+                    continue
+                
+                # Main section headers (##)
+                if line.startswith('## '):
+                    section_title = line.replace('## ', '').strip()
+                    story.append(Spacer(1, 10))
+                    story.append(Paragraph(section_title, section_heading_style))
+                
+                # Subsection headers (###)
+                elif line.startswith('### '):
+                    subsection_title = line.replace('### ', '').strip().rstrip(':')
+                    story.append(Paragraph(subsection_title, subsection_style))
+                
+                # Bullet points
+                elif line.startswith('•') or line.startswith('✅') or line.startswith('✓') or line.startswith('⚠') or line.startswith('├─') or line.startswith('└─'):
+                    # Clean up the line
+                    clean_line = line.replace('├─', '  •').replace('└─', '  •')
+                    story.append(Paragraph(clean_line, detail_style))
+                
+                # Bold text (surrounded by **)
+                elif '**' in line:
+                    # Replace markdown bold with HTML bold for ReportLab
+                    clean_line = line.replace('**', '<b>').replace('**', '</b>')
+                    # Fix if odd number of replacements
+                    if clean_line.count('<b>') != clean_line.count('</b>'):
+                        parts = line.split('**')
+                        clean_line = ''
+                        for i, part in enumerate(parts):
+                            if i % 2 == 1:  # Odd indices are bold
+                                clean_line += f'<b>{part}</b>'
+                            else:
+                                clean_line += part
+                    story.append(Paragraph(clean_line, detail_style))
+                
+                # Regular text
+                elif line and not line.startswith('#'):
+                    story.append(Paragraph(line, detail_style))
+        
+        else:
+            # Fallback to summary if no full analysis
+            story.append(Paragraph("📊 Executive Summary", heading2_style))
+            story.append(Spacer(1, 8))
+            
+            summary_para = Paragraph(report.executive_summary, body_style)
+            summary_data = [[summary_para]]
+            summary_table = Table(summary_data, colWidths=[6.5*inch])
+            summary_table.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (-1, -1), colors.HexColor('#f8fafc')),
+                ('BORDER', (0, 0), (-1, -1), 2, accent_color),
+                ('TOPPADDING', (0, 0), (-1, -1), 15),
+                ('BOTTOMPADDING', (0, 0), (-1, -1), 15),
+                ('LEFTPADDING', (0, 0), (-1, -1), 15),
+                ('RIGHTPADDING', (0, 0), (-1, -1), 15),
+            ]))
+            story.append(summary_table)
+            story.append(Spacer(1, 20))
         
         story.append(Spacer(1, 30))
         

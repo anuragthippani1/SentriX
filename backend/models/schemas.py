@@ -34,7 +34,7 @@ class ScheduleRisk(BaseModel):
 class RiskReport(BaseModel):
     report_id: str
     session_id: str
-    report_type: str  # "political", "schedule", "combined"
+    report_type: str  # "political", "schedule", "combined", "route"
     created_at: datetime
     title: str
     executive_summary: str
@@ -42,6 +42,7 @@ class RiskReport(BaseModel):
     schedule_risks: Optional[List[ScheduleRisk]] = None
     world_risk_data: Optional[Dict[str, Any]] = None
     recommendations: List[str] = []
+    route_analysis: Optional[str] = None  # Full detailed route analysis (for route reports)
 
 class DashboardData(BaseModel):
     world_risk_data: Dict[str, Any]
