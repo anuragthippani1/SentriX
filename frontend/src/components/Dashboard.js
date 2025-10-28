@@ -112,46 +112,46 @@ const Dashboard = () => {
       label: "Total Regions",
       value: animatedStats.totalCountries,
       icon: Globe,
-      gradient: "from-[#A0937D] to-[#8B7D6B]",
+      gradient: "from-[#6D94C5] to-[#5A7DAD]",
       trend: "neutral",
-      bgColor: "bg-[#F6E6CB]",
-      iconColor: "text-[#A0937D]",
+      bgColor: "bg-[#CBDCEB]",
+      iconColor: "text-[#6D94C5]",
       delay: "delay-[0ms]",
     },
     {
       label: "High Risk Zones",
       value: animatedStats.highRiskCount,
       icon: AlertTriangle,
-      gradient: "from-[#D4A574] to-[#B8936A]",
+      gradient: "from-[#C5946D] to-[#AD7D5A]",
       trend: "down",
-      bgColor: "bg-[#F6E6CB]",
-      iconColor: "text-[#A0937D]",
+      bgColor: "bg-[#F5EFE6]",
+      iconColor: "text-[#C5946D]",
       delay: "delay-[100ms]",
     },
     {
       label: "Safe Zones",
       value: animatedStats.lowRiskCount,
       icon: CheckCircle,
-      gradient: "from-[#B6C7AA] to-[#9DB090]",
+      gradient: "from-[#6D94C5] to-[#5A7DAD]",
       trend: "up",
-      bgColor: "bg-[#E7D4B5]",
-      iconColor: "text-[#B6C7AA]",
+      bgColor: "bg-[#E8DFCA]",
+      iconColor: "text-[#6D94C5]",
       delay: "delay-[200ms]",
     },
     {
       label: "Avg Risk Score",
       value: animatedStats.avgRisk,
       icon: TrendingUp,
-      gradient: "from-[#E7D4B5] to-[#D4C1A2]",
+      gradient: "from-[#E8DFCA] to-[#D4C5AE]",
       trend: "neutral",
-      bgColor: "bg-[#F6E6CB]",
-      iconColor: "text-[#A0937D]",
+      bgColor: "bg-[#F5EFE6]",
+      iconColor: "text-[#6D94C5]",
       delay: "delay-[300ms]",
     },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F6E6CB] via-[#E7D4B5] to-[#F6E6CB]">
+    <div className="min-h-screen bg-gradient-to-br from-[#F5EFE6] via-[#CBDCEB] to-[#F5EFE6]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Modern Header with Gradient */}
         <div
@@ -159,12 +159,12 @@ const Dashboard = () => {
             mounted ? "translate-y-0 opacity-100" : "-translate-y-4 opacity-0"
           }`}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-[#A0937D] to-[#B6C7AA] rounded-2xl opacity-10 animate-pulse"></div>
-          <div className="relative bg-white rounded-2xl shadow-lg border border-[#E7D4B5] p-6 hover:shadow-2xl transition-shadow duration-300">
+          <div className="absolute inset-0 bg-gradient-to-r from-[#6D94C5] to-[#CBDCEB] rounded-2xl opacity-10 animate-pulse"></div>
+          <div className="relative bg-white rounded-2xl shadow-lg border border-[#E8DFCA] p-6 hover:shadow-2xl transition-shadow duration-300">
             <div className="flex items-center justify-between">
               <div>
                 <div className="flex items-center space-x-3">
-                  <div className="bg-gradient-to-br from-[#A0937D] to-[#8B7D6B] p-3 rounded-xl animate-float">
+                  <div className="bg-gradient-to-br from-[#6D94C5] to-[#5A7DAD] p-3 rounded-xl animate-float">
                     <Ship className="h-8 w-8 text-white" />
                   </div>
                   <div>
@@ -178,8 +178,8 @@ const Dashboard = () => {
                 </div>
                     {currentSession && (
                       <div className="mt-4 flex items-center space-x-2 text-sm">
-                        <div className="bg-[#E7D4B5] text-[#A0937D] px-3 py-1 rounded-full flex items-center space-x-2">
-                          <div className="w-2 h-2 bg-[#B6C7AA] rounded-full animate-pulse"></div>
+                        <div className="bg-[#CBDCEB] text-[#6D94C5] px-3 py-1 rounded-full flex items-center space-x-2">
+                          <div className="w-2 h-2 bg-[#6D94C5] rounded-full animate-pulse"></div>
                           <span className="font-medium">Active Session</span>
                         </div>
                         <span className="text-gray-500">{currentSession.name}</span>
@@ -227,10 +227,10 @@ const Dashboard = () => {
                     />
                   </div>
                   {stat.trend === "up" && (
-                    <TrendingUp className="h-5 w-5 text-[#B6C7AA] animate-bounce-slow" />
+                    <TrendingUp className="h-5 w-5 text-[#6D94C5] animate-bounce-slow" />
                   )}
                   {stat.trend === "down" && (
-                    <TrendingDown className="h-5 w-5 text-[#D4A574] animate-bounce-slow" />
+                    <TrendingDown className="h-5 w-5 text-[#C5946D] animate-bounce-slow" />
                   )}
                 </div>
                 <div>
@@ -249,11 +249,11 @@ const Dashboard = () => {
         <div className="space-y-6">
           {/* World Risk Map - Modern Card */}
           <div
-            className={`bg-white rounded-2xl shadow-xl border border-[#E7D4B5] overflow-hidden hover:shadow-2xl transition-all duration-500 transform ${
+            className={`bg-white rounded-2xl shadow-xl border border-[#E8DFCA] overflow-hidden hover:shadow-2xl transition-all duration-500 transform ${
               mounted ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
             } delay-[400ms]`}
           >
-            <div className="bg-gradient-to-r from-[#A0937D] to-[#B6C7AA] px-6 py-4 relative overflow-hidden">
+            <div className="bg-gradient-to-r from-[#6D94C5] to-[#8AABCE] px-6 py-4 relative overflow-hidden">
               {/* Animated shimmer effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-10 animate-shimmer"></div>
 
@@ -263,7 +263,7 @@ const Dashboard = () => {
                   <h3 className="text-xl font-bold text-white">
                     Global Risk Heatmap
                   </h3>
-                  <p className="text-sm text-[#F6E6CB] flex items-center space-x-2">
+                  <p className="text-sm text-[#CBDCEB] flex items-center space-x-2">
                     <Activity className="h-3 w-3 animate-pulse" />
                     <span>
                       Interactive world risk assessment & route monitoring
@@ -272,7 +272,7 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="p-6 bg-gradient-to-br from-[#F6E6CB] to-[#E7D4B5]">
+            <div className="p-6 bg-gradient-to-br from-[#F5EFE6] to-[#E8DFCA]">
               <WorldMap worldRiskData={dashboardData.worldRiskData} />
             </div>
           </div>

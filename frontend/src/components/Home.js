@@ -33,29 +33,29 @@ const Home = () => {
       label: "Countries Monitored",
       value: totalCountries,
       icon: Globe,
-      gradient: "from-[#A0937D] to-[#8B7D6B]",
-      shadowColor: "shadow-[#A0937D]/30",
+      gradient: "from-[#6D94C5] to-[#5A7DAD]",
+      shadowColor: "shadow-[#6D94C5]/30",
     },
     {
       label: "High Risk Countries",
       value: highRiskCountries,
       icon: AlertTriangle,
-      gradient: "from-[#D4A574] to-[#B8936A]",
-      shadowColor: "shadow-[#D4A574]/30",
+      gradient: "from-[#C5946D] to-[#AD7D5A]",
+      shadowColor: "shadow-[#C5946D]/30",
     },
     {
       label: "Reports Generated",
       value: totalReports,
       icon: FileText,
-      gradient: "from-[#E7D4B5] to-[#D4C1A2]",
-      shadowColor: "shadow-[#E7D4B5]/30",
+      gradient: "from-[#E8DFCA] to-[#D4C5AE]",
+      shadowColor: "shadow-[#E8DFCA]/30",
     },
     {
       label: "Critical Alerts",
       value: criticalAlerts,
       icon: Shield,
-      gradient: "from-[#B6C7AA] to-[#9DB090]",
-      shadowColor: "shadow-[#B6C7AA]/30",
+      gradient: "from-[#6D94C5] to-[#8AABCE]",
+      shadowColor: "shadow-[#6D94C5]/30",
     },
   ];
 
@@ -64,28 +64,28 @@ const Home = () => {
       title: "View Dashboard",
       description: "Explore global risk heatmap and analytics",
       icon: BarChart3,
-      gradient: "from-[#A0937D] to-[#8B7D6B]",
+      gradient: "from-[#6D94C5] to-[#5A7DAD]",
       path: "/dashboard",
     },
     {
       title: "SentriX Assistant",
       description: "Get AI-powered route analysis and insights",
       icon: Zap,
-      gradient: "from-[#B6C7AA] to-[#9DB090]",
+      gradient: "from-[#E8DFCA] to-[#D4C5AE]",
       path: "/assistant",
     },
     {
       title: "Risk Reports",
       description: "Access detailed risk assessment reports",
       icon: FileText,
-      gradient: "from-[#E7D4B5] to-[#D4C1A2]",
+      gradient: "from-[#6D94C5] to-[#8AABCE]",
       path: "/reports",
     },
     {
       title: "Global Map",
       description: "Interactive world risk visualization",
       icon: Map,
-      gradient: "from-[#A0937D] to-[#B6C7AA]",
+      gradient: "from-[#C5946D] to-[#D4A98A]",
       path: "/dashboard",
     },
   ];
@@ -118,15 +118,15 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#A0937D] via-[#B6C7AA] to-[#8B7D6B] relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-[#6D94C5] via-[#CBDCEB] to-[#6D94C5] relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#E7D4B5]/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#F6E6CB]/20 rounded-full blur-3xl animate-pulse delay-700"></div>
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#F5EFE6]/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#E8DFCA]/20 rounded-full blur-3xl animate-pulse delay-700"></div>
       </div>
 
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-r from-[#A0937D] via-[#8B7D6B] to-[#A0937D] text-white overflow-hidden">
+      <div className="relative bg-gradient-to-r from-[#6D94C5] via-[#5A7DAD] to-[#6D94C5] text-white overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative">
           <div className="text-center">
@@ -216,7 +216,7 @@ const Home = () => {
       </div>
 
       {/* Features Section */}
-      <div className="relative py-20 bg-gradient-to-br from-[#8B7D6B] via-[#A0937D] to-[#8B7D6B]">
+      <div className="relative py-20 bg-gradient-to-br from-[#5A7DAD] via-[#6D94C5] to-[#5A7DAD]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4">
@@ -284,11 +284,11 @@ const Home = () => {
       </div>
 
       {/* Footer */}
-      <div className="relative bg-gradient-to-br from-[#6B5D4F] via-[#8B7D6B] to-[#6B5D4F] border-t border-[#E7D4B5]/20 py-12">
+      <div className="relative bg-gradient-to-br from-[#4A6B96] via-[#5A7DAD] to-[#4A6B96] border-t border-[#CBDCEB]/20 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="flex items-center justify-center space-x-2 mb-4">
-              <div className="h-8 w-8 bg-gradient-to-br from-[#E7D4B5] to-[#B6C7AA] rounded-lg"></div>
+              <div className="h-8 w-8 bg-gradient-to-br from-[#CBDCEB] to-[#E8DFCA] rounded-lg"></div>
               <span className="text-2xl font-bold text-white">SentriX</span>
             </div>
             <p className="text-gray-400 mb-2">

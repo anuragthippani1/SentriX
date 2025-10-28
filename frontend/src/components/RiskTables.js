@@ -35,11 +35,11 @@ const RiskTables = ({ politicalRisks, scheduleRisks }) => {
     <div className="space-y-6">
       {/* Political Risk Table */}
       <div
-        className={`bg-white rounded-2xl shadow-xl border border-[#E7D4B5] overflow-hidden hover:shadow-2xl transition-all duration-500 transform ${
+        className={`bg-white rounded-2xl shadow-xl border border-[#E8DFCA] overflow-hidden hover:shadow-2xl transition-all duration-500 transform ${
           mounted ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
         } delay-[500ms]`}
       >
-        <div className="bg-gradient-to-r from-[#D4A574] to-[#A0937D] px-6 py-4 relative overflow-hidden group">
+        <div className="bg-gradient-to-r from-[#C5946D] to-[#D4A98A] px-6 py-4 relative overflow-hidden group">
           {/* Animated shimmer effect */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-10 animate-shimmer"></div>
 
@@ -51,7 +51,7 @@ const RiskTables = ({ politicalRisks, scheduleRisks }) => {
               <h3 className="text-xl font-bold text-white">
                 Political Risk Analysis
               </h3>
-              <p className="text-sm text-[#F6E6CB] flex items-center space-x-2">
+              <p className="text-sm text-[#F5EFE6] flex items-center space-x-2">
                 <Activity className="h-3 w-3 animate-pulse" />
                 <span>Latest geopolitical events and policy changes</span>
               </p>
@@ -84,7 +84,7 @@ const RiskTables = ({ politicalRisks, scheduleRisks }) => {
                 politicalRisks.map((risk, index) => (
                   <tr
                     key={index}
-                    className="hover:bg-gradient-to-r hover:from-[#F6E6CB] hover:to-[#E7D4B5] transition-all duration-300 cursor-pointer transform hover:scale-[1.01]"
+                    className="hover:bg-gradient-to-r hover:from-[#F5EFE6] hover:to-[#CBDCEB] transition-all duration-300 cursor-pointer transform hover:scale-[1.01]"
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
@@ -155,11 +155,11 @@ const RiskTables = ({ politicalRisks, scheduleRisks }) => {
 
       {/* Schedule Risk Table */}
       <div
-        className={`bg-white rounded-2xl shadow-xl border border-[#E7D4B5] overflow-hidden hover:shadow-2xl transition-all duration-500 transform ${
+        className={`bg-white rounded-2xl shadow-xl border border-[#E8DFCA] overflow-hidden hover:shadow-2xl transition-all duration-500 transform ${
           mounted ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
         } delay-[600ms]`}
       >
-        <div className="bg-gradient-to-r from-[#B6C7AA] to-[#9DB090] px-6 py-4 relative overflow-hidden group">
+        <div className="bg-gradient-to-r from-[#6D94C5] to-[#8AABCE] px-6 py-4 relative overflow-hidden group">
           {/* Animated shimmer effect */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-10 animate-shimmer"></div>
 
@@ -171,7 +171,7 @@ const RiskTables = ({ politicalRisks, scheduleRisks }) => {
               <h3 className="text-xl font-bold text-white">
                 Schedule Risk Analysis
               </h3>
-              <p className="text-sm text-[#F6E6CB] flex items-center space-x-2">
+              <p className="text-sm text-[#CBDCEB] flex items-center space-x-2">
                 <Activity className="h-3 w-3 animate-pulse" />
                 <span>Equipment delivery delays and timeline risks</span>
               </p>
@@ -204,7 +204,7 @@ const RiskTables = ({ politicalRisks, scheduleRisks }) => {
                 scheduleRisks.map((risk, index) => (
                   <tr
                     key={index}
-                    className="hover:bg-gradient-to-r hover:from-[#F6E6CB] hover:to-[#E7D4B5] transition-all duration-300 cursor-pointer transform hover:scale-[1.01]"
+                    className="hover:bg-gradient-to-r hover:from-[#F5EFE6] hover:to-[#CBDCEB] transition-all duration-300 cursor-pointer transform hover:scale-[1.01]"
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="text-sm font-medium text-gray-900">

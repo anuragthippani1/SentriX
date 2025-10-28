@@ -30,7 +30,7 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
   ];
 
   return (
-    <nav className="bg-gradient-to-r from-[#A0937D] to-[#B6C7AA] shadow-lg border-b border-[#E7D4B5]">
+    <nav className="bg-gradient-to-r from-[#6D94C5] to-[#8AABCE] shadow-lg border-b border-[#CBDCEB]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo - Clickable to go home */}
@@ -41,9 +41,7 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
               className="flex-shrink-0 flex items-center hover:opacity-80 transition"
             >
               <img src="/logo.png" alt="SentriX Logo" className="h-8 w-8" />
-              <span className="ml-2 text-xl font-bold text-white">
-                SentriX
-              </span>
+              <span className="ml-2 text-xl font-bold text-white">SentriX</span>
             </Link>
           </div>
 
