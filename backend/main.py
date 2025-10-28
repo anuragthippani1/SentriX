@@ -133,9 +133,14 @@ async def process_query(request: QueryRequest):
         session_id = request.session_id or str(uuid.uuid4())
         text = request.query.lower()
         intent = chatbot_manager.classify_intent(text)
+        
         if intent == "reject":
             response = await assistant_agent.process_query("offtopic")
             return {"session_id": session_id, "response": response, "type": "assistant"}
+        
+        message = ""  # Initialize message variable
+        report = None
+        
         if intent == "combined":
             countries = await scheduler_agent.extract_countries()
             political_risks = await political_risk_agent.analyze_risks(countries)
@@ -177,9 +182,18 @@ async def process_query(request: QueryRequest):
         else:
             response = await assistant_agent.process_query(request.query)
             return {"session_id": session_id, "response": response, "type": "assistant"}
-        await db_client.store_report(report)
-        return {"session_id": session_id, "report": report, "type": "report", "response": {"message": message}}
+        
+        # Store report and return
+        if report:
+            await db_client.store_report(report)
+            return {"session_id": session_id, "report": report, "type": "report", "response": {"message": message}}
+        else:
+            return {"session_id": session_id, "response": {"message": "Unable to generate report"}, "type": "error"}
+            
     except Exception as e:
+        print(f"❌ Error in process_query: {str(e)}")  # Debug log
+        import traceback
+        traceback.print_exc()  # Print full traceback
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/reports")
