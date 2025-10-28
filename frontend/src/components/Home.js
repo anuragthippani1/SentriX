@@ -18,20 +18,15 @@ import IntroAnimation from "./IntroAnimation";
 const Home = () => {
   const navigate = useNavigate();
   const { dashboardData, reports } = useDashboard();
-  
-  // Check if intro has been shown in this session
-  const [showIntro, setShowIntro] = useState(() => {
-    const introShown = sessionStorage.getItem('sentrix-intro-shown');
-    return !introShown; // Show intro only if not shown before
-  });
+ 
+  // Always show intro on home page (even on reload)
+  const [showIntro, setShowIntro] = useState(true);
 
   const handleIntroComplete = () => {
     setShowIntro(false);
-    // Mark intro as shown for this session
-    sessionStorage.setItem('sentrix-intro-shown', 'true');
   };
 
-  // Show intro animation only on first website load
+  // Show intro animation every time home page loads
   if (showIntro) {
     return <IntroAnimation onComplete={handleIntroComplete} />;
   }
