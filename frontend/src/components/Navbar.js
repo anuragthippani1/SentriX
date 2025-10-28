@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import ThemeToggle from "./ThemeToggle";
 
 import { Brain, MessageSquare, FileText, Users, Bot } from "lucide-react";
 
@@ -30,7 +31,7 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
   ];
 
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-200">
+    <nav className="bg-white dark:bg-gray-900 shadow-sm border-b border-gray-200 dark:border-gray-800 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo - Clickable to go home */}
@@ -41,15 +42,15 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
               className="flex-shrink-0 flex items-center hover:opacity-80 transition"
             >
               <img src="/logo.png" alt="SentriX Logo" className="h-8 w-8" />
-              <span className="ml-2 text-xl font-bold text-gray-900">
+              <span className="ml-2 text-xl font-bold text-gray-900 dark:text-white">
                 SentriX
               </span>
             </Link>
           </div>
 
-          {/* Navigation Links */}
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-4">
+          {/* Navigation Links & Theme Toggle */}
+          <div className="hidden md:flex items-center space-x-4">
+            <div className="flex items-baseline space-x-4">
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = location.pathname === item.path;
@@ -60,8 +61,8 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
                     to={item.path}
                     className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                       isActive
-                        ? "bg-gray-100 text-gray-900"
-                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                        ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
+                        : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white"
                     }`}
                   >
                     <div className="flex items-center">
@@ -72,6 +73,9 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
                 );
               })}
             </div>
+            
+            {/* Theme Toggle */}
+            <ThemeToggle />
           </div>
         </div>
       </div>

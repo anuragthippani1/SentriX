@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
@@ -8,16 +8,18 @@ import Reports from "./components/Reports";
 import ThinkingLogs from "./components/ThinkingLogs";
 import SessionManagerPage from "./components/SessionManagerPage";
 import { DashboardProvider } from "./context/DashboardContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import "./index.css";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("home");
 
   return (
-    <DashboardProvider>
-      <Router>
-        <div className="min-h-screen bg-gray-50">
-          <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+    <ThemeProvider>
+      <DashboardProvider>
+        <Router>
+          <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
+            <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} />
 
           <Routes>
             <Route path="/" element={<Home />} />
@@ -27,9 +29,10 @@ function App() {
             <Route path="/thinking-logs" element={<ThinkingLogs />} />
             <Route path="/session-manager" element={<SessionManagerPage />} />
           </Routes>
-        </div>
-      </Router>
-    </DashboardProvider>
+          </div>
+        </Router>
+      </DashboardProvider>
+    </ThemeProvider>
   );
 }
 

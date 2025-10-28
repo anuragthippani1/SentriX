@@ -106,7 +106,7 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white relative overflow-hidden">
+    <div className="min-h-screen bg-white dark:bg-gray-900 relative overflow-hidden transition-colors">
       {/* Hero Section with Ship Image */}
       <div className="relative h-[600px] bg-gray-900 text-white overflow-hidden">
         {/* Background Ship Image */}
@@ -176,19 +176,19 @@ const Home = () => {
           {stats.map((stat, index) => (
             <div
               key={index}
-              className="group bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md p-6 transform transition-all duration-200 hover:scale-105 cursor-pointer"
+              className="group bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md p-6 transform transition-all duration-200 hover:scale-105 cursor-pointer"
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     {stat.label}
                   </p>
-                  <p className="text-3xl font-bold text-gray-900 mt-2">
+                  <p className="text-3xl font-bold text-gray-900 dark:text-white mt-2">
                     {stat.value}
                   </p>
                 </div>
-                <div className="bg-gray-100 p-3 rounded-lg">
-                  <stat.icon className="h-6 w-6 text-gray-600" />
+                <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
+                  <stat.icon className="h-6 w-6 text-gray-600 dark:text-gray-300" />
                 </div>
               </div>
             </div>
@@ -197,12 +197,12 @@ const Home = () => {
       </div>
 
       {/* Quick Actions Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative bg-white dark:bg-gray-900">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
             Quick Actions
           </h2>
-          <p className="text-gray-600 text-lg">
+          <p className="text-gray-600 dark:text-gray-400 text-lg">
             Get started with these powerful features
           </p>
         </div>
@@ -211,18 +211,18 @@ const Home = () => {
             <button
               key={index}
               onClick={() => navigate(action.path)}
-              className="group bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md p-6 text-left transform transition-all duration-200 hover:scale-105"
+              className="group bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md p-6 text-left transform transition-all duration-200 hover:scale-105"
             >
               <div className="flex items-center justify-between mb-4">
-                <div className="bg-gray-100 p-3 rounded-lg">
-                  <action.icon className="h-6 w-6 text-gray-700" />
+                <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
+                  <action.icon className="h-6 w-6 text-gray-700 dark:text-gray-300" />
                 </div>
-                <ArrowRight className="h-5 w-5 text-gray-400 group-hover:translate-x-1 group-hover:text-gray-700 transition-all" />
+                <ArrowRight className="h-5 w-5 text-gray-400 dark:text-gray-500 group-hover:translate-x-1 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-all" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                 {action.title}
               </h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
+              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
                 {action.description}
               </p>
             </button>
@@ -231,13 +231,13 @@ const Home = () => {
       </div>
 
       {/* Features Section */}
-      <div className="relative py-20 bg-gray-50">
+      <div className="relative py-20 bg-gray-50 dark:bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               Why Choose SentriX?
             </h2>
-            <p className="text-gray-600 text-lg">
+            <p className="text-gray-600 dark:text-gray-400 text-lg">
               Comprehensive risk intelligence at your fingertips
             </p>
           </div>
@@ -247,13 +247,13 @@ const Home = () => {
                 key={index}
                 className="group text-center transform transition-all duration-200 hover:scale-105"
               >
-                <div className="bg-white w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-sm border border-gray-200 group-hover:shadow-md transition-all">
-                  <feature.icon className="h-8 w-8 text-gray-700" />
+                <div className="bg-white dark:bg-gray-700 w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-sm border border-gray-200 dark:border-gray-600 group-hover:shadow-md transition-all">
+                  <feature.icon className="h-8 w-8 text-gray-700 dark:text-gray-300" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
                   {feature.description}
                 </p>
               </div>
@@ -297,17 +297,17 @@ const Home = () => {
       </div>
 
       {/* Footer */}
-      <div className="relative bg-white border-t border-gray-200 py-12">
+      <div className="relative bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="flex items-center justify-center space-x-2 mb-4">
               <img src="/logo.png" alt="SentriX Logo" className="h-8 w-8" />
-              <span className="text-xl font-bold text-gray-900">SentriX</span>
+              <span className="text-xl font-bold text-gray-900 dark:text-white">SentriX</span>
             </div>
-            <p className="text-gray-600 mb-2">
+            <p className="text-gray-600 dark:text-gray-400 mb-2">
               © 2024 SentriX. Real-Time Supply Chain Risk Intelligence.
             </p>
-            <p className="text-gray-500 text-sm flex items-center justify-center space-x-4">
+            <p className="text-gray-500 dark:text-gray-500 text-sm flex items-center justify-center space-x-4">
               <span className="flex items-center">
                 <Zap className="h-4 w-4 mr-1" /> Powered by AI
               </span>
