@@ -8,8 +8,6 @@ import {
   FilePlus2,
   Copy,
   CheckCircle,
-  AlertCircle,
-  Clock,
 } from "lucide-react";
 import { useDashboard } from "../context/DashboardContext";
 
@@ -84,7 +82,7 @@ const ChatPanel = () => {
     } (priority: ${routeForm.priority})`;
 
     setTimeout(async () => {
-      const response = await sendChatMessage(routeQuery);
+      await sendChatMessage(routeQuery);
 
       // Generate comprehensive route analysis
       const analysis = generateRouteAnalysis(routeForm);
@@ -123,7 +121,7 @@ const ChatPanel = () => {
   const handleGenerateCombined = async () => {
     try {
       setIsLoading(true);
-      const res = await generateCombinedReport();
+      await generateCombinedReport();
       // Assuming setChatMessages is available from useDashboard context or passed as prop
       // For now, we'll simulate an update to show the message
       // setChatMessages(prev => [...prev, { id: Date.now()+4, type: 'bot', content: `Combined report generated: ${res.report?.report_id}`, timestamp: new Date().toISOString(), data: res }]);

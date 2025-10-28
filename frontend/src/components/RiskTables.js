@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import {
   AlertTriangle,
-  Clock,
   MapPin,
   ExternalLink,
   Package,
-  TrendingDown,
   Activity,
 } from "lucide-react";
 

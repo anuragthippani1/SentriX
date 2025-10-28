@@ -9,12 +9,9 @@ import {
   TrendingDown,
   AlertTriangle,
   CheckCircle,
-  Package,
   Ship,
-  Truck,
   Globe,
   Activity,
-  Zap,
 } from "lucide-react";
 
 const Dashboard = () => {

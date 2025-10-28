@@ -272,6 +272,7 @@ export const DashboardProvider = ({ children }) => {
 
     // Removed automatic polling to prevent page reloads
     // Users can manually refresh data when needed
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Reload reports when sessionId changes
@@ -279,6 +280,7 @@ export const DashboardProvider = ({ children }) => {
     if (sessionId) {
       loadReports();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionId]);
 
   const value = {

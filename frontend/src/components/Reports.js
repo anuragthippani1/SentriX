@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDashboard } from "../context/DashboardContext";
 import { Download, FileText, Calendar, Search, Filter } from "lucide-react";
-import LoadingSpinner from "./LoadingSpinner";
 
 const Reports = () => {
   const { reports, loadReports, downloadReport, currentSession } =
@@ -11,6 +10,7 @@ const Reports = () => {
 
   useEffect(() => {
     loadReports();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const filteredReports = reports.filter((report) => {
