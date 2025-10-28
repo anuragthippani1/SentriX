@@ -21,14 +21,14 @@ function App() {
           <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
             <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} />
 
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/assistant" element={<SentriXAssistantPage />} />
-            <Route path="/reports" element={<Reports />} />
-            <Route path="/thinking-logs" element={<ThinkingLogs />} />
-            <Route path="/session-manager" element={<SessionManagerPage />} />
-          </Routes>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/assistant" element={<SentriXAssistantPage />} />
+              <Route path="/reports" element={<Reports />} />
+              <Route path="/thinking-logs" element={<ThinkingLogs />} />
+              <Route path="/session-manager" element={<SessionManagerPage />} />
+            </Routes>
           </div>
         </Router>
       </DashboardProvider>

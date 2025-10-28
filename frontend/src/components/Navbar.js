@@ -73,7 +73,7 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
                 );
               })}
             </div>
-            
+
             {/* Theme Toggle */}
             <ThemeToggle />
           </div>

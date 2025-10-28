@@ -302,7 +302,9 @@ const Home = () => {
           <div className="text-center">
             <div className="flex items-center justify-center space-x-2 mb-4">
               <img src="/logo.png" alt="SentriX Logo" className="h-8 w-8" />
-              <span className="text-xl font-bold text-gray-900 dark:text-white">SentriX</span>
+              <span className="text-xl font-bold text-gray-900 dark:text-white">
+                SentriX
+              </span>
             </div>
             <p className="text-gray-600 dark:text-gray-400 mb-2">
               © 2024 SentriX. Real-Time Supply Chain Risk Intelligence.
