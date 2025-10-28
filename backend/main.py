@@ -161,23 +161,66 @@ async def process_query(request: QueryRequest):
             political_risks = await political_risk_agent.analyze_risks(countries)
             report = await reporting_agent.generate_political_report(political_risks, session_id)
             
-            # Generate summary message
-            high_risk = sum(1 for r in political_risks if r.likelihood_score >= 3)
-            message = f"I've analyzed political risks across {len(political_risks)} countries. "
-            if high_risk > 0:
-                message += f"⚠️ {high_risk} countries have high political risk levels. "
-            message += f"Key concerns include geopolitical tensions, sanctions, and policy changes. A detailed report has been generated for your review."
+            # Generate detailed message with country information
+            high_risk_countries = [r for r in political_risks if r.likelihood_score >= 3]
+            medium_risk_countries = [r for r in political_risks if r.likelihood_score == 2]
+            low_risk_countries = [r for r in political_risks if r.likelihood_score < 2]
+            
+            message = f"📊 **Political Risk Analysis for {len(political_risks)} Countries**\n\n"
+            
+            if high_risk_countries:
+                message += f"🔴 **High Risk ({len(high_risk_countries)} countries):**\n"
+                for risk in high_risk_countries[:5]:  # Show top 5
+                    message += f"  • {risk.country}: {risk.risk_type} (Score: {risk.likelihood_score}/5)\n"
+                if len(high_risk_countries) > 5:
+                    message += f"  ... and {len(high_risk_countries) - 5} more\n"
+                message += "\n"
+            
+            if medium_risk_countries:
+                message += f"🟡 **Medium Risk ({len(medium_risk_countries)} countries):**\n"
+                for risk in medium_risk_countries[:3]:  # Show top 3
+                    message += f"  • {risk.country}: {risk.risk_type}\n"
+                if len(medium_risk_countries) > 3:
+                    message += f"  ... and {len(medium_risk_countries) - 3} more\n"
+                message += "\n"
+            
+            if low_risk_countries:
+                message += f"🟢 **Low Risk ({len(low_risk_countries)} countries)**\n\n"
+            
+            message += f"📋 A comprehensive report with detailed analysis and mitigation strategies has been generated."
             
         elif intent == "schedule":
             schedule_risks = await scheduler_agent.analyze_schedule_risks()
             report = await reporting_agent.generate_schedule_report(schedule_risks, session_id)
             
-            # Generate summary message
-            severe_delays = sum(1 for r in schedule_risks if r.severity == "High")
-            message = f"I've analyzed schedule risks for {len(schedule_risks)} routes. "
-            if severe_delays > 0:
-                message += f"🚨 {severe_delays} routes have high-severity delays. "
-            message += f"Common issues include port congestion, weather, and customs delays. A comprehensive report has been generated."
+            # Generate detailed message with route information
+            high_severity = [r for r in schedule_risks if r.severity == "High"]
+            medium_severity = [r for r in schedule_risks if r.severity == "Medium"]
+            low_severity = [r for r in schedule_risks if r.severity == "Low"]
+            
+            message = f"📊 **Schedule Risk Analysis for {len(schedule_risks)} Routes**\n\n"
+            
+            if high_severity:
+                message += f"🔴 **High Severity Delays ({len(high_severity)} routes):**\n"
+                for risk in high_severity[:5]:  # Show top 5
+                    message += f"  • Route {risk.equipment_id}: {risk.delay_days} days delay\n"
+                    message += f"    Reason: {risk.reason}\n"
+                if len(high_severity) > 5:
+                    message += f"  ... and {len(high_severity) - 5} more\n"
+                message += "\n"
+            
+            if medium_severity:
+                message += f"🟡 **Medium Severity ({len(medium_severity)} routes):**\n"
+                for risk in medium_severity[:3]:  # Show top 3
+                    message += f"  • Route {risk.equipment_id}: {risk.delay_days} days\n"
+                if len(medium_severity) > 3:
+                    message += f"  ... and {len(medium_severity) - 3} more\n"
+                message += "\n"
+            
+            if low_severity:
+                message += f"🟢 **Low Severity ({len(low_severity)} routes)**\n\n"
+            
+            message += f"📋 Common issues: Port congestion, weather delays, and customs processing. Full report generated."
             
         else:
             response = await assistant_agent.process_query(request.query)

@@ -44,10 +44,26 @@ const ChatPanel = () => {
 
   // Quick action templates
   const quickActions = [
-    { icon: AlertTriangle, label: "Political Risks", query: "What are the political risks?" },
-    { icon: TrendingUp, label: "Schedule Delays", query: "What are the schedule risks?" },
-    { icon: FileText, label: "Combined Report", query: "Generate a combined report" },
-    { icon: Globe, label: "High Risk Countries", query: "Which countries have high political risks?" },
+    {
+      icon: AlertTriangle,
+      label: "Political Risks",
+      query: "What are the political risks?",
+    },
+    {
+      icon: TrendingUp,
+      label: "Schedule Delays",
+      query: "What are the schedule risks?",
+    },
+    {
+      icon: FileText,
+      label: "Combined Report",
+      query: "Generate a combined report",
+    },
+    {
+      icon: Globe,
+      label: "High Risk Countries",
+      query: "Which countries have high political risks?",
+    },
   ];
 
   const scrollToBottom = () => {
@@ -88,12 +104,13 @@ const ChatPanel = () => {
     URL.revokeObjectURL(url);
   };
 
-  // Filter messages by search query
-  const filteredMessages = searchQuery
-    ? chatMessages.filter((msg) =>
-        msg.content.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : chatMessages;
+  // Filter messages by search query (recalculates when chatMessages or searchQuery changes)
+  const filteredMessages = React.useMemo(() => {
+    if (!searchQuery.trim()) return chatMessages;
+    return chatMessages.filter((msg) =>
+      msg.content.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [chatMessages, searchQuery]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
