@@ -223,8 +223,35 @@ async def process_query(request: QueryRequest):
             message += f"📋 Common issues: Port congestion, weather delays, and customs processing. Full report generated."
             
         else:
-            response = await assistant_agent.process_query(request.query)
-            return {"session_id": session_id, "response": response, "type": "assistant"}
+            # Check if it's a route query
+            if assistant_agent._is_route_query(text):
+                # Get the detailed route analysis
+                response = await assistant_agent.process_query(request.query)
+                message = response
+                
+                # Extract origin and destination for report generation
+                words = text.split()
+                origin = None
+                destination = None
+                if "from" in words and "to" in words:
+                    from_idx = words.index("from")
+                    to_idx = words.index("to")
+                    if from_idx < to_idx and to_idx < len(words):
+                        origin = " ".join(words[from_idx+1:to_idx])
+                        destination = " ".join(words[to_idx+1:])
+                
+                # Generate route report if we have origin and destination
+                if origin and destination:
+                    report = await reporting_agent.generate_route_report(origin, destination, message, session_id)
+                    await db_client.store_report(report)
+                    return {"session_id": session_id, "report": report, "type": "route", "response": {"message": message}}
+                else:
+                    # Return just the message if we can't parse route
+                    return {"session_id": session_id, "response": response, "type": "assistant"}
+            else:
+                # For non-route queries, just return assistant response
+                response = await assistant_agent.process_query(request.query)
+                return {"session_id": session_id, "response": response, "type": "assistant"}
         
         # Store report and return
         if report:
