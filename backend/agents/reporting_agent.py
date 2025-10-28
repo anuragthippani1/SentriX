@@ -349,9 +349,23 @@ class ReportingAgent:
             leading=14
         )
         
-        # Cover Page
-        story.append(Spacer(1, 1.5*inch))
-        story.append(Paragraph("🚢 SentriX", title_style))
+        # Cover Page with Logo
+        story.append(Spacer(1, 0.5*inch))
+        
+        # Add SentriX Logo
+        logo_path = os.path.join(os.path.dirname(__file__), "..", "logo.png")
+        if os.path.exists(logo_path):
+            logo = Image(logo_path, width=2*inch, height=2*inch)
+            logo.hAlign = 'CENTER'
+            story.append(logo)
+            story.append(Spacer(1, 0.3*inch))
+        else:
+            # Fallback to emoji if logo not found
+            story.append(Spacer(1, 1*inch))
+            story.append(Paragraph("🚢", title_style))
+        
+        story.append(Paragraph("SentriX Intelligence Platform", title_style))
+        story.append(Spacer(1, 0.2*inch))
         story.append(Paragraph(report.title, subtitle_style))
         
         # Metadata box
@@ -582,9 +596,22 @@ class ReportingAgent:
             leading=16
         )
         
-        # Cover Page
-        story.append(Spacer(1, 1.5*inch))
-        story.append(Paragraph("SentriX", title_style))
+        # Cover Page with Logo
+        story.append(Spacer(1, 0.5*inch))
+        
+        # Add SentriX Logo
+        logo_path = os.path.join(os.path.dirname(__file__), "..", "logo.png")
+        if os.path.exists(logo_path):
+            logo = Image(logo_path, width=2*inch, height=2*inch)
+            logo.hAlign = 'CENTER'
+            story.append(logo)
+            story.append(Spacer(1, 0.3*inch))
+        else:
+            # Fallback if logo not found
+            story.append(Spacer(1, 1*inch))
+        
+        story.append(Paragraph("SentriX Intelligence Platform", title_style))
+        story.append(Spacer(1, 0.2*inch))
         story.append(Paragraph(report.title, subtitle_style))
         
         # Metadata box
