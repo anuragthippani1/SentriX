@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useDashboard } from "../context/DashboardContext";
 import {
   TrendingUp,
@@ -17,36 +17,37 @@ import IntroAnimation from "./IntroAnimation";
 
 const Home = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { dashboardData, reports } = useDashboard();
  
-  // Show intro only on page refresh/reload, not on navigation
+  // Track if this is the first render
+  const isFirstRender = useRef(true);
   const [showIntro, setShowIntro] = useState(false);
-  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    // Only run once when component mounts
-    if (!isInitialized) {
-      // Check if we came from internal navigation
-      const fromNavigation = window.history.state?.usr;
+    // Only check on the very first mount
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
       
-      if (fromNavigation) {
-        // User navigated here via React Router (clicked a link)
+      // Check if we have a navigation key (means we navigated here)
+      const hasNavigationKey = location.key && location.key !== 'default';
+      
+      if (hasNavigationKey) {
+        // User navigated here from another page
         setShowIntro(false);
       } else {
-        // User refreshed the page or opened directly
+        // User refreshed the page or first load
         setShowIntro(true);
       }
-      
-      setIsInitialized(true);
     }
-  }, [isInitialized]);
+  }, [location.key]);
 
   const handleIntroComplete = () => {
     setShowIntro(false);
   };
 
   // Show intro animation only on page refresh
-  if (showIntro && isInitialized) {
+  if (showIntro) {
     return <IntroAnimation onComplete={handleIntroComplete} />;
   }
 
