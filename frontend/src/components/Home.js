@@ -66,26 +66,26 @@ const Home = () => {
 
   const quickActions = [
     {
-      title: "View Dashboard",
-      description: "Explore global risk heatmap and analytics",
+      title: "Live Dashboard",
+      description: "Real-time shipment tracking and analytics",
       icon: BarChart3,
       path: "/dashboard",
     },
     {
-      title: "SentriX Assistant",
-      description: "Get AI-powered route analysis and insights",
+      title: "AI Assistant",
+      description: "Smart route optimization and recommendations",
       icon: Zap,
       path: "/assistant",
     },
     {
-      title: "Risk Reports",
-      description: "Access detailed risk assessment reports",
+      title: "Shipping Reports",
+      description: "Detailed route analysis and performance reports",
       icon: FileText,
       path: "/reports",
     },
     {
-      title: "Global Map",
-      description: "Interactive world risk visualization",
+      title: "Route Planner",
+      description: "Interactive global shipping route visualization",
       icon: Map,
       path: "/dashboard",
     },
@@ -93,27 +93,27 @@ const Home = () => {
 
   const features = [
     {
-      title: "Real-Time Risk Monitoring",
+      title: "Real-Time Tracking",
       description:
-        "Track political and supply chain risks across 100+ countries in real-time.",
+        "Monitor shipments across 100+ countries with live location updates and ETAs.",
       icon: Globe,
     },
     {
-      title: "AI-Powered Analysis",
+      title: "Smart Automation",
       description:
-        "Get intelligent route recommendations and risk assessments using advanced AI.",
+        "AI-powered route optimization, automated alerts, and intelligent scheduling.",
       icon: TrendingUp,
     },
     {
-      title: "Comprehensive Reports",
+      title: "Instant Updates",
       description:
-        "Generate detailed risk reports with actionable insights and mitigation strategies.",
+        "Get real-time notifications for delays, route changes, and delivery milestones.",
       icon: FileText,
     },
     {
-      title: "Interactive Visualization",
+      title: "Simplified Process",
       description:
-        "Explore risk data through intuitive maps, charts, and interactive dashboards.",
+        "Streamlined workflows with intuitive dashboards and one-click actions.",
       icon: BarChart3,
     },
   ];
@@ -140,7 +140,7 @@ const Home = () => {
                 <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
                   <Activity className="h-5 w-5 animate-pulse text-white" />
                   <span className="text-sm font-semibold text-white">
-                    Real-Time Intelligence
+                    Live Tracking • Real-Time Updates
                   </span>
                 </div>
               </div>
@@ -150,13 +150,13 @@ const Home = () => {
               </h1>
 
               <p className="text-2xl md:text-3xl font-semibold text-gray-100 mb-6 drop-shadow-lg">
-                Real-Time Supply Chain Risk Intelligence
+                Streamline Your Shipping Process
               </p>
 
               <p className="text-base md:text-lg text-gray-200 max-w-2xl mx-auto leading-relaxed mb-8">
-                Navigate global logistics with confidence. Track container ships
-                across deep seas, monitor geopolitical risks, and make informed
-                decisions powered by AI.
+                A modern shipping platform designed to simplify logistics operations. 
+                Get real-time shipment updates, track routes across the globe, and 
+                optimize your supply chain with intelligent automation.
               </p>
 
               {/* CTA Buttons */}
@@ -211,10 +211,10 @@ const Home = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative bg-white dark:bg-gray-900">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Quick Actions
+            Quick Access
           </h2>
           <p className="text-gray-600 dark:text-gray-400 text-lg">
-            Get started with these powerful features
+            Jump into action with our streamlined tools
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -249,7 +249,7 @@ const Home = () => {
               Why Choose SentriX?
             </h2>
             <p className="text-gray-600 dark:text-gray-400 text-lg">
-              Comprehensive risk intelligence at your fingertips
+              Modern shipping solutions that save time and reduce complexity
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -282,10 +282,10 @@ const Home = () => {
               <span className="text-sm font-semibold">Get Started Now</span>
             </div>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Ready to Get Started?
+              Ready to Streamline Your Shipping?
             </h2>
             <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
-              Explore the dashboard to see real-time risk intelligence in action
+              Experience real-time tracking and intelligent automation today
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <button
@@ -318,7 +318,7 @@ const Home = () => {
               </span>
             </div>
             <p className="text-gray-600 dark:text-gray-400 mb-2">
-              © 2024 SentriX. Real-Time Supply Chain Risk Intelligence.
+              © 2024 SentriX. Modern Shipping Platform for Real-Time Updates.
             </p>
             <p className="text-gray-500 dark:text-gray-500 text-sm flex items-center justify-center space-x-4">
               <span className="flex items-center">
