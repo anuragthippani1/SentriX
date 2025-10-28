@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDashboard } from "../context/DashboardContext";
 import {
   TrendingUp,
@@ -17,7 +17,6 @@ import IntroAnimation from "./IntroAnimation";
 
 const Home = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { dashboardData, reports } = useDashboard();
 
   // Always show intro when landing on home page
