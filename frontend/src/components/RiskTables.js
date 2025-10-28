@@ -34,11 +34,15 @@ const RiskTables = ({ politicalRisks, scheduleRisks }) => {
   return (
     <div className="space-y-6">
       {/* Political Risk Table */}
-      <div className={`bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl transition-all duration-500 transform ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'} delay-[500ms]`}>
-        <div className="bg-gradient-to-r from-orange-500 to-red-600 px-6 py-4 relative overflow-hidden group">
+      <div
+        className={`bg-white rounded-2xl shadow-xl border border-[#E7D4B5] overflow-hidden hover:shadow-2xl transition-all duration-500 transform ${
+          mounted ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+        } delay-[500ms]`}
+      >
+        <div className="bg-gradient-to-r from-[#D4A574] to-[#A0937D] px-6 py-4 relative overflow-hidden group">
           {/* Animated shimmer effect */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-10 animate-shimmer"></div>
-          
+
           <div className="flex items-center space-x-3 relative z-10">
             <div className="animate-float">
               <AlertTriangle className="h-6 w-6 text-white" />
@@ -47,7 +51,7 @@ const RiskTables = ({ politicalRisks, scheduleRisks }) => {
               <h3 className="text-xl font-bold text-white">
                 Political Risk Analysis
               </h3>
-              <p className="text-sm text-orange-100 flex items-center space-x-2">
+              <p className="text-sm text-[#F6E6CB] flex items-center space-x-2">
                 <Activity className="h-3 w-3 animate-pulse" />
                 <span>Latest geopolitical events and policy changes</span>
               </p>
@@ -78,7 +82,10 @@ const RiskTables = ({ politicalRisks, scheduleRisks }) => {
             <tbody className="bg-white divide-y divide-gray-200">
               {politicalRisks.length > 0 ? (
                 politicalRisks.map((risk, index) => (
-                  <tr key={index} className="hover:bg-gradient-to-r hover:from-orange-50 hover:to-red-50 transition-all duration-300 cursor-pointer transform hover:scale-[1.01]">
+                  <tr
+                    key={index}
+                    className="hover:bg-gradient-to-r hover:from-[#F6E6CB] hover:to-[#E7D4B5] transition-all duration-300 cursor-pointer transform hover:scale-[1.01]"
+                  >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <MapPin className="h-4 w-4 text-gray-400 mr-2" />
@@ -147,11 +154,15 @@ const RiskTables = ({ politicalRisks, scheduleRisks }) => {
       </div>
 
       {/* Schedule Risk Table */}
-      <div className={`bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl transition-all duration-500 transform ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'} delay-[600ms]`}>
-        <div className="bg-gradient-to-r from-blue-500 to-indigo-600 px-6 py-4 relative overflow-hidden group">
+      <div
+        className={`bg-white rounded-2xl shadow-xl border border-[#E7D4B5] overflow-hidden hover:shadow-2xl transition-all duration-500 transform ${
+          mounted ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+        } delay-[600ms]`}
+      >
+        <div className="bg-gradient-to-r from-[#B6C7AA] to-[#9DB090] px-6 py-4 relative overflow-hidden group">
           {/* Animated shimmer effect */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-10 animate-shimmer"></div>
-          
+
           <div className="flex items-center space-x-3 relative z-10">
             <div className="animate-float">
               <Package className="h-6 w-6 text-white" />
@@ -160,7 +171,7 @@ const RiskTables = ({ politicalRisks, scheduleRisks }) => {
               <h3 className="text-xl font-bold text-white">
                 Schedule Risk Analysis
               </h3>
-              <p className="text-sm text-blue-100 flex items-center space-x-2">
+              <p className="text-sm text-[#F6E6CB] flex items-center space-x-2">
                 <Activity className="h-3 w-3 animate-pulse" />
                 <span>Equipment delivery delays and timeline risks</span>
               </p>
@@ -191,7 +202,10 @@ const RiskTables = ({ politicalRisks, scheduleRisks }) => {
             <tbody className="bg-white divide-y divide-gray-200">
               {scheduleRisks.length > 0 ? (
                 scheduleRisks.map((risk, index) => (
-                  <tr key={index} className="hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-300 cursor-pointer transform hover:scale-[1.01]">
+                  <tr
+                    key={index}
+                    className="hover:bg-gradient-to-r hover:from-[#F6E6CB] hover:to-[#E7D4B5] transition-all duration-300 cursor-pointer transform hover:scale-[1.01]"
+                  >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="text-sm font-medium text-gray-900">
                         {risk.equipment_id}

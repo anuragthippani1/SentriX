@@ -112,55 +112,59 @@ const Dashboard = () => {
       label: "Total Regions",
       value: animatedStats.totalCountries,
       icon: Globe,
-      gradient: "from-blue-500 to-blue-600",
+      gradient: "from-[#A0937D] to-[#8B7D6B]",
       trend: "neutral",
-      bgColor: "bg-blue-50",
-      iconColor: "text-blue-600",
+      bgColor: "bg-[#F6E6CB]",
+      iconColor: "text-[#A0937D]",
       delay: "delay-[0ms]",
     },
     {
       label: "High Risk Zones",
       value: animatedStats.highRiskCount,
       icon: AlertTriangle,
-      gradient: "from-red-500 to-orange-600",
+      gradient: "from-[#D4A574] to-[#B8936A]",
       trend: "down",
-      bgColor: "bg-red-50",
-      iconColor: "text-red-600",
+      bgColor: "bg-[#F6E6CB]",
+      iconColor: "text-[#A0937D]",
       delay: "delay-[100ms]",
     },
     {
       label: "Safe Zones",
       value: animatedStats.lowRiskCount,
       icon: CheckCircle,
-      gradient: "from-green-500 to-emerald-600",
+      gradient: "from-[#B6C7AA] to-[#9DB090]",
       trend: "up",
-      bgColor: "bg-green-50",
-      iconColor: "text-green-600",
+      bgColor: "bg-[#E7D4B5]",
+      iconColor: "text-[#B6C7AA]",
       delay: "delay-[200ms]",
     },
     {
       label: "Avg Risk Score",
       value: animatedStats.avgRisk,
       icon: TrendingUp,
-      gradient: "from-indigo-500 to-purple-600",
+      gradient: "from-[#E7D4B5] to-[#D4C1A2]",
       trend: "neutral",
-      bgColor: "bg-indigo-50",
-      iconColor: "text-indigo-600",
+      bgColor: "bg-[#F6E6CB]",
+      iconColor: "text-[#A0937D]",
       delay: "delay-[300ms]",
     },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-[#F6E6CB] via-[#E7D4B5] to-[#F6E6CB]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Modern Header with Gradient */}
-        <div className={`mb-8 relative transform transition-all duration-700 ${mounted ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0'}`}>
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl opacity-10 animate-pulse"></div>
-          <div className="relative bg-white rounded-2xl shadow-lg border border-gray-200 p-6 hover:shadow-2xl transition-shadow duration-300">
+        <div
+          className={`mb-8 relative transform transition-all duration-700 ${
+            mounted ? "translate-y-0 opacity-100" : "-translate-y-4 opacity-0"
+          }`}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-[#A0937D] to-[#B6C7AA] rounded-2xl opacity-10 animate-pulse"></div>
+          <div className="relative bg-white rounded-2xl shadow-lg border border-[#E7D4B5] p-6 hover:shadow-2xl transition-shadow duration-300">
             <div className="flex items-center justify-between">
               <div>
                 <div className="flex items-center space-x-3">
-                  <div className="bg-gradient-to-br from-blue-500 to-indigo-600 p-3 rounded-xl animate-float">
+                  <div className="bg-gradient-to-br from-[#A0937D] to-[#8B7D6B] p-3 rounded-xl animate-float">
                     <Ship className="h-8 w-8 text-white" />
                   </div>
                   <div>
@@ -172,15 +176,15 @@ const Dashboard = () => {
                     </p>
                   </div>
                 </div>
-                {currentSession && (
-                  <div className="mt-4 flex items-center space-x-2 text-sm">
-                    <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full flex items-center space-x-2">
-                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                      <span className="font-medium">Active Session</span>
-                    </div>
-                    <span className="text-gray-500">{currentSession.name}</span>
-                  </div>
-                )}
+                    {currentSession && (
+                      <div className="mt-4 flex items-center space-x-2 text-sm">
+                        <div className="bg-[#E7D4B5] text-[#A0937D] px-3 py-1 rounded-full flex items-center space-x-2">
+                          <div className="w-2 h-2 bg-[#B6C7AA] rounded-full animate-pulse"></div>
+                          <span className="font-medium">Active Session</span>
+                        </div>
+                        <span className="text-gray-500">{currentSession.name}</span>
+                      </div>
+                    )}
               </div>
               <div className="hidden lg:flex items-center space-x-4">
                 <div className="text-right">
@@ -199,26 +203,34 @@ const Dashboard = () => {
           {stats.map((stat, index) => (
             <div
               key={index}
-              className={`relative bg-white rounded-xl shadow-lg border border-gray-200 p-6 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:scale-105 overflow-hidden group cursor-pointer transform ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'} ${stat.delay}`}
+              className={`relative bg-white rounded-xl shadow-lg border border-gray-200 p-6 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:scale-105 overflow-hidden group cursor-pointer transform ${
+                mounted
+                  ? "translate-y-0 opacity-100"
+                  : "translate-y-8 opacity-0"
+              } ${stat.delay}`}
             >
               {/* Animated gradient background */}
               <div
                 className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${stat.gradient} opacity-10 rounded-full -mr-16 -mt-16 group-hover:opacity-20 transition-opacity duration-300`}
               ></div>
-              
+
               {/* Shimmer effect on hover */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transform -skew-x-12 group-hover:translate-x-full transition-all duration-1000"></div>
-              
+
               <div className="relative">
                 <div className="flex items-center justify-between mb-4">
-                  <div className={`${stat.bgColor} p-3 rounded-lg transform group-hover:rotate-6 group-hover:scale-110 transition-all duration-300`}>
-                    <stat.icon className={`h-6 w-6 ${stat.iconColor} group-hover:animate-pulse`} />
+                  <div
+                    className={`${stat.bgColor} p-3 rounded-lg transform group-hover:rotate-6 group-hover:scale-110 transition-all duration-300`}
+                  >
+                    <stat.icon
+                      className={`h-6 w-6 ${stat.iconColor} group-hover:animate-pulse`}
+                    />
                   </div>
                   {stat.trend === "up" && (
-                    <TrendingUp className="h-5 w-5 text-green-500 animate-bounce-slow" />
+                    <TrendingUp className="h-5 w-5 text-[#B6C7AA] animate-bounce-slow" />
                   )}
                   {stat.trend === "down" && (
-                    <TrendingDown className="h-5 w-5 text-red-500 animate-bounce-slow" />
+                    <TrendingDown className="h-5 w-5 text-[#D4A574] animate-bounce-slow" />
                   )}
                 </div>
                 <div>
@@ -236,25 +248,31 @@ const Dashboard = () => {
 
         <div className="space-y-6">
           {/* World Risk Map - Modern Card */}
-          <div className={`bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl transition-all duration-500 transform ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'} delay-[400ms]`}>
-            <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 relative overflow-hidden">
+          <div
+            className={`bg-white rounded-2xl shadow-xl border border-[#E7D4B5] overflow-hidden hover:shadow-2xl transition-all duration-500 transform ${
+              mounted ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+            } delay-[400ms]`}
+          >
+            <div className="bg-gradient-to-r from-[#A0937D] to-[#B6C7AA] px-6 py-4 relative overflow-hidden">
               {/* Animated shimmer effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-10 animate-shimmer"></div>
-              
+
               <div className="flex items-center space-x-3 relative z-10">
                 <Globe className="h-6 w-6 text-white animate-spin-slow" />
                 <div>
                   <h3 className="text-xl font-bold text-white">
                     Global Risk Heatmap
                   </h3>
-                  <p className="text-sm text-blue-100 flex items-center space-x-2">
+                  <p className="text-sm text-[#F6E6CB] flex items-center space-x-2">
                     <Activity className="h-3 w-3 animate-pulse" />
-                    <span>Interactive world risk assessment & route monitoring</span>
+                    <span>
+                      Interactive world risk assessment & route monitoring
+                    </span>
                   </p>
                 </div>
               </div>
             </div>
-            <div className="p-6 bg-gradient-to-br from-gray-50 to-blue-50">
+            <div className="p-6 bg-gradient-to-br from-[#F6E6CB] to-[#E7D4B5]">
               <WorldMap worldRiskData={dashboardData.worldRiskData} />
             </div>
           </div>
