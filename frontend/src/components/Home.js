@@ -20,33 +20,8 @@ const Home = () => {
   const location = useLocation();
   const { dashboardData, reports } = useDashboard();
 
-  // Track if this is the first render
-  const isFirstRender = useRef(true);
-  const [showIntro, setShowIntro] = useState(false);
-
-  useEffect(() => {
-    // Only check on the very first mount
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-
-      console.log("Location key:", location.key); // Debug
-      
-      // Check if we have a navigation key (means we navigated here)
-      // location.key exists and is not 'default' = navigation
-      // No location.key or 'default' = refresh/first load
-      const isNavigation = location.key && location.key !== "default";
-
-      if (isNavigation) {
-        // User navigated here from another page
-        console.log("Navigation detected - no intro");
-        setShowIntro(false);
-      } else {
-        // User refreshed the page or first load
-        console.log("Refresh/First load detected - show intro");
-        setShowIntro(true);
-      }
-    }
-  }, [location.key]);
+  // Always show intro when landing on home page
+  const [showIntro, setShowIntro] = useState(true);
 
   const handleIntroComplete = () => {
     setShowIntro(false);
