@@ -21,11 +21,27 @@ const Home = () => {
  
   // Show intro only on page refresh/reload, not on navigation
   const [showIntro, setShowIntro] = useState(() => {
-    // Check if this is a fresh page load (not a navigation)
-    const isPageRefresh = performance.navigation.type === 1 || 
-                          performance.getEntriesByType('navigation')[0]?.type === 'reload';
-    return isPageRefresh;
+    // Check if we just navigated (not refreshed)
+    const justNavigated = sessionStorage.getItem("sentrix-just-navigated");
+    
+    if (justNavigated) {
+      // User navigated here, don't show intro
+      sessionStorage.removeItem("sentrix-just-navigated");
+      return false;
+    }
+    
+    // This is a page refresh or first load, show intro
+    return true;
   });
+
+  useEffect(() => {
+    // Mark that we're on the home page
+    // This will be cleared on refresh but persist on navigation
+    return () => {
+      // When leaving home page, mark as navigated
+      sessionStorage.setItem("sentrix-just-navigated", "true");
+    };
+  }, []);
 
   const handleIntroComplete = () => {
     setShowIntro(false);
