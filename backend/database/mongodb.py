@@ -63,13 +63,15 @@ class MongoDBClient:
                     # Remove MongoDB's _id field
                     report_dict.pop("_id", None)
                     return RiskReport(**report_dict)
-            else:
-                # Fallback to file storage
-                return await self._get_report_from_file(report_id)
+            
+            # Always fall back to file storage if not found in DB
+            print(f"Report not in MongoDB, checking file storage...")
+            return await self._get_report_from_file(report_id)
                 
         except Exception as e:
             print(f"Error getting report: {str(e)}")
-            return None
+            # Try file storage as last resort
+            return await self._get_report_from_file(report_id)
     
     async def get_all_reports(self) -> List[Dict[str, Any]]:
         """Get all reports (for reports page)"""
