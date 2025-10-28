@@ -57,7 +57,7 @@ const MultiPortRoutePlanner = () => {
 
   const planRoute = async () => {
     const filledPorts = ports.filter((p) => p.trim() !== "");
-    
+
     if (filledPorts.length < 2) {
       setError("Please select at least 2 ports");
       return;
@@ -97,9 +97,7 @@ const MultiPortRoutePlanner = () => {
 
   const toggleLeg = (index) => {
     setExpandedLegs((prev) =>
-      prev.includes(index)
-        ? prev.filter((i) => i !== index)
-        : [...prev, index]
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
     );
   };
 
@@ -263,7 +261,9 @@ const MultiPortRoutePlanner = () => {
                     <p className="text-2xl font-bold text-gray-900 dark:text-white">
                       {routeAnalysis.summary.total_time_days.toFixed(1)}
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">days</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      days
+                    </p>
                   </div>
                   <Clock className="h-8 w-8 text-purple-600 dark:text-purple-400" />
                 </div>
@@ -276,9 +276,13 @@ const MultiPortRoutePlanner = () => {
                       Total Cost
                     </p>
                     <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                      ${(routeAnalysis.summary.total_cost_usd / 1000).toFixed(0)}K
+                      $
+                      {(routeAnalysis.summary.total_cost_usd / 1000).toFixed(0)}
+                      K
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">USD</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      USD
+                    </p>
                   </div>
                   <DollarSign className="h-8 w-8 text-green-600 dark:text-green-400" />
                 </div>
@@ -326,7 +330,9 @@ const MultiPortRoutePlanner = () => {
                             {leg.from} → {leg.to}
                           </p>
                           <p className="text-sm text-gray-600 dark:text-gray-400">
-                            {leg.distance_nm.toLocaleString()} nm • {leg.total_time_days.toFixed(1)} days • ${(leg.total_cost_usd / 1000).toFixed(0)}K
+                            {leg.distance_nm.toLocaleString()} nm •{" "}
+                            {leg.total_time_days.toFixed(1)} days • $
+                            {(leg.total_cost_usd / 1000).toFixed(0)}K
                           </p>
                         </div>
                       </div>
@@ -409,4 +415,3 @@ const MultiPortRoutePlanner = () => {
 };
 
 export default MultiPortRoutePlanner;
-

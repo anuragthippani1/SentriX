@@ -29,7 +29,10 @@ function App() {
               <Route path="/reports" element={<Reports />} />
               <Route path="/thinking-logs" element={<ThinkingLogs />} />
               <Route path="/session-manager" element={<SessionManagerPage />} />
-              <Route path="/route-planner" element={<MultiPortRoutePlanner />} />
+              <Route
+                path="/route-planner"
+                element={<MultiPortRoutePlanner />}
+              />
             </Routes>
           </div>
         </Router>
