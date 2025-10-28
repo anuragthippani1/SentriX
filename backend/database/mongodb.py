@@ -97,13 +97,18 @@ class MongoDBClient:
     async def _get_report_from_file(self, report_id: str) -> Optional[RiskReport]:
         """Fallback: Get report from file"""
         import os
-        reports_dir = "reports_data"
+        # Use absolute path to match _get_all_reports_from_files
+        reports_dir = os.path.join(os.path.dirname(__file__), "..", "reports_data")
         filepath = os.path.join(reports_dir, f"{report_id}.json")
         
+        print(f"Looking for report file: {filepath}")
         if os.path.exists(filepath):
+            print(f"✅ Found report file: {filepath}")
             with open(filepath, 'r') as f:
                 report_dict = json.load(f)
                 return RiskReport(**report_dict)
+        else:
+            print(f"❌ Report file not found: {filepath}")
         return None
     
     async def _get_all_reports_from_files(self) -> List[Dict[str, Any]]:
