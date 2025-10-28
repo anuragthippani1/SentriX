@@ -129,52 +129,60 @@ const Home = () => {
       <div className="relative h-[600px] bg-gray-900 text-white overflow-hidden">
         {/* Background Ship Image */}
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat brightness-90"
           style={{ backgroundImage: "url(/ship.jpg)" }}
         ></div>
 
-        {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50"></div>
+        {/* Enhanced Vignette Effect - Darker Edges */}
+        <div className="absolute inset-0 bg-gradient-radial from-transparent via-black/20 to-black/70"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/60"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40"></div>
 
         {/* Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center relative z-10">
           <div className="text-center w-full">
-            <div className="inline-block mb-6">
-              <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20 shadow-xl">
-                <Activity className="h-5 w-5 animate-pulse" />
-                <span className="text-sm font-semibold">
-                  Real-Time Intelligence
-                </span>
+            {/* Text Content Box with Backdrop */}
+            <div className="max-w-4xl mx-auto bg-black/30 backdrop-blur-md rounded-3xl p-8 md:p-12 border border-white/10 shadow-2xl">
+              <div className="inline-block mb-6">
+                <div className="flex items-center space-x-2 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 backdrop-blur-sm px-6 py-3 rounded-full border border-blue-300/30 shadow-lg">
+                  <Activity className="h-5 w-5 animate-pulse text-blue-300" />
+                  <span className="text-sm font-semibold text-blue-100">
+                    Real-Time Intelligence
+                  </span>
+                </div>
               </div>
-            </div>
-            <h1 className="text-6xl md:text-7xl font-extrabold mb-6 text-white drop-shadow-2xl">
-              Welcome to SentriX
-            </h1>
-            <p className="text-2xl md:text-3xl font-bold text-blue-100 mb-6 max-w-3xl mx-auto drop-shadow-lg">
-              Real-Time Supply Chain Risk Intelligence
-            </p>
-            <p className="text-lg md:text-xl text-blue-50 max-w-2xl mx-auto leading-relaxed drop-shadow-md mb-8">
-              Navigate global logistics with confidence. Track container ships
-              across deep seas, monitor geopolitical risks, and make informed
-              decisions powered by AI.
-            </p>
+              
+              <h1 className="text-5xl md:text-7xl font-extrabold mb-6 text-white drop-shadow-2xl leading-tight">
+                Welcome to SentriX
+              </h1>
+              
+              <p className="text-2xl md:text-3xl font-bold text-gray-100 mb-6 drop-shadow-lg">
+                Real-Time Supply Chain Risk Intelligence
+              </p>
+              
+              <p className="text-base md:text-lg text-gray-200 max-w-2xl mx-auto leading-relaxed mb-8">
+                Navigate global logistics with confidence. Track container ships
+                across deep seas, monitor geopolitical risks, and make informed
+                decisions powered by AI.
+              </p>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-              <button
-                onClick={() => navigate("/dashboard")}
-                className="group bg-white text-[#6D94C5] px-8 py-4 rounded-xl font-bold text-lg shadow-2xl hover:shadow-white/20 transform hover:scale-105 transition-all duration-300 flex items-center space-x-2"
-              >
-                <span>View Dashboard</span>
-                <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-              <button
-                onClick={() => navigate("/assistant")}
-                className="group bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-xl font-bold text-lg border-2 border-white/30 shadow-xl hover:bg-white/20 transform hover:scale-105 transition-all duration-300 flex items-center space-x-2"
-              >
-                <Zap className="h-5 w-5" />
-                <span>Try AI Assistant</span>
-              </button>
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <button
+                  onClick={() => navigate("/dashboard")}
+                  className="group bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-2xl hover:shadow-blue-500/50 transform hover:scale-105 transition-all duration-300 flex items-center space-x-2"
+                >
+                  <span>View Dashboard</span>
+                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </button>
+                <button
+                  onClick={() => navigate("/assistant")}
+                  className="group bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-xl font-bold text-lg border-2 border-white/40 shadow-xl hover:bg-white/20 hover:border-white/60 transform hover:scale-105 transition-all duration-300 flex items-center space-x-2"
+                >
+                  <Zap className="h-5 w-5" />
+                  <span>Try AI Assistant</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
