@@ -19,14 +19,19 @@ const Home = () => {
   const navigate = useNavigate();
   const { dashboardData, reports } = useDashboard();
  
-  // Always show intro on home page (even on reload)
-  const [showIntro, setShowIntro] = useState(true);
+  // Show intro only on page refresh/reload, not on navigation
+  const [showIntro, setShowIntro] = useState(() => {
+    // Check if this is a fresh page load (not a navigation)
+    const isPageRefresh = performance.navigation.type === 1 || 
+                          performance.getEntriesByType('navigation')[0]?.type === 'reload';
+    return isPageRefresh;
+  });
 
   const handleIntroComplete = () => {
     setShowIntro(false);
   };
 
-  // Show intro animation every time home page loads
+  // Show intro animation only on page refresh
   if (showIntro) {
     return <IntroAnimation onComplete={handleIntroComplete} />;
   }
