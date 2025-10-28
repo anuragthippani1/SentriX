@@ -176,15 +176,15 @@ const Dashboard = () => {
                     </p>
                   </div>
                 </div>
-                    {currentSession && (
-                      <div className="mt-4 flex items-center space-x-2 text-sm">
-                        <div className="bg-[#CBDCEB] text-[#6D94C5] px-3 py-1 rounded-full flex items-center space-x-2">
-                          <div className="w-2 h-2 bg-[#6D94C5] rounded-full animate-pulse"></div>
-                          <span className="font-medium">Active Session</span>
-                        </div>
-                        <span className="text-gray-500">{currentSession.name}</span>
-                      </div>
-                    )}
+                {currentSession && (
+                  <div className="mt-4 flex items-center space-x-2 text-sm">
+                    <div className="bg-[#CBDCEB] text-[#6D94C5] px-3 py-1 rounded-full flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-[#6D94C5] rounded-full animate-pulse"></div>
+                      <span className="font-medium">Active Session</span>
+                    </div>
+                    <span className="text-gray-500">{currentSession.name}</span>
+                  </div>
+                )}
               </div>
               <div className="hidden lg:flex items-center space-x-4">
                 <div className="text-right">

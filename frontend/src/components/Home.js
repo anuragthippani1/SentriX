@@ -125,29 +125,60 @@ const Home = () => {
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#E8DFCA]/20 rounded-full blur-3xl animate-pulse delay-700"></div>
       </div>
 
-      {/* Hero Section */}
-      <div className="relative bg-gradient-to-r from-[#6D94C5] via-[#5A7DAD] to-[#6D94C5] text-white overflow-hidden">
+      {/* Hero Section with Ship Image */}
+      <div className="relative h-[600px] bg-gradient-to-r from-[#6D94C5] via-[#5A7DAD] to-[#6D94C5] text-white overflow-hidden">
+        {/* Background Ship Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40"
+          style={{ backgroundImage: 'url(/ship.jpg)' }}
+        ></div>
+        
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#6D94C5]/80 via-[#5A7DAD]/70 to-[#6D94C5]/80"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#6D94C5]/50"></div>
+        
+        {/* Grid Pattern */}
         <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative">
-          <div className="text-center">
+        
+        {/* Content */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center relative z-10">
+          <div className="text-center w-full">
             <div className="inline-block mb-6">
-              <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm px-6 py-2 rounded-full border border-white/20">
-                <Activity className="h-4 w-4 animate-pulse" />
+              <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20 shadow-xl">
+                <Activity className="h-5 w-5 animate-pulse" />
                 <span className="text-sm font-semibold">
                   Real-Time Intelligence
                 </span>
               </div>
             </div>
-            <h1 className="text-6xl md:text-7xl font-extrabold mb-6 text-white">
+            <h1 className="text-6xl md:text-7xl font-extrabold mb-6 text-white drop-shadow-2xl">
               Welcome to SentriX
             </h1>
-            <p className="text-2xl md:text-3xl font-bold text-blue-100 mb-6 max-w-3xl mx-auto">
+            <p className="text-2xl md:text-3xl font-bold text-blue-100 mb-6 max-w-3xl mx-auto drop-shadow-lg">
               Real-Time Supply Chain Risk Intelligence
             </p>
-            <p className="text-lg text-blue-50 max-w-2xl mx-auto leading-relaxed">
-              Make informed decisions with comprehensive geopolitical and supply
-              chain risk analysis powered by AI
+            <p className="text-lg md:text-xl text-blue-50 max-w-2xl mx-auto leading-relaxed drop-shadow-md mb-8">
+              Navigate global logistics with confidence. Track container ships across deep seas,
+              monitor geopolitical risks, and make informed decisions powered by AI.
             </p>
+            
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+              <button
+                onClick={() => navigate("/dashboard")}
+                className="group bg-white text-[#6D94C5] px-8 py-4 rounded-xl font-bold text-lg shadow-2xl hover:shadow-white/20 transform hover:scale-105 transition-all duration-300 flex items-center space-x-2"
+              >
+                <span>View Dashboard</span>
+                <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </button>
+              <button
+                onClick={() => navigate("/assistant")}
+                className="group bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-xl font-bold text-lg border-2 border-white/30 shadow-xl hover:bg-white/20 transform hover:scale-105 transition-all duration-300 flex items-center space-x-2"
+              >
+                <Zap className="h-5 w-5" />
+                <span>Try AI Assistant</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
