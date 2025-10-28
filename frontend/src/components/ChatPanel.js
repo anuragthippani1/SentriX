@@ -10,7 +10,6 @@ import {
   CheckCircle,
   Download,
   Search,
-  Zap,
   Globe,
   AlertTriangle,
   FileText,

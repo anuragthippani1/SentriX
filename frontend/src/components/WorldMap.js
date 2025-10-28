@@ -8,57 +8,66 @@ const WorldMap = ({ worldRiskData = {} }) => {
   const [tooltipContent, setTooltipContent] = useState("");
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
+  // Debug: Log the worldRiskData to see what we're receiving
+  console.log("WorldMap received worldRiskData:", worldRiskData);
+  console.log("Number of countries with risk data:", Object.keys(worldRiskData).length);
+
   // Country name mapping to normalize different naming conventions
+  // Maps GeoJSON names to backend data names
   const countryNameMapping = {
+    // Americas
     "United States of America": "United States",
-    "United States": "United States",
-    USA: "United States",
+    "USA": "United States",
+    
+    // Europe
     "United Kingdom": "United Kingdom",
-    UK: "United Kingdom",
-    "Great Britain": "United Kingdom",
-    Russia: "Russia",
     "Russian Federation": "Russia",
-    "South Korea": "South Korea",
-    "Republic of Korea": "South Korea",
-    "North Korea": "North Korea",
-    "Democratic People's Republic of Korea": "North Korea",
-    Iran: "Iran",
-    "Islamic Republic of Iran": "Iran",
-    Syria: "Syria",
-    "Syrian Arab Republic": "Syria",
-    Iraq: "Iraq",
-    "Republic of Iraq": "Iraq",
-    Afghanistan: "Afghanistan",
-    "Islamic Republic of Afghanistan": "Afghanistan",
-    Yemen: "Yemen",
-    "Republic of Yemen": "Yemen",
-    Somalia: "Somalia",
-    "Federal Republic of Somalia": "Somalia",
-    Libya: "Libya",
-    "State of Libya": "Libya",
-    Sudan: "Sudan",
-    "Republic of the Sudan": "Sudan",
-    "South Sudan": "South Sudan",
-    "Republic of South Sudan": "South Sudan",
-    "Central African Republic": "Central African Republic",
-    CAR: "Central African Republic",
-    "Democratic Republic of the Congo": "Democratic Republic of the Congo",
-    DRC: "Democratic Republic of the Congo",
-    Congo: "Congo",
-    "Republic of the Congo": "Congo",
-    "Dem. Rep. Congo": "Democratic Republic of the Congo",
-    "Congo Kinshasa": "Democratic Republic of the Congo",
-    "Congo Brazzaville": "Congo",
-    China: "China",
-    "People's Republic of China": "China",
-    Vietnam: "Vietnam",
-    "Viet Nam": "Vietnam",
-    Myanmar: "Myanmar",
-    Burma: "Myanmar",
     "Czech Republic": "Czech Republic",
-    Czechia: "Czech Republic",
-    Tanzania: "Tanzania",
+    "Czechia": "Czech Republic",
+    
+    // Asia
+    "People's Republic of China": "China",
+    "Republic of Korea": "South Korea",
+    "S. Korea": "South Korea",
+    "Korea": "South Korea",
+    "Dem. Rep. Korea": "North Korea",
+    "Democratic People's Republic of Korea": "North Korea",
+    "Korea, Dem. Rep.": "North Korea",
+    "Iran (Islamic Republic of)": "Iran",
+    "Islamic Republic of Iran": "Iran",
+    "Syrian Arab Republic": "Syria",
+    "Viet Nam": "Vietnam",
+    "Myanmar (Burma)": "Myanmar",
+    "Burma": "Myanmar",
+    "Lao PDR": "Laos",
+    "Lao People's Democratic Republic": "Laos",
+    
+    // Africa
+    "Central African Rep.": "Central African Republic",
+    "Dem. Rep. Congo": "Democratic Republic of the Congo",
+    "Democratic Republic of the Congo": "Democratic Republic of the Congo",
+    "Congo, Dem. Rep.": "Democratic Republic of the Congo",
+    "Republic of the Congo": "Congo",
+    "Congo": "Congo",
     "United Republic of Tanzania": "Tanzania",
+    "S. Sudan": "South Sudan",
+    "Eq. Guinea": "Equatorial Guinea",
+    "Equatorial Guinea": "Equatorial Guinea",
+    "Côte d'Ivoire": "Ivory Coast",
+    "Ivory Coast": "Ivory Coast",
+    
+    // Middle East
+    "Palestine": "Palestine",
+    "West Bank": "Palestine",
+    "Gaza": "Palestine",
+    "State of Palestine": "Palestine",
+    
+    // Balkans
+    "Bosnia and Herz.": "Bosnia and Herzegovina",
+    "Bosnia and Herzegovina": "Bosnia and Herzegovina",
+    "N. Cyprus": "Cyprus",
+    "Macedonia": "North Macedonia",
+    "North Macedonia": "North Macedonia",
   };
 
   const getRiskColor = (riskLevel) => {
@@ -180,12 +189,18 @@ const WorldMap = ({ worldRiskData = {} }) => {
                 geo.properties?.NAME || geo.properties?.NAME_EN;
               const riskData = getCountryRiskData(countryName);
               const riskLevel = riskData ? riskData.risk_level : 0;
+              const fillColor = getRiskColor(riskLevel);
+
+              // Debug: Log countries with risk data
+              if (riskData) {
+                console.log(`Country: ${countryName}, Risk Level: ${riskLevel}, Color: ${fillColor}`);
+              }
 
               return (
                 <Geography
                   key={geo.rsmKey}
                   geography={geo}
-                  fill={getRiskColor(riskLevel)}
+                  fill={fillColor}
                   stroke="#FFFFFF"
                   strokeWidth={0.5}
                   style={{
