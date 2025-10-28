@@ -296,22 +296,53 @@ const Home = () => {
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-6">
             What SentriX Does
           </h2>
-          <div className="space-y-4 text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-            <p>
-              SentriX monitors real-time political risks, supply chain disruptions, and schedule delays 
-              across 100+ countries to help you make smarter shipping decisions. Track geopolitical tensions, 
-              trade policy changes, and potential delays before they impact your shipments.
-            </p>
-            <p>
-              Our AI-powered route analysis provides comprehensive insights including timing breakdowns, 
-              weather conditions, ocean climate data, and detailed risk assessments for every shipping route. 
-              Get smart recommendations to choose safer, faster routes and avoid costly disruptions.
-            </p>
-            <p>
-              Generate detailed PDF reports instantly with complete risk assessments, country-by-country analysis, 
-              mitigation strategies, and actionable insights. Download and share professional reports with your 
-              team to keep everyone informed and prepared.
-            </p>
+          <div className="space-y-6">
+            {/* Real-Time Monitoring */}
+            <div className="flex items-start space-x-4">
+              <div className="flex-shrink-0">
+                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                  <Shield className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                </div>
+              </div>
+              <p className="text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed flex-1">
+                SentriX monitors real-time political risks, supply chain
+                disruptions, and schedule delays across 100+ countries to help you
+                make smarter shipping decisions. Track geopolitical tensions,
+                trade policy changes, and potential delays before they impact your
+                shipments.
+              </p>
+            </div>
+
+            {/* AI-Powered Analysis */}
+            <div className="flex items-start space-x-4">
+              <div className="flex-shrink-0">
+                <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
+                  <BarChart3 className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                </div>
+              </div>
+              <p className="text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed flex-1">
+                Our AI-powered route analysis provides comprehensive insights
+                including timing breakdowns, weather conditions, ocean climate
+                data, and detailed risk assessments for every shipping route. Get
+                smart recommendations to choose safer, faster routes and avoid
+                costly disruptions.
+              </p>
+            </div>
+
+            {/* Report Generation */}
+            <div className="flex items-start space-x-4">
+              <div className="flex-shrink-0">
+                <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+                  <FileText className="h-6 w-6 text-green-600 dark:text-green-400" />
+                </div>
+              </div>
+              <p className="text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed flex-1">
+                Generate detailed PDF reports instantly with complete risk
+                assessments, country-by-country analysis, mitigation strategies,
+                and actionable insights. Download and share professional reports
+                with your team to keep everyone informed and prepared.
+              </p>
+            </div>
           </div>
         </div>
       </div>
