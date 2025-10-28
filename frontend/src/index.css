@@ -169,6 +169,20 @@
       transform: translateY(0);
     }
   }
+
+  /* Loading bar animation */
+  .animate-loading-bar {
+    animation: loading-bar 3s ease-in-out forwards;
+  }
+
+  @keyframes loading-bar {
+    from {
+      width: 0%;
+    }
+    to {
+      width: 100%;
+    }
+  }
 }
 
 body {
