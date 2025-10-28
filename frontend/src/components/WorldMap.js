@@ -8,7 +8,6 @@ const WorldMap = ({ worldRiskData = {} }) => {
   const [tooltipContent, setTooltipContent] = useState("");
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
-
   // Country name mapping to normalize different naming conventions
   // Maps GeoJSON names to backend data names
   const countryNameMapping = {
@@ -68,11 +67,11 @@ const WorldMap = ({ worldRiskData = {} }) => {
   };
 
   const getRiskColor = (riskLevel) => {
-    if (riskLevel >= 4) return "#7F1D1D"; // Critical Risk - Very Dark Red
-    if (riskLevel === 3) return "#DC2626"; // High Risk - Dark Red
-    if (riskLevel === 2) return "#F59E0B"; // Medium Risk - Amber
-    if (riskLevel === 1) return "#059669"; // Low Risk - Emerald Green
-    return "#F3F4F6"; // No Data - Light Gray
+    if (riskLevel >= 4) return "#EF4444"; // Critical Risk - Bright Red
+    if (riskLevel === 3) return "#F97316"; // High Risk - Orange
+    if (riskLevel === 2) return "#FDE047"; // Medium Risk - Yellow
+    if (riskLevel === 1) return "#10B981"; // Low Risk - Green
+    return "#E5E7EB"; // No Data - Very Light Gray
   };
 
   const getRiskLabel = (riskLevel) => {
@@ -172,12 +171,13 @@ const WorldMap = ({ worldRiskData = {} }) => {
   return (
     <div className="w-full">
       <ComposableMap
+        projection="geoMercator"
         projectionConfig={{
-          scale: 140,
-          center: [10, 20],
+          scale: 130,
+          center: [0, 30],
         }}
-        width={800}
-        height={500}
+        width={900}
+        height={450}
         className="transition-all duration-300"
       >
         <Geographies geography={geoUrl}>
@@ -196,23 +196,24 @@ const WorldMap = ({ worldRiskData = {} }) => {
                   key={geo.rsmKey}
                   geography={geo}
                   fill={fillColor}
-                  stroke="#E5E7EB"
-                  strokeWidth={0.75}
+                  stroke="#FFFFFF"
+                  strokeWidth={0.5}
                   style={{
                     default: {
-                      fill: getRiskColor(riskLevel),
+                      fill: fillColor,
                       outline: "none",
+                      transition: "all 0.2s ease-in-out",
                     },
                     hover: {
-                      fill: riskLevel > 0 ? fillColor : "#9CA3AF",
+                      fill: fillColor,
                       outline: "none",
-                      stroke: "#6D94C5",
-                      strokeWidth: 2,
-                      filter: "brightness(1.1)",
+                      stroke: "#3B82F6",
+                      strokeWidth: 1.5,
+                      opacity: 0.85,
                       cursor: "pointer",
                     },
                     pressed: {
-                      fill: getRiskColor(riskLevel),
+                      fill: fillColor,
                       outline: "none",
                     },
                   }}
@@ -237,86 +238,67 @@ const WorldMap = ({ worldRiskData = {} }) => {
         />
       )}
 
-      {/* Enhanced Legend */}
-      <div className="mt-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
-        <h3 className="text-sm font-semibold text-gray-900 mb-3 flex items-center">
-          <span className="mr-2">🗺️</span>
-          Risk Assessment Legend
+      {/* Simple Legend */}
+      <div className="mt-6 bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">
+          Risk Levels
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
           {[
             {
               level: 4,
-              label: "Critical Risk",
-              color: "#7F1D1D",
-              description: "Active conflicts, sanctions, severe instability",
+              label: "Critical",
+              color: "#EF4444",
             },
             {
               level: 3,
-              label: "High Risk",
-              color: "#DC2626",
-              description: "Political tensions, security concerns",
+              label: "High",
+              color: "#F97316",
             },
             {
               level: 2,
-              label: "Medium Risk",
-              color: "#F59E0B",
-              description: "Moderate political uncertainty",
+              label: "Medium",
+              color: "#FDE047",
             },
             {
               level: 1,
-              label: "Low Risk",
-              color: "#059669",
-              description: "Stable political environment",
+              label: "Low",
+              color: "#10B981",
             },
             {
               level: 0,
               label: "No Data",
-              color: "#F3F4F6",
-              description: "Data collection in progress",
+              color: "#E5E7EB",
             },
-          ].map(({ level, label, color, description }) => (
-            <div key={level} className="flex items-start space-x-3">
+          ].map(({ level, label, color }) => (
+            <div key={level} className="flex items-center space-x-2">
               <div
-                className="w-4 h-4 rounded flex-shrink-0 mt-0.5"
+                className="w-5 h-5 rounded-sm border border-gray-300"
                 style={{ backgroundColor: color }}
               />
-              <div className="flex-1 min-w-0">
-                <div className="text-xs font-medium text-gray-900">{label}</div>
-                <div className="text-xs text-gray-500 leading-tight">
-                  {description}
-                </div>
-              </div>
+              <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                {label}
+              </span>
             </div>
           ))}
-        </div>
-        <div className="mt-4 pt-3 border-t border-blue-200">
-          <div className="text-xs text-gray-600">
-            <div className="font-semibold mb-2 flex items-center">
-              <span className="mr-1">💡</span>
-              Interactive Tips:
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-gray-500">
-              <div>• Hover over countries for detailed risk information</div>
-              <div>• Colors update in real-time based on risk levels</div>
-              <div>• Consider alternative routes for critical shipments</div>
-              <div>• Risk levels are continuously monitored</div>
-            </div>
-          </div>
         </div>
       </div>
 
       {/* Risk Summary */}
       <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
-        <div className="bg-gray-50 p-3 rounded">
-          <div className="font-medium text-gray-900">Countries Monitored</div>
-          <div className="text-2xl font-bold text-blue-600">
+        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+          <div className="text-xs font-medium text-gray-600 dark:text-gray-400">
+            Countries Monitored
+          </div>
+          <div className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-1">
             {Object.keys(worldRiskData).length}
           </div>
         </div>
-        <div className="bg-gray-50 p-3 rounded">
-          <div className="font-medium text-gray-900">High Risk Countries</div>
-          <div className="text-2xl font-bold text-red-600">
+        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+          <div className="text-xs font-medium text-gray-600 dark:text-gray-400">
+            High Risk Countries
+          </div>
+          <div className="text-2xl font-bold text-red-500 dark:text-red-400 mt-1">
             {
               Object.values(worldRiskData).filter(
                 (data) => data.risk_level >= 3
