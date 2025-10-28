@@ -379,13 +379,6 @@ const ChatPanel = () => {
                     <div className="whitespace-pre-wrap text-sm">
                       {message.content}
                     </div>
-                    {message.data && message.data.report && (
-                      <div className="mt-2 p-2 bg-white bg-opacity-20 rounded text-xs">
-                        <p className="font-medium">Report Generated</p>
-                        <p>Type: {message.data.report.report_type}</p>
-                        <p>ID: {message.data.report.report_id}</p>
-                      </div>
-                    )}
                   </div>
                   <button
                     onClick={() => copyMessage(message.id, message.content)}

@@ -41,7 +41,7 @@ const IntroAnimation = ({ onComplete }) => {
               WELCOME
             </span>
           </div>
-          
+
           {/* TO - appears then fades out */}
           <div className="absolute inset-0 flex items-center justify-center">
             <span
@@ -53,7 +53,7 @@ const IntroAnimation = ({ onComplete }) => {
               TO
             </span>
           </div>
-          
+
           {/* SENTRIX - appears and lifts up, stays visible */}
           <div className="overflow-hidden">
             <span

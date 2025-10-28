@@ -141,18 +141,44 @@ async def process_query(request: QueryRequest):
             political_risks = await political_risk_agent.analyze_risks(countries)
             schedule_risks = await scheduler_agent.analyze_schedule_risks()
             report = await reporting_agent.generate_combined_report(political_risks, schedule_risks, session_id)
+            
+            # Generate summary message
+            high_pol_risk = sum(1 for r in political_risks if r.risk_level >= 3)
+            high_sch_risk = sum(1 for r in schedule_risks if r.severity == "High")
+            message = f"I've completed a comprehensive analysis covering {len(political_risks)} countries and {len(schedule_risks)} routes. "
+            if high_pol_risk > 0:
+                message += f"⚠️ {high_pol_risk} countries show high political risks. "
+            if high_sch_risk > 0:
+                message += f"🚨 {high_sch_risk} routes face severe delays. "
+            message += f"The full combined report includes risk assessments, mitigation strategies, and actionable recommendations."
         elif intent == "political":
             countries = await scheduler_agent.extract_countries()
             political_risks = await political_risk_agent.analyze_risks(countries)
             report = await reporting_agent.generate_political_report(political_risks, session_id)
+            
+            # Generate summary message
+            high_risk = sum(1 for r in political_risks if r.risk_level >= 3)
+            message = f"I've analyzed political risks across {len(political_risks)} countries. "
+            if high_risk > 0:
+                message += f"⚠️ {high_risk} countries have high political risk levels. "
+            message += f"Key concerns include geopolitical tensions, sanctions, and policy changes. A detailed report has been generated for your review."
+            
         elif intent == "schedule":
             schedule_risks = await scheduler_agent.analyze_schedule_risks()
             report = await reporting_agent.generate_schedule_report(schedule_risks, session_id)
+            
+            # Generate summary message
+            severe_delays = sum(1 for r in schedule_risks if r.severity == "High")
+            message = f"I've analyzed schedule risks for {len(schedule_risks)} routes. "
+            if severe_delays > 0:
+                message += f"🚨 {severe_delays} routes have high-severity delays. "
+            message += f"Common issues include port congestion, weather, and customs delays. A comprehensive report has been generated."
+            
         else:
             response = await assistant_agent.process_query(request.query)
             return {"session_id": session_id, "response": response, "type": "assistant"}
         await db_client.store_report(report)
-        return {"session_id": session_id, "report": report, "type": "report"}
+        return {"session_id": session_id, "report": report, "type": "report", "response": {"message": message}}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
