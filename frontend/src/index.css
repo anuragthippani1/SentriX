@@ -183,6 +183,17 @@
       width: 100%;
     }
   }
+
+  /* Text glow effect for intro */
+  .hover-glow {
+    text-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
+    transition: text-shadow 0.3s ease;
+  }
+
+  /* Ultra-tight tracking */
+  .tracking-tighter {
+    letter-spacing: -0.05em;
+  }
 }
 
 body {
