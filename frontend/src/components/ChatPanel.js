@@ -8,6 +8,14 @@ import {
   FilePlus2,
   Copy,
   CheckCircle,
+  Download,
+  Search,
+  Zap,
+  Globe,
+  AlertTriangle,
+  FileText,
+  TrendingUp,
+  X,
 } from "lucide-react";
 import { useDashboard } from "../context/DashboardContext";
 
@@ -22,6 +30,8 @@ const ChatPanel = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [copiedMessageId, setCopiedMessageId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
   const [routeForm, setRouteForm] = useState({
     from: "",
     to: "",
@@ -32,6 +42,14 @@ const ChatPanel = () => {
   const [routeAnalysis, setRouteAnalysis] = useState(null);
   const messagesEndRef = useRef(null);
 
+  // Quick action templates
+  const quickActions = [
+    { icon: AlertTriangle, label: "Political Risks", query: "What are the political risks?" },
+    { icon: TrendingUp, label: "Schedule Delays", query: "What are the schedule risks?" },
+    { icon: FileText, label: "Combined Report", query: "Generate a combined report" },
+    { icon: Globe, label: "High Risk Countries", query: "Which countries have high political risks?" },
+  ];
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -39,6 +57,43 @@ const ChatPanel = () => {
   useEffect(() => {
     scrollToBottom();
   }, [chatMessages]);
+
+  // Quick action handler
+  const handleQuickAction = (query) => {
+    setInputMessage(query);
+    // Auto-submit
+    setTimeout(() => {
+      handleSubmit({ preventDefault: () => {} });
+    }, 100);
+  };
+
+  // Export chat history
+  const exportChatHistory = () => {
+    const chatText = chatMessages
+      .map((msg) => {
+        const time = new Date(msg.timestamp).toLocaleString();
+        const sender = msg.type === "user" ? "You" : "SentriX Assistant";
+        return `[${time}] ${sender}:\n${msg.content}\n`;
+      })
+      .join("\n---\n\n");
+
+    const blob = new Blob([chatText], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `sentrix-chat-${new Date().toISOString().split("T")[0]}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  // Filter messages by search query
+  const filteredMessages = searchQuery
+    ? chatMessages.filter((msg) =>
+        msg.content.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : chatMessages;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -205,32 +260,90 @@ const ChatPanel = () => {
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 h-[600px] flex flex-col">
       {/* Header */}
-      <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
-        <div>
-          <h3 className="text-lg font-semibold text-gray-900">
-            SentriX Assistant
-          </h3>
-          <p className="text-sm text-gray-600">
-            Ask me about supply chain risks
-          </p>
+      <div className="px-4 py-3 border-b border-gray-200">
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              SentriX Assistant
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Ask me about supply chain risks
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowSearch(!showSearch)}
+              className="inline-flex items-center px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded transition-colors"
+              title="Search chat"
+            >
+              <Search className="h-3 w-3 mr-1" /> Search
+            </button>
+            <button
+              onClick={exportChatHistory}
+              className="inline-flex items-center px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded transition-colors"
+              title="Export chat"
+              disabled={chatMessages.length === 0}
+            >
+              <Download className="h-3 w-3 mr-1" /> Export
+            </button>
+            <label className="inline-flex items-center px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded cursor-pointer transition-colors">
+              <Upload className="h-3 w-3 mr-1" /> Upload
+              <input
+                type="file"
+                accept="application/json"
+                className="hidden"
+                onChange={handleFileUpload}
+              />
+            </label>
+            <button
+              onClick={handleGenerateCombined}
+              className="inline-flex items-center px-2 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+            >
+              <FilePlus2 className="h-3 w-3 mr-1" /> Report
+            </button>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <label className="inline-flex items-center px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 rounded cursor-pointer">
-            <Upload className="h-3 w-3 mr-1" /> Upload JSON
+
+        {/* Search Bar */}
+        {showSearch && (
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
             <input
-              type="file"
-              accept="application/json"
-              className="hidden"
-              onChange={handleFileUpload}
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search messages..."
+              className="w-full pl-10 pr-10 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
             />
-          </label>
-          <button
-            onClick={handleGenerateCombined}
-            className="inline-flex items-center px-2 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700"
-          >
-            <FilePlus2 className="h-3 w-3 mr-1" /> Combined Report
-          </button>
-        </div>
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* Quick Action Buttons */}
+        {chatMessages.length === 0 && !searchQuery && (
+          <div className="grid grid-cols-2 gap-2 mt-3">
+            {quickActions.map((action, index) => {
+              const Icon = action.icon;
+              return (
+                <button
+                  key={index}
+                  onClick={() => handleQuickAction(action.query)}
+                  className="flex items-center gap-2 px-3 py-2 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-lg text-sm font-medium transition-colors"
+                >
+                  <Icon className="h-4 w-4" />
+                  {action.label}
+                </button>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* Route Form Modal */}
@@ -328,7 +441,7 @@ const ChatPanel = () => {
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {chatMessages.length === 0 ? (
+        {filteredMessages.length === 0 && !searchQuery ? (
           <div className="text-center text-gray-500">
             <Bot className="h-12 w-12 mx-auto mb-4 text-gray-300" />
             <p className="text-sm">
@@ -353,8 +466,13 @@ const ChatPanel = () => {
               </button>
             </div>
           </div>
+        ) : searchQuery && filteredMessages.length === 0 ? (
+          <div className="text-center text-gray-500">
+            <Search className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+            <p className="text-sm">No messages found for "{searchQuery}"</p>
+          </div>
         ) : (
-          chatMessages.map((message) => (
+          filteredMessages.map((message) => (
             <div
               key={message.id}
               className={`flex ${
