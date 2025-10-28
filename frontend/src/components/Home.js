@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDashboard } from "../context/DashboardContext";
 import {
@@ -12,8 +12,40 @@ import {
   Map,
   Zap,
   Activity,
+  Package,
+  Ship,
+  Clock,
+  CheckCircle,
+  TrendingDown,
 } from "lucide-react";
 import IntroAnimation from "./IntroAnimation";
+
+// Animated Counter Component
+const AnimatedCounter = ({ end, duration = 2000, suffix = "" }) => {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    let startTime;
+    let animationFrame;
+
+    const animate = (currentTime) => {
+      if (!startTime) startTime = currentTime;
+      const progress = (currentTime - startTime) / duration;
+
+      if (progress < 1) {
+        setCount(Math.floor(end * progress));
+        animationFrame = requestAnimationFrame(animate);
+      } else {
+        setCount(end);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [end, duration]);
+
+  return <span>{count.toLocaleString()}{suffix}</span>;
+};
 
 const Home = () => {
   const navigate = useNavigate();
@@ -118,6 +150,68 @@ const Home = () => {
     },
   ];
 
+  // Key Metrics Data
+  const keyMetrics = [
+    {
+      label: "Active Shipments",
+      value: 1247,
+      trend: "+12%",
+      icon: Package,
+      color: "blue",
+    },
+    {
+      label: "Routes Optimized",
+      value: 89,
+      trend: "+23%",
+      icon: Ship,
+      color: "green",
+    },
+    {
+      label: "Avg Delivery Time",
+      value: 12.3,
+      suffix: " days",
+      trend: "-8%",
+      icon: Clock,
+      color: "purple",
+    },
+    {
+      label: "On-Time Delivery",
+      value: 98.7,
+      suffix: "%",
+      trend: "+2%",
+      icon: CheckCircle,
+      color: "emerald",
+    },
+  ];
+
+  // Live Activity Feed
+  const [activities] = useState([
+    {
+      type: "success",
+      icon: CheckCircle,
+      message: "Shipment #SX-1234 delivered to Dubai",
+      time: "2 mins ago",
+    },
+    {
+      type: "info",
+      icon: Ship,
+      message: "Route optimized for cargo #SX-5678",
+      time: "5 mins ago",
+    },
+    {
+      type: "warning",
+      icon: AlertTriangle,
+      message: "Weather delay detected in Pacific route",
+      time: "8 mins ago",
+    },
+    {
+      type: "success",
+      icon: CheckCircle,
+      message: "Customs clearance completed - Port of Singapore",
+      time: "12 mins ago",
+    },
+  ]);
+
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
       {/* Hero Section - Clean & Simple */}
@@ -154,9 +248,10 @@ const Home = () => {
               </p>
 
               <p className="text-base md:text-lg text-gray-200 max-w-2xl mx-auto leading-relaxed mb-8">
-                A modern shipping platform designed to simplify logistics operations. 
-                Get real-time shipment updates, track routes across the globe, and 
-                optimize your supply chain with intelligent automation.
+                A modern shipping platform designed to simplify logistics
+                operations. Get real-time shipment updates, track routes across
+                the globe, and optimize your supply chain with intelligent
+                automation.
               </p>
 
               {/* CTA Buttons */}
@@ -181,7 +276,7 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Stats Section */}
+      {/* Stats Section with Animated Counters */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((stat, index) => (
@@ -195,7 +290,7 @@ const Home = () => {
                     {stat.label}
                   </p>
                   <p className="text-3xl font-bold text-gray-900 dark:text-white mt-2">
-                    {stat.value}
+                    <AnimatedCounter end={stat.value} duration={1500} />
                   </p>
                 </div>
                 <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
@@ -204,6 +299,108 @@ const Home = () => {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Key Metrics & Live Activity Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Key Metrics Dashboard */}
+          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                Key Metrics
+              </h3>
+              <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                <Activity className="h-4 w-4 mr-1 animate-pulse" />
+                <span>Live</span>
+              </div>
+            </div>
+            <div className="space-y-4">
+              {keyMetrics.map((metric, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className={`p-2 bg-${metric.color}-100 dark:bg-${metric.color}-900/30 rounded-lg`}>
+                      <metric.icon className={`h-5 w-5 text-${metric.color}-600 dark:text-${metric.color}-400`} />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                        {metric.label}
+                      </p>
+                      <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                        <AnimatedCounter 
+                          end={metric.value} 
+                          duration={2000} 
+                          suffix={metric.suffix || ""}
+                        />
+                      </p>
+                    </div>
+                  </div>
+                  <div className={`flex items-center space-x-1 text-sm font-semibold ${
+                    metric.trend.startsWith('+') ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+                  }`}>
+                    {metric.trend.startsWith('+') ? (
+                      <TrendingUp className="h-4 w-4" />
+                    ) : (
+                      <TrendingDown className="h-4 w-4" />
+                    )}
+                    <span>{metric.trend}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Live Activity Feed */}
+          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                Live Activity
+              </h3>
+              <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                <div className="h-2 w-2 bg-green-500 rounded-full animate-pulse mr-2"></div>
+                <span>Real-time</span>
+              </div>
+            </div>
+            <div className="space-y-3">
+              {activities.map((activity, index) => (
+                <div
+                  key={index}
+                  className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors animate-fadeIn"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <div className={`p-2 rounded-lg ${
+                    activity.type === 'success' ? 'bg-green-100 dark:bg-green-900/30' :
+                    activity.type === 'warning' ? 'bg-yellow-100 dark:bg-yellow-900/30' :
+                    'bg-blue-100 dark:bg-blue-900/30'
+                  }`}>
+                    <activity.icon className={`h-4 w-4 ${
+                      activity.type === 'success' ? 'text-green-600 dark:text-green-400' :
+                      activity.type === 'warning' ? 'text-yellow-600 dark:text-yellow-400' :
+                      'text-blue-600 dark:text-blue-400'
+                    }`} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-gray-900 dark:text-white font-medium">
+                      {activity.message}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      {activity.time}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <button
+              onClick={() => navigate("/dashboard")}
+              className="mt-4 w-full text-center text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white font-medium transition-colors"
+            >
+              View all activity →
+            </button>
+          </div>
         </div>
       </div>
 
