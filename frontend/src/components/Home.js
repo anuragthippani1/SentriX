@@ -253,14 +253,19 @@ const Home = () => {
               </p>
 
               <p className="text-base md:text-lg text-gray-200 max-w-3xl mx-auto leading-relaxed mb-4">
-                <strong className="text-white">SentriX</strong> is your intelligent shipping risk management platform that monitors 
-                <strong className="text-white"> political risks</strong>, <strong className="text-white">supply chain disruptions</strong>, and 
-                <strong className="text-white"> schedule delays</strong> across 100+ countries in real-time.
+                <strong className="text-white">SentriX</strong> is your
+                intelligent shipping risk management platform that monitors
+                <strong className="text-white"> political risks</strong>,{" "}
+                <strong className="text-white">supply chain disruptions</strong>
+                , and
+                <strong className="text-white"> schedule delays</strong> across
+                100+ countries in real-time.
               </p>
-              
+
               <p className="text-sm md:text-base text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
-                Get AI-powered route analysis, automated risk reports, and instant alerts to make smarter 
-                logistics decisions and avoid costly delays before they happen.
+                Get AI-powered route analysis, automated risk reports, and
+                instant alerts to make smarter logistics decisions and avoid
+                costly delays before they happen.
               </p>
 
               {/* CTA Buttons */}
@@ -287,58 +292,26 @@ const Home = () => {
 
       {/* What SentriX Does Section */}
       <div className="bg-gray-50 dark:bg-gray-800 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              What SentriX Does
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Your complete solution for intelligent shipping risk management and route optimization
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-6">
+            What SentriX Does
+          </h2>
+          <div className="space-y-4 text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+            <p>
+              SentriX monitors real-time political risks, supply chain disruptions, and schedule delays 
+              across 100+ countries to help you make smarter shipping decisions. Track geopolitical tensions, 
+              trade policy changes, and potential delays before they impact your shipments.
             </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Real-Time Risk Monitoring */}
-            <div className="bg-white dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
-              <div className="bg-red-100 dark:bg-red-900/30 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                <Shield className="h-6 w-6 text-red-600 dark:text-red-400" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                Real-Time Risk Monitoring
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300">
-                Track political risks, supply chain disruptions, and schedule delays across 100+ countries. 
-                Get instant alerts when conditions change that could impact your shipments.
-              </p>
-            </div>
-
-            {/* AI Route Analysis */}
-            <div className="bg-white dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
-              <div className="bg-blue-100 dark:bg-blue-900/30 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                <Map className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                AI-Powered Route Analysis
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300">
-                Get comprehensive route analysis with timing breakdowns, weather conditions, risk assessments, 
-                and smart recommendations for safer, faster shipping routes.
-              </p>
-            </div>
-
-            {/* Automated Reports */}
-            <div className="bg-white dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
-              <div className="bg-green-100 dark:bg-green-900/30 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                <FileText className="h-6 w-6 text-green-600 dark:text-green-400" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                Automated Risk Reports
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300">
-                Generate detailed PDF reports with risk assessments, country analysis, and mitigation strategies. 
-                Download and share comprehensive insights with your team instantly.
-              </p>
-            </div>
+            <p>
+              Our AI-powered route analysis provides comprehensive insights including timing breakdowns, 
+              weather conditions, ocean climate data, and detailed risk assessments for every shipping route. 
+              Get smart recommendations to choose safer, faster routes and avoid costly disruptions.
+            </p>
+            <p>
+              Generate detailed PDF reports instantly with complete risk assessments, country-by-country analysis, 
+              mitigation strategies, and actionable insights. Download and share professional reports with your 
+              team to keep everyone informed and prepared.
+            </p>
           </div>
         </div>
       </div>
