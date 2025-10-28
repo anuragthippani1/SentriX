@@ -41,7 +41,9 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
               className="flex-shrink-0 flex items-center hover:opacity-80 transition"
             >
               <img src="/logo.png" alt="SentriX Logo" className="h-8 w-8" />
-              <span className="ml-2 text-xl font-bold text-gray-900">SentriX</span>
+              <span className="ml-2 text-xl font-bold text-gray-900">
+                SentriX
+              </span>
             </Link>
           </div>
 
