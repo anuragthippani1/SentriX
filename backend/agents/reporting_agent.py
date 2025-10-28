@@ -417,21 +417,19 @@ class ReportingAgent:
             story.append(Spacer(1, 15))
             
             # Detailed political risks table
-            political_data = [['Country', 'Risk Type', 'Score', 'Reasoning', 'Source']]
+            political_data = [['Country', 'Risk Type', 'Score', 'Reasoning']]
             for risk in report.political_risks:
                 # Truncate long text with word wrap
-                reasoning = risk.reasoning[:80] + "..." if len(risk.reasoning) > 80 else risk.reasoning
-                source = risk.source_title[:40] + "..." if len(risk.source_title) > 40 else risk.source_title
+                reasoning = risk.reasoning[:120] + "..." if len(risk.reasoning) > 120 else risk.reasoning
                 
                 political_data.append([
                     risk.country,
                     risk.risk_type,
                     str(risk.likelihood_score) + '/5',
-                    reasoning,
-                    source
+                    reasoning
                 ])
             
-            political_table = Table(political_data, colWidths=[0.9*inch, 1.1*inch, 0.5*inch, 2.2*inch, 1.8*inch])
+            political_table = Table(political_data, colWidths=[1.2*inch, 1.5*inch, 0.6*inch, 3.2*inch])
             
             # Build table style with alternating rows
             table_style = [
