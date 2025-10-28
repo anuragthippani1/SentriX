@@ -220,15 +220,28 @@ async def get_report(report_id: str):
 async def download_report(report_id: str):
     """Download report as PDF/DOCX"""
     try:
+        print(f"📥 Download request for report: {report_id}")
         report = await db_client.get_report(report_id)
         if not report:
+            print(f"❌ Report not found: {report_id}")
             raise HTTPException(status_code=404, detail="Report not found")
         
+        print(f"✅ Report found, generating PDF...")
         # Generate downloadable file
         file_path = await reporting_agent.generate_downloadable_report(report)
-        return FileResponse(file_path, filename=f"sentrix_report_{report_id}.pdf")
+        print(f"✅ PDF generated at: {file_path}")
+        
+        import os
+        if not os.path.exists(file_path):
+            print(f"❌ File not found at path: {file_path}")
+            raise HTTPException(status_code=500, detail="Generated file not found")
+            
+        return FileResponse(file_path, filename=f"sentrix_report_{report_id}.pdf", media_type="application/pdf")
         
     except Exception as e:
+        print(f"❌ Download error: {str(e)}")
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
 # @app.get("/api/stream/dashboard")
