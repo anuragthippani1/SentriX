@@ -38,7 +38,7 @@ const IntroAnimation = ({ onComplete }) => {
                 animationFillMode: "forwards",
               }}
             >
-              EXPERIENCE
+              WELCOME
             </span>
           </div>
           <div className="overflow-hidden">
@@ -49,7 +49,7 @@ const IntroAnimation = ({ onComplete }) => {
                 animationFillMode: "forwards",
               }}
             >
-              THE
+              TO
             </span>
           </div>
           <div className="overflow-hidden my-2">
@@ -61,18 +61,7 @@ const IntroAnimation = ({ onComplete }) => {
                 textShadow: "0 0 80px rgba(59, 130, 246, 0.5)",
               }}
             >
-              SUPPLY CHAIN
-            </span>
-          </div>
-          <div className="overflow-hidden">
-            <span
-              className="block opacity-0 animate-fadeInUp text-white hover-glow"
-              style={{
-                animationDelay: "0.7s",
-                animationFillMode: "forwards",
-              }}
-            >
-              INTELLIGENCE
+              SENTRIX
             </span>
           </div>
         </h1>

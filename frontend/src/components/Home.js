@@ -18,13 +18,20 @@ import IntroAnimation from "./IntroAnimation";
 const Home = () => {
   const navigate = useNavigate();
   const { dashboardData, reports } = useDashboard();
-  const [showIntro, setShowIntro] = useState(true);
+  
+  // Check if intro has been shown in this session
+  const [showIntro, setShowIntro] = useState(() => {
+    const introShown = sessionStorage.getItem('sentrix-intro-shown');
+    return !introShown; // Show intro only if not shown before
+  });
 
   const handleIntroComplete = () => {
     setShowIntro(false);
+    // Mark intro as shown for this session
+    sessionStorage.setItem('sentrix-intro-shown', 'true');
   };
 
-  // Show intro animation on first load
+  // Show intro animation only on first website load
   if (showIntro) {
     return <IntroAnimation onComplete={handleIntroComplete} />;
   }
