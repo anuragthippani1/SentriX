@@ -44,7 +44,12 @@ const AnimatedCounter = ({ end, duration = 2000, suffix = "" }) => {
     return () => cancelAnimationFrame(animationFrame);
   }, [end, duration]);
 
-  return <span>{count.toLocaleString()}{suffix}</span>;
+  return (
+    <span>
+      {count.toLocaleString()}
+      {suffix}
+    </span>
+  );
 };
 
 const Home = () => {
@@ -53,6 +58,34 @@ const Home = () => {
 
   // Always show intro when landing on home page
   const [showIntro, setShowIntro] = useState(true);
+
+  // Live Activity Feed - MUST be defined before any conditional returns
+  const [activities] = useState([
+    {
+      type: "success",
+      icon: CheckCircle,
+      message: "Shipment #SX-1234 delivered to Dubai",
+      time: "2 mins ago",
+    },
+    {
+      type: "info",
+      icon: Ship,
+      message: "Route optimized for cargo #SX-5678",
+      time: "5 mins ago",
+    },
+    {
+      type: "warning",
+      icon: AlertTriangle,
+      message: "Weather delay detected in Pacific route",
+      time: "8 mins ago",
+    },
+    {
+      type: "success",
+      icon: CheckCircle,
+      message: "Customs clearance completed - Port of Singapore",
+      time: "12 mins ago",
+    },
+  ]);
 
   const handleIntroComplete = () => {
     setShowIntro(false);
@@ -184,34 +217,6 @@ const Home = () => {
     },
   ];
 
-  // Live Activity Feed
-  const [activities] = useState([
-    {
-      type: "success",
-      icon: CheckCircle,
-      message: "Shipment #SX-1234 delivered to Dubai",
-      time: "2 mins ago",
-    },
-    {
-      type: "info",
-      icon: Ship,
-      message: "Route optimized for cargo #SX-5678",
-      time: "5 mins ago",
-    },
-    {
-      type: "warning",
-      icon: AlertTriangle,
-      message: "Weather delay detected in Pacific route",
-      time: "8 mins ago",
-    },
-    {
-      type: "success",
-      icon: CheckCircle,
-      message: "Customs clearance completed - Port of Singapore",
-      time: "12 mins ago",
-    },
-  ]);
-
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
       {/* Hero Section - Clean & Simple */}
@@ -323,26 +328,34 @@ const Home = () => {
                   className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 >
                   <div className="flex items-center space-x-3">
-                    <div className={`p-2 bg-${metric.color}-100 dark:bg-${metric.color}-900/30 rounded-lg`}>
-                      <metric.icon className={`h-5 w-5 text-${metric.color}-600 dark:text-${metric.color}-400`} />
+                    <div
+                      className={`p-2 bg-${metric.color}-100 dark:bg-${metric.color}-900/30 rounded-lg`}
+                    >
+                      <metric.icon
+                        className={`h-5 w-5 text-${metric.color}-600 dark:text-${metric.color}-400`}
+                      />
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
                         {metric.label}
                       </p>
                       <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                        <AnimatedCounter 
-                          end={metric.value} 
-                          duration={2000} 
+                        <AnimatedCounter
+                          end={metric.value}
+                          duration={2000}
                           suffix={metric.suffix || ""}
                         />
                       </p>
                     </div>
                   </div>
-                  <div className={`flex items-center space-x-1 text-sm font-semibold ${
-                    metric.trend.startsWith('+') ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
-                  }`}>
-                    {metric.trend.startsWith('+') ? (
+                  <div
+                    className={`flex items-center space-x-1 text-sm font-semibold ${
+                      metric.trend.startsWith("+")
+                        ? "text-green-600 dark:text-green-400"
+                        : "text-red-600 dark:text-red-400"
+                    }`}
+                  >
+                    {metric.trend.startsWith("+") ? (
                       <TrendingUp className="h-4 w-4" />
                     ) : (
                       <TrendingDown className="h-4 w-4" />
@@ -372,16 +385,24 @@ const Home = () => {
                   className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors animate-fadeIn"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <div className={`p-2 rounded-lg ${
-                    activity.type === 'success' ? 'bg-green-100 dark:bg-green-900/30' :
-                    activity.type === 'warning' ? 'bg-yellow-100 dark:bg-yellow-900/30' :
-                    'bg-blue-100 dark:bg-blue-900/30'
-                  }`}>
-                    <activity.icon className={`h-4 w-4 ${
-                      activity.type === 'success' ? 'text-green-600 dark:text-green-400' :
-                      activity.type === 'warning' ? 'text-yellow-600 dark:text-yellow-400' :
-                      'text-blue-600 dark:text-blue-400'
-                    }`} />
+                  <div
+                    className={`p-2 rounded-lg ${
+                      activity.type === "success"
+                        ? "bg-green-100 dark:bg-green-900/30"
+                        : activity.type === "warning"
+                        ? "bg-yellow-100 dark:bg-yellow-900/30"
+                        : "bg-blue-100 dark:bg-blue-900/30"
+                    }`}
+                  >
+                    <activity.icon
+                      className={`h-4 w-4 ${
+                        activity.type === "success"
+                          ? "text-green-600 dark:text-green-400"
+                          : activity.type === "warning"
+                          ? "text-yellow-600 dark:text-yellow-400"
+                          : "text-blue-600 dark:text-blue-400"
+                      }`}
+                    />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm text-gray-900 dark:text-white font-medium">
