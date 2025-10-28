@@ -4,14 +4,14 @@ const IntroAnimation = ({ onComplete }) => {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    // After 2.5 seconds, slide the intro away
+    // After 1 second, slide the intro away
     const timer = setTimeout(() => {
       setIsVisible(false);
       // Wait for slide-out animation to complete, then notify parent
       setTimeout(() => {
         onComplete();
       }, 800);
-    }, 2500);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, [onComplete]);
@@ -65,18 +65,6 @@ const IntroAnimation = ({ onComplete }) => {
             </span>
           </div>
         </h1>
-
-        {/* Subtitle with Icon */}
-        <div
-          className="mt-10 opacity-0 animate-fadeIn flex items-center justify-center space-x-3"
-          style={{ animationDelay: "1s", animationFillMode: "forwards" }}
-        >
-          <div className="h-px w-12 bg-gradient-to-r from-transparent to-blue-500"></div>
-          <p className="text-lg md:text-xl text-gray-300 font-light tracking-widest uppercase">
-            Powered by AI
-          </p>
-          <div className="h-px w-12 bg-gradient-to-l from-transparent to-blue-500"></div>
-        </div>
       </div>
     </div>
   );
