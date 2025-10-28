@@ -15,8 +15,10 @@ import {
   FileText,
   TrendingUp,
   X,
+  Ship,
 } from "lucide-react";
 import { useDashboard } from "../context/DashboardContext";
+import MultiPortRoutePlanner from "./MultiPortRoutePlanner";
 
 const ChatPanel = () => {
   const {
@@ -39,6 +41,7 @@ const ChatPanel = () => {
   });
   const [showRouteForm, setShowRouteForm] = useState(false);
   const [routeAnalysis, setRouteAnalysis] = useState(null);
+  const [showRoutePlanner, setShowRoutePlanner] = useState(false);
   const messagesEndRef = useRef(null);
 
   // Quick action templates
@@ -273,6 +276,32 @@ const ChatPanel = () => {
     return analysis;
   };
 
+  // If showing route planner, render it instead of chat
+  if (showRoutePlanner) {
+    return (
+      <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-800">
+        <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+            <Ship className="h-5 w-5 mr-2 text-blue-600 dark:text-blue-400" />
+            Multi-Port Route Planner
+          </h3>
+          <button
+            onClick={() => setShowRoutePlanner(false)}
+            className="inline-flex items-center px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded transition-colors"
+          >
+            <X className="h-4 w-4 mr-1" /> Close
+          </button>
+        </div>
+        <div
+          className="overflow-y-auto"
+          style={{ maxHeight: "calc(100vh - 200px)" }}
+        >
+          <MultiPortRoutePlanner />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 h-[600px] flex flex-col">
       {/* Header */}
@@ -287,6 +316,13 @@ const ChatPanel = () => {
             </p>
           </div>
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowRoutePlanner(true)}
+              className="inline-flex items-center px-2 py-1 text-xs bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors"
+              title="Route Planner"
+            >
+              <Ship className="h-3 w-3 mr-1" /> Route Planner
+            </button>
             <button
               onClick={() => setShowSearch(!showSearch)}
               className="inline-flex items-center px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded transition-colors"

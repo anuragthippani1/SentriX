@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
 
-import { Brain, MessageSquare, FileText, Users, Bot, Ship } from "lucide-react";
+import { Brain, MessageSquare, FileText, Users, Bot } from "lucide-react";
 
 const Navbar = ({ currentPage, setCurrentPage }) => {
   const location = useLocation();
@@ -14,12 +14,6 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
       label: "SentriX Assistant",
       icon: Bot,
       path: "/assistant",
-    },
-    {
-      id: "route-planner",
-      label: "Route Planner",
-      icon: Ship,
-      path: "/route-planner",
     },
     { id: "reports", label: "Reports", icon: FileText, path: "/reports" },
     {
