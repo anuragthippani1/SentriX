@@ -107,63 +107,73 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 relative overflow-hidden transition-colors">
-      {/* Hero Section with Ship Image */}
-      <div className="relative h-[600px] bg-gray-900 text-white overflow-hidden">
+      {/* Hero Section with Lift-up Animation - Inspired by Modern Interactive Design */}
+      <div className="relative h-screen bg-gray-900 dark:bg-black text-white overflow-hidden">
         {/* Background Ship Image */}
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat brightness-90"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat brightness-50"
           style={{ backgroundImage: "url(/ship.jpg)" }}
         ></div>
 
-        {/* Enhanced Vignette Effect - Darker Edges */}
-        <div className="absolute inset-0 bg-gradient-radial from-transparent via-black/20 to-black/70"></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/60"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40"></div>
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-black/60"></div>
 
-        {/* Content */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center relative z-10">
-          <div className="text-center w-full">
-            {/* Text Content Box with Backdrop */}
-            <div className="max-w-4xl mx-auto bg-black/40 backdrop-blur-lg rounded-2xl p-8 md:p-12 border border-white/10 shadow-2xl">
-              <div className="inline-block mb-6">
-                <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
-                  <Activity className="h-5 w-5 animate-pulse text-white" />
-                  <span className="text-sm font-semibold text-white">
-                    Real-Time Intelligence
+        {/* Content - Split Screen Effect */}
+        <div className="relative z-10 h-full flex items-center justify-center">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            
+            {/* Main Headline - Lift Up Animation */}
+            <div className="text-center mb-12 overflow-hidden">
+              <div className="animate-slideUp">
+                <h1 className="text-7xl md:text-9xl font-black mb-4 tracking-tight leading-none">
+                  <span className="block opacity-0 animate-fadeInUp" style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}>
+                    EXPERIENCE
                   </span>
-                </div>
+                  <span className="block opacity-0 animate-fadeInUp" style={{ animationDelay: '0.3s', animationFillMode: 'forwards' }}>
+                    THE
+                  </span>
+                  <span className="block opacity-0 animate-fadeInUp text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600" style={{ animationDelay: '0.5s', animationFillMode: 'forwards' }}>
+                    SUPPLY CHAIN
+                  </span>
+                  <span className="block opacity-0 animate-fadeInUp" style={{ animationDelay: '0.7s', animationFillMode: 'forwards' }}>
+                    INTELLIGENCE
+                  </span>
+                </h1>
               </div>
+            </div>
 
-              <h1 className="text-5xl md:text-7xl font-extrabold mb-6 text-white drop-shadow-2xl leading-tight">
-                Welcome to SentriX
-              </h1>
-
-              <p className="text-2xl md:text-3xl font-semibold text-gray-100 mb-6 drop-shadow-lg">
-                Real-Time Supply Chain Risk Intelligence
+            {/* Subtitle */}
+            <div className="text-center mb-12 opacity-0 animate-fadeIn" style={{ animationDelay: '1s', animationFillMode: 'forwards' }}>
+              <p className="text-xl md:text-2xl text-gray-300 font-light tracking-wide">
+                Real-Time Risk Analysis • Global Coverage • AI-Powered Insights
               </p>
+            </div>
 
-              <p className="text-base md:text-lg text-gray-200 max-w-2xl mx-auto leading-relaxed mb-8">
-                Navigate global logistics with confidence. Track container ships
-                across deep seas, monitor geopolitical risks, and make informed
-                decisions powered by AI.
-              </p>
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 opacity-0 animate-fadeIn" style={{ animationDelay: '1.2s', animationFillMode: 'forwards' }}>
+              <button
+                onClick={() => navigate("/dashboard")}
+                className="group relative px-10 py-5 bg-white text-black font-bold text-lg rounded-none overflow-hidden transform hover:scale-105 transition-all duration-300"
+              >
+                <span className="relative z-10 flex items-center">
+                  View Dashboard
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-2 transition-transform" />
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+              </button>
+              <button
+                onClick={() => navigate("/assistant")}
+                className="group px-10 py-5 border-2 border-white text-white font-bold text-lg rounded-none hover:bg-white hover:text-black transform hover:scale-105 transition-all duration-300 flex items-center"
+              >
+                <Zap className="mr-2 h-5 w-5" />
+                Try AI Assistant
+              </button>
+            </div>
 
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-                <button
-                  onClick={() => navigate("/dashboard")}
-                  className="group bg-white text-gray-900 px-8 py-4 rounded-lg font-semibold text-base shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center space-x-2"
-                >
-                  <span>View Dashboard</span>
-                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </button>
-                <button
-                  onClick={() => navigate("/assistant")}
-                  className="group bg-transparent text-white px-8 py-4 rounded-lg font-semibold text-base border-2 border-white/60 hover:bg-white/10 transform hover:scale-105 transition-all duration-200 flex items-center space-x-2"
-                >
-                  <Zap className="h-5 w-5" />
-                  <span>Try AI Assistant</span>
-                </button>
+            {/* Scroll Indicator */}
+            <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 opacity-0 animate-bounce" style={{ animationDelay: '1.5s', animationFillMode: 'forwards' }}>
+              <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center p-2">
+                <div className="w-1 h-3 bg-white/50 rounded-full animate-pulse"></div>
               </div>
             </div>
           </div>
