@@ -30,7 +30,7 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
   ];
 
   return (
-    <nav className="bg-gradient-to-r from-[#6D94C5] to-[#8AABCE] shadow-lg border-b border-[#CBDCEB]">
+    <nav className="bg-white shadow-sm border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo - Clickable to go home */}
@@ -41,7 +41,7 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
               className="flex-shrink-0 flex items-center hover:opacity-80 transition"
             >
               <img src="/logo.png" alt="SentriX Logo" className="h-8 w-8" />
-              <span className="ml-2 text-xl font-bold text-white">SentriX</span>
+              <span className="ml-2 text-xl font-bold text-gray-900">SentriX</span>
             </Link>
           </div>
 
@@ -58,8 +58,8 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
                     to={item.path}
                     className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                       isActive
-                        ? "bg-white/20 text-white backdrop-blur-sm"
-                        : "text-white/80 hover:bg-white/10 hover:text-white"
+                        ? "bg-gray-100 text-gray-900"
+                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                     }`}
                   >
                     <div className="flex items-center">

@@ -33,29 +33,21 @@ const Home = () => {
       label: "Countries Monitored",
       value: totalCountries,
       icon: Globe,
-      gradient: "from-[#6D94C5] to-[#5A7DAD]",
-      shadowColor: "shadow-[#6D94C5]/30",
     },
     {
       label: "High Risk Countries",
       value: highRiskCountries,
       icon: AlertTriangle,
-      gradient: "from-[#C5946D] to-[#AD7D5A]",
-      shadowColor: "shadow-[#C5946D]/30",
     },
     {
       label: "Reports Generated",
       value: totalReports,
       icon: FileText,
-      gradient: "from-[#E8DFCA] to-[#D4C5AE]",
-      shadowColor: "shadow-[#E8DFCA]/30",
     },
     {
       label: "Critical Alerts",
       value: criticalAlerts,
       icon: Shield,
-      gradient: "from-[#6D94C5] to-[#8AABCE]",
-      shadowColor: "shadow-[#6D94C5]/30",
     },
   ];
 
@@ -64,28 +56,24 @@ const Home = () => {
       title: "View Dashboard",
       description: "Explore global risk heatmap and analytics",
       icon: BarChart3,
-      gradient: "from-[#6D94C5] to-[#5A7DAD]",
       path: "/dashboard",
     },
     {
       title: "SentriX Assistant",
       description: "Get AI-powered route analysis and insights",
       icon: Zap,
-      gradient: "from-[#E8DFCA] to-[#D4C5AE]",
       path: "/assistant",
     },
     {
       title: "Risk Reports",
       description: "Access detailed risk assessment reports",
       icon: FileText,
-      gradient: "from-[#6D94C5] to-[#8AABCE]",
       path: "/reports",
     },
     {
       title: "Global Map",
       description: "Interactive world risk visualization",
       icon: Map,
-      gradient: "from-[#C5946D] to-[#D4A98A]",
       path: "/dashboard",
     },
   ];
@@ -118,12 +106,7 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#6D94C5] via-[#CBDCEB] to-[#6D94C5] relative overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#F5EFE6]/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#E8DFCA]/20 rounded-full blur-3xl animate-pulse delay-700"></div>
-      </div>
+    <div className="min-h-screen bg-white relative overflow-hidden">
 
       {/* Hero Section with Ship Image */}
       <div className="relative h-[600px] bg-gray-900 text-white overflow-hidden">
@@ -142,11 +125,11 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center relative z-10">
           <div className="text-center w-full">
             {/* Text Content Box with Backdrop */}
-            <div className="max-w-4xl mx-auto bg-black/30 backdrop-blur-md rounded-3xl p-8 md:p-12 border border-white/10 shadow-2xl">
+            <div className="max-w-4xl mx-auto bg-black/40 backdrop-blur-lg rounded-2xl p-8 md:p-12 border border-white/10 shadow-2xl">
               <div className="inline-block mb-6">
-                <div className="flex items-center space-x-2 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 backdrop-blur-sm px-6 py-3 rounded-full border border-blue-300/30 shadow-lg">
-                  <Activity className="h-5 w-5 animate-pulse text-blue-300" />
-                  <span className="text-sm font-semibold text-blue-100">
+                <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
+                  <Activity className="h-5 w-5 animate-pulse text-white" />
+                  <span className="text-sm font-semibold text-white">
                     Real-Time Intelligence
                   </span>
                 </div>
@@ -156,7 +139,7 @@ const Home = () => {
                 Welcome to SentriX
               </h1>
               
-              <p className="text-2xl md:text-3xl font-bold text-gray-100 mb-6 drop-shadow-lg">
+              <p className="text-2xl md:text-3xl font-semibold text-gray-100 mb-6 drop-shadow-lg">
                 Real-Time Supply Chain Risk Intelligence
               </p>
               
@@ -170,14 +153,14 @@ const Home = () => {
               <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
                 <button
                   onClick={() => navigate("/dashboard")}
-                  className="group bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-2xl hover:shadow-blue-500/50 transform hover:scale-105 transition-all duration-300 flex items-center space-x-2"
+                  className="group bg-white text-gray-900 px-8 py-4 rounded-lg font-semibold text-base shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center space-x-2"
                 >
                   <span>View Dashboard</span>
                   <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </button>
                 <button
                   onClick={() => navigate("/assistant")}
-                  className="group bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-xl font-bold text-lg border-2 border-white/40 shadow-xl hover:bg-white/20 hover:border-white/60 transform hover:scale-105 transition-all duration-300 flex items-center space-x-2"
+                  className="group bg-transparent text-white px-8 py-4 rounded-lg font-semibold text-base border-2 border-white/60 hover:bg-white/10 transform hover:scale-105 transition-all duration-200 flex items-center space-x-2"
                 >
                   <Zap className="h-5 w-5" />
                   <span>Try AI Assistant</span>
@@ -194,19 +177,19 @@ const Home = () => {
           {stats.map((stat, index) => (
             <div
               key={index}
-              className={`group bg-gradient-to-br ${stat.gradient} rounded-2xl shadow-2xl ${stat.shadowColor} p-6 transform transition-all duration-300 hover:scale-110 hover:-rotate-1 cursor-pointer border border-white/20 backdrop-blur-sm`}
+              className="group bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md p-6 transform transition-all duration-200 hover:scale-105 cursor-pointer"
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-semibold text-white/80 uppercase tracking-wider">
+                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">
                     {stat.label}
                   </p>
-                  <p className="text-5xl font-extrabold text-white mt-2 group-hover:scale-110 transition-transform">
+                  <p className="text-3xl font-bold text-gray-900 mt-2">
                     {stat.value}
                   </p>
                 </div>
-                <div className="bg-white/20 backdrop-blur-md p-4 rounded-xl group-hover:bg-white/30 transition-colors">
-                  <stat.icon className="h-8 w-8 text-white animate-pulse" />
+                <div className="bg-gray-100 p-3 rounded-lg">
+                  <stat.icon className="h-6 w-6 text-gray-600" />
                 </div>
               </div>
             </div>
@@ -229,30 +212,27 @@ const Home = () => {
             <button
               key={index}
               onClick={() => navigate(action.path)}
-              className={`group relative bg-gradient-to-br ${action.gradient} rounded-2xl shadow-2xl p-8 text-left transform transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50 border border-white/10 overflow-hidden`}
+              className="group bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md p-6 text-left transform transition-all duration-200 hover:scale-105"
             >
-              <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <div className="relative z-10">
-                <div className="flex items-center justify-between mb-6">
-                  <div className="bg-white/20 backdrop-blur-md p-3 rounded-xl group-hover:scale-110 transition-transform">
-                    <action.icon className="h-8 w-8 text-white" />
-                  </div>
-                  <ArrowRight className="h-6 w-6 text-white/60 group-hover:translate-x-1 group-hover:text-white transition-all" />
+              <div className="flex items-center justify-between mb-4">
+                <div className="bg-gray-100 p-3 rounded-lg">
+                  <action.icon className="h-6 w-6 text-gray-700" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-3">
-                  {action.title}
-                </h3>
-                <p className="text-sm text-white/80 leading-relaxed">
-                  {action.description}
-                </p>
+                <ArrowRight className="h-5 w-5 text-gray-400 group-hover:translate-x-1 group-hover:text-gray-700 transition-all" />
               </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                {action.title}
+              </h3>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                {action.description}
+              </p>
             </button>
           ))}
         </div>
       </div>
 
       {/* Features Section */}
-      <div className="relative py-20 bg-gradient-to-br from-[#5A7DAD] via-[#6D94C5] to-[#5A7DAD]">
+      <div className="relative py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4">
