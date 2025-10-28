@@ -42,7 +42,7 @@ export const DashboardProvider = ({ children }) => {
         "Fetching dashboard data from http://localhost:8000/api/dashboard"
       );
       const response = await axios.get("http://localhost:8000/api/dashboard");
-      console.log("Dashboard data received:", response.data);
+
       setDashboardData({
         worldRiskData: response.data.world_risk_data || {},
         politicalRisks: response.data.political_risks || [],

@@ -8,28 +8,25 @@ const WorldMap = ({ worldRiskData = {} }) => {
   const [tooltipContent, setTooltipContent] = useState("");
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
-  // Debug: Log the worldRiskData to see what we're receiving
-  console.log("WorldMap received worldRiskData:", worldRiskData);
-  console.log("Number of countries with risk data:", Object.keys(worldRiskData).length);
 
   // Country name mapping to normalize different naming conventions
   // Maps GeoJSON names to backend data names
   const countryNameMapping = {
     // Americas
     "United States of America": "United States",
-    "USA": "United States",
-    
+    USA: "United States",
+
     // Europe
     "United Kingdom": "United Kingdom",
     "Russian Federation": "Russia",
     "Czech Republic": "Czech Republic",
-    "Czechia": "Czech Republic",
-    
+    Czechia: "Czech Republic",
+
     // Asia
     "People's Republic of China": "China",
     "Republic of Korea": "South Korea",
     "S. Korea": "South Korea",
-    "Korea": "South Korea",
+    Korea: "South Korea",
     "Dem. Rep. Korea": "North Korea",
     "Democratic People's Republic of Korea": "North Korea",
     "Korea, Dem. Rep.": "North Korea",
@@ -38,35 +35,35 @@ const WorldMap = ({ worldRiskData = {} }) => {
     "Syrian Arab Republic": "Syria",
     "Viet Nam": "Vietnam",
     "Myanmar (Burma)": "Myanmar",
-    "Burma": "Myanmar",
+    Burma: "Myanmar",
     "Lao PDR": "Laos",
     "Lao People's Democratic Republic": "Laos",
-    
+
     // Africa
     "Central African Rep.": "Central African Republic",
     "Dem. Rep. Congo": "Democratic Republic of the Congo",
     "Democratic Republic of the Congo": "Democratic Republic of the Congo",
     "Congo, Dem. Rep.": "Democratic Republic of the Congo",
     "Republic of the Congo": "Congo",
-    "Congo": "Congo",
+    Congo: "Congo",
     "United Republic of Tanzania": "Tanzania",
     "S. Sudan": "South Sudan",
     "Eq. Guinea": "Equatorial Guinea",
     "Equatorial Guinea": "Equatorial Guinea",
     "Côte d'Ivoire": "Ivory Coast",
     "Ivory Coast": "Ivory Coast",
-    
+
     // Middle East
-    "Palestine": "Palestine",
+    Palestine: "Palestine",
     "West Bank": "Palestine",
-    "Gaza": "Palestine",
+    Gaza: "Palestine",
     "State of Palestine": "Palestine",
-    
+
     // Balkans
     "Bosnia and Herz.": "Bosnia and Herzegovina",
     "Bosnia and Herzegovina": "Bosnia and Herzegovina",
     "N. Cyprus": "Cyprus",
-    "Macedonia": "North Macedonia",
+    Macedonia: "North Macedonia",
     "North Macedonia": "North Macedonia",
   };
 
@@ -176,43 +173,43 @@ const WorldMap = ({ worldRiskData = {} }) => {
     <div className="w-full">
       <ComposableMap
         projectionConfig={{
-          scale: 120,
-          center: [0, 20],
+          scale: 140,
+          center: [10, 20],
         }}
-        width={600}
-        height={400}
+        width={800}
+        height={500}
+        className="transition-all duration-300"
       >
         <Geographies geography={geoUrl}>
           {({ geographies }) =>
             geographies.map((geo) => {
               const countryName =
-                geo.properties?.NAME || geo.properties?.NAME_EN;
+                geo.properties?.NAME ||
+                geo.properties?.NAME_EN ||
+                geo.properties?.name;
               const riskData = getCountryRiskData(countryName);
               const riskLevel = riskData ? riskData.risk_level : 0;
               const fillColor = getRiskColor(riskLevel);
-
-              // Debug: Log countries with risk data
-              if (riskData) {
-                console.log(`Country: ${countryName}, Risk Level: ${riskLevel}, Color: ${fillColor}`);
-              }
 
               return (
                 <Geography
                   key={geo.rsmKey}
                   geography={geo}
                   fill={fillColor}
-                  stroke="#FFFFFF"
-                  strokeWidth={0.5}
+                  stroke="#E5E7EB"
+                  strokeWidth={0.75}
                   style={{
                     default: {
                       fill: getRiskColor(riskLevel),
                       outline: "none",
                     },
                     hover: {
-                      fill: getRiskColor(riskLevel),
+                      fill: riskLevel > 0 ? fillColor : "#9CA3AF",
                       outline: "none",
-                      stroke: "#1E40AF",
+                      stroke: "#6D94C5",
                       strokeWidth: 2,
+                      filter: "brightness(1.1)",
+                      cursor: "pointer",
                     },
                     pressed: {
                       fill: getRiskColor(riskLevel),
