@@ -226,8 +226,9 @@ async def process_query(request: QueryRequest):
             # Check if it's a route query
             if assistant_agent._is_route_query(text):
                 # Get the detailed route analysis
-                response = await assistant_agent.process_query(request.query)
-                message = response
+                response_obj = await assistant_agent.process_query(request.query)
+                # Extract just the message string from the response object
+                message = response_obj.get("message", str(response_obj)) if isinstance(response_obj, dict) else str(response_obj)
                 
                 # Extract origin and destination for report generation
                 words = text.split()
@@ -247,11 +248,13 @@ async def process_query(request: QueryRequest):
                     return {"session_id": session_id, "report": report, "type": "route", "response": {"message": message}}
                 else:
                     # Return just the message if we can't parse route
-                    return {"session_id": session_id, "response": response, "type": "assistant"}
+                    return {"session_id": session_id, "response": {"message": message}, "type": "assistant"}
             else:
                 # For non-route queries, just return assistant response
-                response = await assistant_agent.process_query(request.query)
-                return {"session_id": session_id, "response": response, "type": "assistant"}
+                response_obj = await assistant_agent.process_query(request.query)
+                # Extract just the message string from the response object
+                message = response_obj.get("message", str(response_obj)) if isinstance(response_obj, dict) else str(response_obj)
+                return {"session_id": session_id, "response": {"message": message}, "type": "assistant"}
         
         # Store report and return
         if report:
