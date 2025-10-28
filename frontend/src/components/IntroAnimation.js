@@ -4,14 +4,14 @@ const IntroAnimation = ({ onComplete }) => {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    // After 1 second, slide the intro away
+    // After 2 seconds (time for all words to show), slide the intro away
     const timer = setTimeout(() => {
       setIsVisible(false);
       // Wait for slide-out animation to complete, then notify parent
       setTimeout(() => {
         onComplete();
       }, 800);
-    }, 1000);
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, [onComplete]);
@@ -30,33 +30,36 @@ const IntroAnimation = ({ onComplete }) => {
 
       <div className="text-center relative z-10 px-4">
         <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tight leading-tight">
-          <div className="overflow-hidden">
+          {/* WELCOME - appears then fades out */}
+          <div className="absolute inset-0 flex items-center justify-center">
             <span
-              className="block opacity-0 animate-fadeInUp text-white hover-glow"
+              className="text-white hover-glow animate-word-appear-fade"
               style={{
-                animationDelay: "0.1s",
-                animationFillMode: "forwards",
+                animationDelay: "0s",
               }}
             >
               WELCOME
             </span>
           </div>
-          <div className="overflow-hidden">
+          
+          {/* TO - appears then fades out */}
+          <div className="absolute inset-0 flex items-center justify-center">
             <span
-              className="block opacity-0 animate-fadeInUp text-white hover-glow"
+              className="text-white hover-glow animate-word-appear-fade"
               style={{
-                animationDelay: "0.3s",
-                animationFillMode: "forwards",
+                animationDelay: "0.6s",
               }}
             >
               TO
             </span>
           </div>
-          <div className="overflow-hidden my-2">
+          
+          {/* SENTRIX - appears and lifts up, stays visible */}
+          <div className="overflow-hidden">
             <span
               className="block opacity-0 animate-fadeInUp text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 animate-gradient relative"
               style={{
-                animationDelay: "0.5s",
+                animationDelay: "1.2s",
                 animationFillMode: "forwards",
                 textShadow: "0 0 80px rgba(59, 130, 246, 0.5)",
               }}
