@@ -20,35 +20,33 @@ const Home = () => {
   const { dashboardData, reports } = useDashboard();
  
   // Show intro only on page refresh/reload, not on navigation
-  const [showIntro, setShowIntro] = useState(() => {
-    // Check if we just navigated (not refreshed)
-    const justNavigated = sessionStorage.getItem("sentrix-just-navigated");
-    
-    if (justNavigated) {
-      // User navigated here, don't show intro
-      sessionStorage.removeItem("sentrix-just-navigated");
-      return false;
-    }
-    
-    // This is a page refresh or first load, show intro
-    return true;
-  });
+  const [showIntro, setShowIntro] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    // Mark that we're on the home page
-    // This will be cleared on refresh but persist on navigation
-    return () => {
-      // When leaving home page, mark as navigated
-      sessionStorage.setItem("sentrix-just-navigated", "true");
-    };
-  }, []);
+    // Only run once when component mounts
+    if (!isInitialized) {
+      // Check if we came from internal navigation
+      const fromNavigation = window.history.state?.usr;
+      
+      if (fromNavigation) {
+        // User navigated here via React Router (clicked a link)
+        setShowIntro(false);
+      } else {
+        // User refreshed the page or opened directly
+        setShowIntro(true);
+      }
+      
+      setIsInitialized(true);
+    }
+  }, [isInitialized]);
 
   const handleIntroComplete = () => {
     setShowIntro(false);
   };
 
   // Show intro animation only on page refresh
-  if (showIntro) {
+  if (showIntro && isInitialized) {
     return <IntroAnimation onComplete={handleIntroComplete} />;
   }
 
