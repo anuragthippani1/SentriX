@@ -148,7 +148,7 @@ async def process_query(request: QueryRequest):
             report = await reporting_agent.generate_combined_report(political_risks, schedule_risks, session_id)
             
             # Generate summary message
-            high_pol_risk = sum(1 for r in political_risks if r.risk_level >= 3)
+            high_pol_risk = sum(1 for r in political_risks if r.likelihood_score >= 3)
             high_sch_risk = sum(1 for r in schedule_risks if r.severity == "High")
             message = f"I've completed a comprehensive analysis covering {len(political_risks)} countries and {len(schedule_risks)} routes. "
             if high_pol_risk > 0:
@@ -162,7 +162,7 @@ async def process_query(request: QueryRequest):
             report = await reporting_agent.generate_political_report(political_risks, session_id)
             
             # Generate summary message
-            high_risk = sum(1 for r in political_risks if r.risk_level >= 3)
+            high_risk = sum(1 for r in political_risks if r.likelihood_score >= 3)
             message = f"I've analyzed political risks across {len(political_risks)} countries. "
             if high_risk > 0:
                 message += f"⚠️ {high_risk} countries have high political risk levels. "
