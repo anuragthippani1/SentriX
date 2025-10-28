@@ -1013,16 +1013,11 @@ async def plan_multi_port_route(request: Dict[str, Any]):
         report_id = str(uuid.uuid4())
         route_report = RiskReport(
             report_id=report_id,
+            session_id=session_id or "default",
             report_type="multi_port_route",
-            generated_at=datetime.now(),
-            session_id=session_id,
+            created_at=datetime.now(),
+            title=f"Multi-Port Route: {' → '.join(ports)}",
             executive_summary=f"Multi-port route analysis for {len(ports)} ports: {' → '.join(ports)}. Total distance: {route_analysis['summary']['total_distance_nm']} nm, Estimated time: {route_analysis['summary']['total_time_days']} days, Total cost: ${route_analysis['summary']['total_cost_usd']:,.2f}.",
-            key_findings=[
-                f"Route covers {route_analysis['summary']['total_distance_nm']} nautical miles across {len(ports)} ports",
-                f"Estimated transit time: {route_analysis['summary']['total_time_days']} days",
-                f"Total estimated cost: ${route_analysis['summary']['total_cost_usd']:,.2f}",
-                f"Canals used: {', '.join(route_analysis['summary']['canals_used']) if route_analysis['summary']['canals_used'] else 'None'}"
-            ],
             recommendations=[
                 f"Recommended optimization strategy: {optimization}",
                 "Monitor weather conditions along the route",
