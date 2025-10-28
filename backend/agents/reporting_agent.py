@@ -3,10 +3,13 @@ import uuid
 from datetime import datetime
 from typing import List, Dict, Any
 from models.schemas import RiskReport, PoliticalRisk, ScheduleRisk
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+from reportlab.lib.pagesizes import letter, A4
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, Image
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib import colors
+from reportlab.lib.units import inch
+from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
+from reportlab.pdfgen import canvas
 import os
 
 class ReportingAgent:
@@ -247,116 +250,368 @@ class ReportingAgent:
         return world_data
     
     async def generate_downloadable_report(self, report: RiskReport) -> str:
-        """Generate downloadable PDF report"""
+        """Generate professional PDF report with improved styling"""
         filename = f"sentrix_report_{report.report_id}.pdf"
         filepath = os.path.join(self.reports_dir, filename)
         
-        doc = SimpleDocTemplate(filepath, pagesize=letter)
+        # Create document with margins
+        doc = SimpleDocTemplate(
+            filepath, 
+            pagesize=letter,
+            rightMargin=0.75*inch,
+            leftMargin=0.75*inch,
+            topMargin=0.75*inch,
+            bottomMargin=0.75*inch
+        )
+        
         styles = getSampleStyleSheet()
         story = []
         
-        # Title
+        # Define custom colors
+        primary_color = colors.HexColor('#2563eb')  # Blue
+        secondary_color = colors.HexColor('#64748b')  # Slate
+        accent_color = colors.HexColor('#0ea5e9')  # Sky blue
+        success_color = colors.HexColor('#10b981')  # Green
+        warning_color = colors.HexColor('#f59e0b')  # Amber
+        danger_color = colors.HexColor('#ef4444')  # Red
+        
+        # Custom styles
         title_style = ParagraphStyle(
             'CustomTitle',
             parent=styles['Heading1'],
-            fontSize=18,
-            spaceAfter=30,
-            alignment=1  # Center alignment
+            fontSize=28,
+            textColor=primary_color,
+            spaceAfter=10,
+            alignment=TA_CENTER,
+            fontName='Helvetica-Bold',
+            leading=34
         )
-        story.append(Paragraph(report.title, title_style))
-        story.append(Spacer(1, 20))
         
-        # Report metadata
+        subtitle_style = ParagraphStyle(
+            'SubTitle',
+            parent=styles['Normal'],
+            fontSize=12,
+            textColor=secondary_color,
+            spaceAfter=30,
+            alignment=TA_CENTER,
+            fontName='Helvetica'
+        )
+        
+        heading2_style = ParagraphStyle(
+            'CustomHeading2',
+            parent=styles['Heading2'],
+            fontSize=16,
+            textColor=primary_color,
+            spaceAfter=12,
+            spaceBefore=20,
+            fontName='Helvetica-Bold',
+            borderWidth=0,
+            borderColor=primary_color,
+            borderPadding=5,
+            leftIndent=0
+        )
+        
+        body_style = ParagraphStyle(
+            'CustomBody',
+            parent=styles['Normal'],
+            fontSize=11,
+            textColor=colors.HexColor('#1f2937'),
+            alignment=TA_JUSTIFY,
+            spaceAfter=12,
+            leading=16
+        )
+        
+        # Cover Page
+        story.append(Spacer(1, 1.5*inch))
+        story.append(Paragraph("SentriX", title_style))
+        story.append(Paragraph(report.title, subtitle_style))
+        
+        # Metadata box
         meta_data = [
-            ['Report ID:', report.report_id],
-            ['Session ID:', report.session_id],
-            ['Generated:', report.created_at.strftime('%Y-%m-%d %H:%M:%S')],
-            ['Type:', report.report_type.title()]
+            ['Report Information', ''],
+            ['Report ID:', report.report_id[:16] + '...'],
+            ['Session ID:', report.session_id[:16] + '...'],
+            ['Generated:', report.created_at.strftime('%B %d, %Y at %H:%M:%S')],
+            ['Report Type:', report.report_type.title()],
         ]
         
-        meta_table = Table(meta_data, colWidths=[100, 200])
+        meta_table = Table(meta_data, colWidths=[2*inch, 3.5*inch])
         meta_table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (0, -1), colors.lightgrey),
-            ('TEXTCOLOR', (0, 0), (-1, -1), colors.black),
-            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-            ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
-            ('FONTSIZE', (0, 0), (-1, -1), 10),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
+            ('BACKGROUND', (0, 0), (-1, 0), primary_color),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+            ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 14),
+            ('SPAN', (0, 0), (-1, 0)),
+            ('BACKGROUND', (0, 1), (0, -1), colors.HexColor('#f1f5f9')),
+            ('TEXTCOLOR', (0, 1), (-1, -1), colors.HexColor('#1f2937')),
+            ('ALIGN', (0, 1), (0, -1), 'RIGHT'),
+            ('ALIGN', (1, 1), (1, -1), 'LEFT'),
+            ('FONTNAME', (0, 1), (0, -1), 'Helvetica-Bold'),
+            ('FONTNAME', (1, 1), (1, -1), 'Helvetica'),
+            ('FONTSIZE', (0, 1), (-1, -1), 10),
+            ('TOPPADDING', (0, 0), (-1, -1), 10),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 10),
+            ('LEFTPADDING', (0, 0), (-1, -1), 12),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 12),
+            ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#e2e8f0')),
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ]))
         
         story.append(meta_table)
-        story.append(Spacer(1, 20))
+        story.append(PageBreak())
         
         # Executive Summary
-        story.append(Paragraph("Executive Summary", styles['Heading2']))
-        story.append(Paragraph(report.executive_summary, styles['Normal']))
+        story.append(Paragraph("📊 Executive Summary", heading2_style))
+        story.append(Spacer(1, 8))
+        
+        # Summary box
+        summary_para = Paragraph(report.executive_summary, body_style)
+        summary_data = [[summary_para]]
+        summary_table = Table(summary_data, colWidths=[6.5*inch])
+        summary_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, -1), colors.HexColor('#f8fafc')),
+            ('BORDER', (0, 0), (-1, -1), 2, accent_color),
+            ('TOPPADDING', (0, 0), (-1, -1), 15),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 15),
+            ('LEFTPADDING', (0, 0), (-1, -1), 15),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 15),
+        ]))
+        story.append(summary_table)
         story.append(Spacer(1, 20))
         
         # Political Risks Section
         if report.political_risks:
-            story.append(Paragraph("Political Risk Analysis", styles['Heading2']))
+            story.append(Paragraph("🌍 Political Risk Analysis", heading2_style))
+            story.append(Spacer(1, 10))
             
-            # Create political risks table
-            political_data = [['Country', 'Risk Type', 'Score', 'Reasoning', 'Source']]
-            for risk in report.political_risks:
-                political_data.append([
-                    risk.country,
-                    risk.risk_type,
-                    str(risk.likelihood_score),
-                    risk.reasoning[:50] + "..." if len(risk.reasoning) > 50 else risk.reasoning,
-                    risk.source_title[:30] + "..." if len(risk.source_title) > 30 else risk.source_title
-                ])
+            # Summary statistics
+            high_risk = len([r for r in report.political_risks if r.likelihood_score >= 4])
+            medium_risk = len([r for r in report.political_risks if r.likelihood_score == 3])
+            low_risk = len([r for r in report.political_risks if r.likelihood_score < 3])
             
-            political_table = Table(political_data, colWidths=[80, 100, 40, 150, 100])
-            political_table.setStyle(TableStyle([
-                ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-                ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            stats_data = [
+                ['Total Countries Analyzed', 'High Risk', 'Medium Risk', 'Low Risk'],
+                [str(len(set(r.country for r in report.political_risks))), str(high_risk), str(medium_risk), str(low_risk)]
+            ]
+            
+            stats_table = Table(stats_data, colWidths=[1.6*inch, 1.6*inch, 1.6*inch, 1.6*inch])
+            stats_table.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#1e293b')),
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
                 ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
                 ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
                 ('FONTSIZE', (0, 0), (-1, 0), 10),
-                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-                ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-                ('GRID', (0, 0), (-1, -1), 1, colors.black)
+                ('BACKGROUND', (0, 1), (0, 1), accent_color),
+                ('BACKGROUND', (1, 1), (1, 1), danger_color),
+                ('BACKGROUND', (2, 1), (2, 1), warning_color),
+                ('BACKGROUND', (3, 1), (3, 1), success_color),
+                ('TEXTCOLOR', (0, 1), (-1, 1), colors.white),
+                ('FONTNAME', (0, 1), (-1, 1), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 1), (-1, 1), 16),
+                ('TOPPADDING', (0, 0), (-1, -1), 12),
+                ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
+                ('GRID', (0, 0), (-1, -1), 1, colors.white),
             ]))
+            story.append(stats_table)
+            story.append(Spacer(1, 15))
             
+            # Detailed political risks table
+            political_data = [['Country', 'Risk Type', 'Score', 'Reasoning', 'Source']]
+            for risk in report.political_risks:
+                # Truncate long text with word wrap
+                reasoning = risk.reasoning[:80] + "..." if len(risk.reasoning) > 80 else risk.reasoning
+                source = risk.source_title[:40] + "..." if len(risk.source_title) > 40 else risk.source_title
+                
+                political_data.append([
+                    risk.country,
+                    risk.risk_type,
+                    str(risk.likelihood_score) + '/5',
+                    reasoning,
+                    source
+                ])
+            
+            political_table = Table(political_data, colWidths=[0.9*inch, 1.1*inch, 0.5*inch, 2.2*inch, 1.8*inch])
+            
+            # Build table style with alternating rows
+            table_style = [
+                ('BACKGROUND', (0, 0), (-1, 0), primary_color),
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+                ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 0), (-1, 0), 10),
+                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                ('TOPPADDING', (0, 0), (-1, 0), 12),
+                ('ALIGN', (2, 1), (2, -1), 'CENTER'),
+                ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+                ('FONTSIZE', (0, 1), (-1, -1), 9),
+                ('TOPPADDING', (0, 1), (-1, -1), 8),
+                ('BOTTOMPADDING', (0, 1), (-1, -1), 8),
+                ('LEFTPADDING', (0, 0), (-1, -1), 8),
+                ('RIGHTPADDING', (0, 0), (-1, -1), 8),
+                ('GRID', (0, 0), (-1, -1), 0.5, colors.HexColor('#cbd5e1')),
+                ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+            ]
+            
+            # Alternating row colors
+            for i in range(1, len(political_data)):
+                if i % 2 == 0:
+                    table_style.append(('BACKGROUND', (0, i), (-1, i), colors.HexColor('#f8fafc')))
+                else:
+                    table_style.append(('BACKGROUND', (0, i), (-1, i), colors.white))
+                
+                # Color code risk scores
+                score = report.political_risks[i-1].likelihood_score
+                if score >= 4:
+                    table_style.append(('BACKGROUND', (2, i), (2, i), danger_color))
+                    table_style.append(('TEXTCOLOR', (2, i), (2, i), colors.white))
+                elif score == 3:
+                    table_style.append(('BACKGROUND', (2, i), (2, i), warning_color))
+                    table_style.append(('TEXTCOLOR', (2, i), (2, i), colors.white))
+                else:
+                    table_style.append(('BACKGROUND', (2, i), (2, i), success_color))
+                    table_style.append(('TEXTCOLOR', (2, i), (2, i), colors.white))
+            
+            political_table.setStyle(TableStyle(table_style))
             story.append(political_table)
             story.append(Spacer(1, 20))
         
         # Schedule Risks Section
         if report.schedule_risks:
-            story.append(Paragraph("Schedule Risk Analysis", styles['Heading2']))
+            story.append(Paragraph("📅 Schedule Risk Analysis", heading2_style))
+            story.append(Spacer(1, 10))
             
-            # Create schedule risks table
-            schedule_data = [['Equipment ID', 'Country', 'Delay Days', 'Risk Level', 'Risk Factors']]
+            # Summary statistics
+            delayed = len([r for r in report.schedule_risks if r.delay_days > 0])
+            high_risk_sched = len([r for r in report.schedule_risks if r.risk_level >= 4])
+            avg_delay = sum(r.delay_days for r in report.schedule_risks) / len(report.schedule_risks)
+            
+            stats_data = [
+                ['Total Equipment', 'Delayed Items', 'High Risk Items', 'Avg Delay (Days)'],
+                [str(len(report.schedule_risks)), str(delayed), str(high_risk_sched), f"{avg_delay:.1f}"]
+            ]
+            
+            stats_table = Table(stats_data, colWidths=[1.6*inch, 1.6*inch, 1.6*inch, 1.6*inch])
+            stats_table.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#1e293b')),
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 0), (-1, 0), 10),
+                ('BACKGROUND', (0, 1), (0, 1), accent_color),
+                ('BACKGROUND', (1, 1), (1, 1), warning_color),
+                ('BACKGROUND', (2, 1), (2, 1), danger_color),
+                ('BACKGROUND', (3, 1), (3, 1), secondary_color),
+                ('TEXTCOLOR', (0, 1), (-1, 1), colors.white),
+                ('FONTNAME', (0, 1), (-1, 1), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 1), (-1, 1), 16),
+                ('TOPPADDING', (0, 0), (-1, -1), 12),
+                ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
+                ('GRID', (0, 0), (-1, -1), 1, colors.white),
+            ]))
+            story.append(stats_table)
+            story.append(Spacer(1, 15))
+            
+            # Detailed schedule risks table
+            schedule_data = [['Equipment ID', 'Country', 'Delay\n(Days)', 'Risk\nLevel', 'Key Risk Factors']]
             for risk in report.schedule_risks:
+                factors = ', '.join(risk.risk_factors[:3])
+                if len(risk.risk_factors) > 3:
+                    factors += f" (+{len(risk.risk_factors) - 3} more)"
+                
                 schedule_data.append([
                     risk.equipment_id,
                     risk.country,
                     str(risk.delay_days),
-                    str(risk.risk_level),
-                    ', '.join(risk.risk_factors[:2])  # Limit to first 2 factors
+                    str(risk.risk_level) + '/5',
+                    factors
                 ])
             
-            schedule_table = Table(schedule_data, colWidths=[80, 80, 60, 60, 120])
-            schedule_table.setStyle(TableStyle([
-                ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-                ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            schedule_table = Table(schedule_data, colWidths=[1.2*inch, 1*inch, 0.7*inch, 0.6*inch, 3*inch])
+            
+            # Build table style
+            table_style = [
+                ('BACKGROUND', (0, 0), (-1, 0), primary_color),
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+                ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
                 ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
                 ('FONTSIZE', (0, 0), (-1, 0), 10),
                 ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-                ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-                ('GRID', (0, 0), (-1, -1), 1, colors.black)
-            ]))
+                ('TOPPADDING', (0, 0), (-1, 0), 12),
+                ('ALIGN', (2, 1), (3, -1), 'CENTER'),
+                ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+                ('FONTSIZE', (0, 1), (-1, -1), 9),
+                ('TOPPADDING', (0, 1), (-1, -1), 8),
+                ('BOTTOMPADDING', (0, 1), (-1, -1), 8),
+                ('LEFTPADDING', (0, 0), (-1, -1), 8),
+                ('RIGHTPADDING', (0, 0), (-1, -1), 8),
+                ('GRID', (0, 0), (-1, -1), 0.5, colors.HexColor('#cbd5e1')),
+                ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+            ]
             
+            # Alternating row colors and risk level coloring
+            for i in range(1, len(schedule_data)):
+                if i % 2 == 0:
+                    table_style.append(('BACKGROUND', (0, i), (-1, i), colors.HexColor('#f8fafc')))
+                else:
+                    table_style.append(('BACKGROUND', (0, i), (-1, i), colors.white))
+                
+                # Color code risk levels
+                risk_level = report.schedule_risks[i-1].risk_level
+                if risk_level >= 4:
+                    table_style.append(('BACKGROUND', (3, i), (3, i), danger_color))
+                    table_style.append(('TEXTCOLOR', (3, i), (3, i), colors.white))
+                elif risk_level == 3:
+                    table_style.append(('BACKGROUND', (3, i), (3, i), warning_color))
+                    table_style.append(('TEXTCOLOR', (3, i), (3, i), colors.white))
+                else:
+                    table_style.append(('BACKGROUND', (3, i), (3, i), success_color))
+                    table_style.append(('TEXTCOLOR', (3, i), (3, i), colors.white))
+                
+                # Highlight high delays
+                if report.schedule_risks[i-1].delay_days > 5:
+                    table_style.append(('TEXTCOLOR', (2, i), (2, i), danger_color))
+                    table_style.append(('FONTNAME', (2, i), (2, i), 'Helvetica-Bold'))
+            
+            schedule_table.setStyle(TableStyle(table_style))
             story.append(schedule_table)
             story.append(Spacer(1, 20))
         
-        # Recommendations
+        # Recommendations Section
         if report.recommendations:
-            story.append(Paragraph("Recommendations", styles['Heading2']))
+            story.append(Paragraph("💡 Key Recommendations", heading2_style))
+            story.append(Spacer(1, 10))
+            
+            rec_style = ParagraphStyle(
+                'Recommendation',
+                parent=styles['Normal'],
+                fontSize=10,
+                textColor=colors.HexColor('#1f2937'),
+                leftIndent=20,
+                spaceAfter=8,
+                leading=14
+            )
+            
             for i, rec in enumerate(report.recommendations, 1):
-                story.append(Paragraph(f"{i}. {rec}", styles['Normal']))
+                bullet = "●" if i % 2 == 1 else "○"
+                rec_text = f"{bullet} {rec}"
+                story.append(Paragraph(rec_text, rec_style))
+        
+        story.append(Spacer(1, 30))
+        
+        # Footer
+        footer_style = ParagraphStyle(
+            'Footer',
+            parent=styles['Normal'],
+            fontSize=9,
+            textColor=secondary_color,
+            alignment=TA_CENTER,
+            spaceAfter=0
+        )
+        story.append(Spacer(1, 0.5*inch))
+        story.append(Paragraph("─" * 80, footer_style))
+        story.append(Paragraph("Generated by SentriX Intelligence Platform | Confidential", footer_style))
+        story.append(Paragraph(f"Report ID: {report.report_id}", footer_style))
         
         # Build PDF
         doc.build(story)
