@@ -111,52 +111,32 @@ const WorldMap = ({ worldRiskData = {} }) => {
   };
 
   const handleMouseEnter = (geo, event) => {
-    const countryName = geo.properties?.NAME || geo.properties?.NAME_EN;
+    const countryName = geo.properties?.NAME || geo.properties?.NAME_EN || geo.properties?.name || "Unknown Region";
     const riskData = getCountryRiskData(countryName);
 
-    if (riskData) {
-      const riskFactors = riskData.risk_factors
-        ? riskData.risk_factors.join(", ")
-        : "None identified";
-
+    if (riskData && countryName !== "Unknown Region") {
       const riskLevel = riskData.risk_level;
       const riskColor = getRiskColor(riskLevel);
       const riskLabel = getRiskLabel(riskLevel);
 
       setTooltipContent(`
-        <div class="bg-white rounded-lg shadow-xl border border-gray-200 p-4 max-w-sm">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-300 dark:border-gray-600 p-3 max-w-xs">
           <div class="flex items-center space-x-2 mb-2">
             <div class="w-3 h-3 rounded-full" style="background-color: ${riskColor}"></div>
-            <div class="font-bold text-gray-900 text-lg">${countryName}</div>
+            <div class="font-bold text-gray-900 dark:text-gray-100 text-sm">${countryName}</div>
           </div>
-          <div class="mb-3">
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" style="background-color: ${riskColor}; color: white;">
+          <div>
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium" style="background-color: ${riskColor}; color: white;">
               ${riskLabel}
             </span>
           </div>
-          <div class="text-sm text-gray-700 mb-2">${riskData.details}</div>
-          <div class="text-xs text-gray-600">
-            <div class="font-semibold mb-1">Risk Factors:</div>
-            <div class="text-gray-500">${riskFactors}</div>
-          </div>
-          ${
-            riskLevel >= 3
-              ? `
-            <div class="mt-3 pt-2 border-t border-gray-200">
-              <div class="text-xs font-semibold text-red-600 mb-1">⚠️ High Risk Alert</div>
-              <div class="text-xs text-gray-600">Consider alternative routes or enhanced security measures</div>
-            </div>
-          `
-              : ""
-          }
         </div>
       `);
-    } else {
+    } else if (countryName !== "Unknown Region") {
       setTooltipContent(`
-        <div class="bg-white rounded-lg shadow-xl border border-gray-200 p-4">
-          <div class="font-bold text-gray-900 text-lg mb-2">${countryName}</div>
-          <div class="text-sm text-gray-600">No risk data available</div>
-          <div class="text-xs text-gray-500 mt-2">Data collection in progress</div>
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-300 dark:border-gray-600 p-3">
+          <div class="font-semibold text-gray-900 dark:text-gray-100 text-sm mb-1">${countryName}</div>
+          <div class="text-xs text-gray-500 dark:text-gray-400">No data available</div>
         </div>
       `);
     }
