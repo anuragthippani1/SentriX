@@ -111,7 +111,11 @@ const WorldMap = ({ worldRiskData = {} }) => {
   };
 
   const handleMouseEnter = (geo, event) => {
-    const countryName = geo.properties?.NAME || geo.properties?.NAME_EN || geo.properties?.name || "Unknown Region";
+    const countryName =
+      geo.properties?.NAME ||
+      geo.properties?.NAME_EN ||
+      geo.properties?.name ||
+      "Unknown Region";
     const riskData = getCountryRiskData(countryName);
 
     if (riskData && countryName !== "Unknown Region") {
