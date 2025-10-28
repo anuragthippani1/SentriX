@@ -15,6 +15,7 @@ from agents.chatbot_manager import ChatbotManager
 from agents.scheduler_agent import SchedulerAgent
 from agents.political_risk_agent import PoliticalRiskAgent
 from agents.reporting_agent import ReportingAgent
+from agents.route_planner_agent import RoutePlannerAgent
 from database.mongodb import MongoDBClient
 from models.schemas import QueryRequest, RiskReport, PoliticalRisk, ScheduleRisk, Session, SessionCreate, SessionUpdate
 
@@ -43,6 +44,7 @@ scheduler_agent = SchedulerAgent()
 political_risk_agent = PoliticalRiskAgent()
 reporting_agent = ReportingAgent()
 chatbot_manager = ChatbotManager()
+route_planner_agent = RoutePlannerAgent()
 
 # Initialize database
 db_client = MongoDBClient()
@@ -974,6 +976,181 @@ async def get_session_reports(session_id: str):
         
     except HTTPException:
         raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# ============================================================
+# MULTI-PORT ROUTE PLANNING ENDPOINTS
+# ============================================================
+
+@app.post("/api/route/plan-multi-port")
+async def plan_multi_port_route(request: Dict[str, Any]):
+    """
+    Plan a multi-port shipping route.
+    
+    Request body:
+    {
+        "ports": ["Port1", "Port2", "Port3", ...],
+        "optimization": "fastest|cheapest|balanced|safest",
+        "session_id": "optional"
+    }
+    """
+    try:
+        ports = request.get("ports", [])
+        optimization = request.get("optimization", "balanced")
+        session_id = request.get("session_id")
+        
+        if not ports or len(ports) < 2:
+            raise HTTPException(status_code=400, detail="At least 2 ports are required")
+        
+        # Plan the route
+        route_analysis = route_planner_agent.plan_multi_port_route(ports, optimization)
+        
+        if "error" in route_analysis:
+            raise HTTPException(status_code=400, detail=route_analysis["error"])
+        
+        # Generate a report for this route
+        report_id = str(uuid.uuid4())
+        route_report = RiskReport(
+            report_id=report_id,
+            report_type="multi_port_route",
+            generated_at=datetime.now(),
+            session_id=session_id,
+            executive_summary=f"Multi-port route analysis for {len(ports)} ports: {' → '.join(ports)}. Total distance: {route_analysis['summary']['total_distance_nm']} nm, Estimated time: {route_analysis['summary']['total_time_days']} days, Total cost: ${route_analysis['summary']['total_cost_usd']:,.2f}.",
+            key_findings=[
+                f"Route covers {route_analysis['summary']['total_distance_nm']} nautical miles across {len(ports)} ports",
+                f"Estimated transit time: {route_analysis['summary']['total_time_days']} days",
+                f"Total estimated cost: ${route_analysis['summary']['total_cost_usd']:,.2f}",
+                f"Canals used: {', '.join(route_analysis['summary']['canals_used']) if route_analysis['summary']['canals_used'] else 'None'}"
+            ],
+            recommendations=[
+                f"Recommended optimization strategy: {optimization}",
+                "Monitor weather conditions along the route",
+                "Pre-book port slots to minimize wait times",
+                "Consider alternative routes if delays occur"
+            ],
+            political_risks=[],
+            schedule_risks=[],
+            route_analysis=json.dumps(route_analysis)  # Store full route data as JSON
+        )
+        
+        # Store report
+        await db_client.store_report(route_report)
+        
+        return {
+            "success": True,
+            "report_id": report_id,
+            "route_analysis": route_analysis,
+            "message": f"Multi-port route planned successfully with {len(ports)} ports"
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/route/optimize-order")
+async def optimize_route_order(request: Dict[str, Any]):
+    """
+    Optimize the order of waypoints for a multi-port route.
+    
+    Request body:
+    {
+        "origin": "OriginPort",
+        "destination": "DestinationPort",
+        "waypoints": ["Port1", "Port2", "Port3", ...],
+        "optimization": "fastest|cheapest|balanced"
+    }
+    """
+    try:
+        origin = request.get("origin")
+        destination = request.get("destination")
+        waypoints = request.get("waypoints", [])
+        optimization = request.get("optimization", "balanced")
+        
+        if not origin or not destination:
+            raise HTTPException(status_code=400, detail="Origin and destination are required")
+        
+        # Optimize the route order
+        optimized_route = route_planner_agent.optimize_route_order(
+            origin, destination, waypoints, optimization
+        )
+        
+        # Get full analysis for optimized route
+        route_analysis = route_planner_agent.plan_multi_port_route(optimized_route, optimization)
+        
+        return {
+            "success": True,
+            "original_ports": [origin] + waypoints + [destination],
+            "optimized_ports": optimized_route,
+            "route_analysis": route_analysis
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/route/compare")
+async def compare_routes(request: Dict[str, Any]):
+    """
+    Compare two different multi-port routes.
+    
+    Request body:
+    {
+        "route1": ["Port1", "Port2", ...],
+        "route2": ["Port1", "Port3", ...]
+    }
+    """
+    try:
+        route1 = request.get("route1", [])
+        route2 = request.get("route2", [])
+        
+        if not route1 or not route2:
+            raise HTTPException(status_code=400, detail="Both routes are required")
+        
+        if len(route1) < 2 or len(route2) < 2:
+            raise HTTPException(status_code=400, detail="Each route must have at least 2 ports")
+        
+        # Compare the routes
+        comparison = route_planner_agent.compare_routes(route1, route2)
+        
+        if "error" in comparison:
+            raise HTTPException(status_code=400, detail=comparison["error"])
+        
+        return {
+            "success": True,
+            "comparison": comparison
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/route/ports")
+async def get_available_ports():
+    """Get list of all available ports"""
+    try:
+        from data.ports import get_all_port_names
+        ports = get_all_port_names()
+        return {"ports": ports, "total": len(ports)}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/route/ports/search")
+async def search_ports(query: str):
+    """Search for ports by name or country"""
+    try:
+        from data.ports import search_ports
+        results = search_ports(query)
+        return {"results": results, "total": len(results)}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

@@ -306,10 +306,10 @@ const Home = () => {
               </div>
               <p className="text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed flex-1">
                 SentriX monitors real-time political risks, supply chain
-                disruptions, and schedule delays across 100+ countries to help you
-                make smarter shipping decisions. Track geopolitical tensions,
-                trade policy changes, and potential delays before they impact your
-                shipments.
+                disruptions, and schedule delays across 100+ countries to help
+                you make smarter shipping decisions. Track geopolitical
+                tensions, trade policy changes, and potential delays before they
+                impact your shipments.
               </p>
             </div>
 
@@ -323,9 +323,9 @@ const Home = () => {
               <p className="text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed flex-1">
                 Our AI-powered route analysis provides comprehensive insights
                 including timing breakdowns, weather conditions, ocean climate
-                data, and detailed risk assessments for every shipping route. Get
-                smart recommendations to choose safer, faster routes and avoid
-                costly disruptions.
+                data, and detailed risk assessments for every shipping route.
+                Get smart recommendations to choose safer, faster routes and
+                avoid costly disruptions.
               </p>
             </div>
 

@@ -7,6 +7,7 @@ import SentriXAssistantPage from "./components/SentriXAssistantPage";
 import Reports from "./components/Reports";
 import ThinkingLogs from "./components/ThinkingLogs";
 import SessionManagerPage from "./components/SessionManagerPage";
+import MultiPortRoutePlanner from "./components/MultiPortRoutePlanner";
 import { DashboardProvider } from "./context/DashboardContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import "./index.css";
@@ -28,6 +29,7 @@ function App() {
               <Route path="/reports" element={<Reports />} />
               <Route path="/thinking-logs" element={<ThinkingLogs />} />
               <Route path="/session-manager" element={<SessionManagerPage />} />
+              <Route path="/route-planner" element={<MultiPortRoutePlanner />} />
             </Routes>
           </div>
         </Router>
