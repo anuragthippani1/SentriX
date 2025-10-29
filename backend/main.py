@@ -23,15 +23,11 @@ load_dotenv()  # load variables from backend/.env if present
 
 app = FastAPI(title="SentriX API", version="1.0.0")
 
-# CORS middleware - Allow all local development origins
+# CORS middleware - Allow frontend origins
+# For development/testing, allow all origins. For production, specify exact domains.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "http://localhost:3001",
-        "http://127.0.0.1:3001"
-    ],
+    allow_origins=["*"],  # Allow all origins (you can restrict this later with specific Vercel URLs)
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
