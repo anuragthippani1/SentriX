@@ -17,8 +17,36 @@ class RoutePlannerAgent:
     def __init__(self):
         self.ports = MAJOR_PORTS
         self.canals = CANALS
-        self.avg_ship_speed = 20  # knots
-        self.fuel_cost_per_nm = 2.5  # USD per nautical mile
+        self.base_ship_speed = 20  # knots
+        self.base_fuel_cost_per_nm = 2.5  # USD per nautical mile
+        
+        # Optimization multipliers
+        self.optimization_profiles = {
+            "fastest": {
+                "speed_multiplier": 1.25,  # 25% faster (25 knots)
+                "fuel_cost_multiplier": 1.5,  # 50% more fuel cost
+                "port_wait_multiplier": 0.5,  # Priority port access (50% wait time)
+                "description": "Maximum speed with priority port access"
+            },
+            "cheapest": {
+                "speed_multiplier": 0.8,  # 20% slower (16 knots) - eco-speed
+                "fuel_cost_multiplier": 0.7,  # 30% less fuel cost
+                "port_wait_multiplier": 1.3,  # 30% longer wait (cheaper ports)
+                "description": "Eco-speed navigation with budget ports"
+            },
+            "balanced": {
+                "speed_multiplier": 1.0,  # Standard speed (20 knots)
+                "fuel_cost_multiplier": 1.0,  # Standard fuel cost
+                "port_wait_multiplier": 1.0,  # Standard wait time
+                "description": "Optimal balance of speed, cost, and efficiency"
+            },
+            "safest": {
+                "speed_multiplier": 0.9,  # 10% slower for safety (18 knots)
+                "fuel_cost_multiplier": 1.1,  # 10% more fuel (safer routes may be longer)
+                "port_wait_multiplier": 0.8,  # Better scheduled, safer ports
+                "description": "Prioritizes low-risk routes and reliable ports"
+            }
+        }
         
     def calculate_distance(self, coord1: Dict, coord2: Dict) -> float:
         """
@@ -39,7 +67,7 @@ class RoutePlannerAgent:
         
         return c * r
     
-    def calculate_route_leg(self, port1_name: str, port2_name: str) -> Optional[Dict]:
+    def calculate_route_leg(self, port1_name: str, port2_name: str, optimization: str = "balanced") -> Optional[Dict]:
         """Calculate details for a single leg of the route"""
         port1 = get_port_by_name(port1_name)
         port2 = get_port_by_name(port2_name)
@@ -47,15 +75,23 @@ class RoutePlannerAgent:
         if not port1 or not port2:
             return None
         
+        # Get optimization profile
+        profile = self.optimization_profiles.get(optimization, self.optimization_profiles["balanced"])
+        
+        # Apply optimization to speed and costs
+        ship_speed = self.base_ship_speed * profile["speed_multiplier"]
+        fuel_cost_per_nm = self.base_fuel_cost_per_nm * profile["fuel_cost_multiplier"]
+        
         distance = self.calculate_distance(port1["coordinates"], port2["coordinates"])
-        transit_time_hours = distance / self.avg_ship_speed
+        transit_time_hours = distance / ship_speed
         transit_time_days = transit_time_hours / 24
         
-        # Include port wait times
-        total_time_days = transit_time_days + port1["avg_wait_time"] + port2["avg_wait_time"]
+        # Apply optimization to port wait times
+        port_wait_time = (port1["avg_wait_time"] + port2["avg_wait_time"]) * profile["port_wait_multiplier"]
+        total_time_days = transit_time_days + port_wait_time
         
         # Calculate costs
-        fuel_cost = distance * self.fuel_cost_per_nm
+        fuel_cost = distance * fuel_cost_per_nm
         port_fees = 15000 + 12000  # Simplified port fees for departure and arrival
         
         # Check if route crosses major canals
@@ -77,13 +113,15 @@ class RoutePlannerAgent:
             "distance_nm": round(distance, 2),
             "distance_km": round(distance * 1.852, 2),
             "transit_time_days": round(transit_time_days, 2),
-            "port_wait_time_days": round(port1["avg_wait_time"] + port2["avg_wait_time"], 2),
+            "port_wait_time_days": round(port_wait_time, 2),
             "total_time_days": round(total_time_days, 2),
             "fuel_cost_usd": round(fuel_cost, 2),
             "port_fees_usd": port_fees,
             "canal_cost_usd": canal_cost,
             "canal_name": canal_info["name"] if canal_info else None,
             "total_cost_usd": round(total_cost, 2),
+            "ship_speed_knots": round(ship_speed, 1),
+            "optimization_applied": optimization,
             "coordinates": {
                 "from": port1["coordinates"],
                 "to": port2["coordinates"]
@@ -130,9 +168,9 @@ class RoutePlannerAgent:
         total_cost = 0
         canals_used = []
         
-        # Calculate each leg
+        # Calculate each leg with optimization applied
         for i in range(len(ports) - 1):
-            leg = self.calculate_route_leg(ports[i], ports[i+1])
+            leg = self.calculate_route_leg(ports[i], ports[i+1], optimization)
             if not leg:
                 return {"error": f"Invalid port: {ports[i]} or {ports[i+1]}"}
             
@@ -153,9 +191,13 @@ class RoutePlannerAgent:
         if len(ports) > 3 and optimization in ["cheapest", "fastest"]:
             alternatives = self._generate_alternatives(ports, optimization)
         
+        # Get optimization profile info
+        profile = self.optimization_profiles.get(optimization, self.optimization_profiles["balanced"])
+        
         return {
             "route_type": "multi_port",
             "optimization": optimization,
+            "optimization_description": profile["description"],
             "total_ports": len(ports),
             "ports": ports,
             "total_legs": len(legs),
@@ -167,7 +209,8 @@ class RoutePlannerAgent:
                 "total_cost_usd": round(total_cost, 2),
                 "canals_used": list(set(canals_used)),
                 "estimated_departure": datetime.now().strftime("%Y-%m-%d %H:%M UTC"),
-                "estimated_arrival": (datetime.now() + timedelta(days=total_time)).strftime("%Y-%m-%d %H:%M UTC")
+                "estimated_arrival": (datetime.now() + timedelta(days=total_time)).strftime("%Y-%m-%d %H:%M UTC"),
+                "avg_speed_knots": round(self.base_ship_speed * profile["speed_multiplier"], 1)
             },
             "alternatives": alternatives,
             "generated_at": datetime.now().isoformat()

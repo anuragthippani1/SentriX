@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
+import config from "../config";
 
 const DashboardContext = createContext();
 
@@ -39,9 +40,9 @@ export const DashboardProvider = ({ children }) => {
     try {
       setDashboardData((prev) => ({ ...prev, loading: true, error: null }));
       console.log(
-        "Fetching dashboard data from http://localhost:8000/api/dashboard"
+        `Fetching dashboard data from ${config.API_URL}/api/dashboard`
       );
-      const response = await axios.get("http://localhost:8000/api/dashboard");
+      const response = await axios.get(`${config.API_URL}/api/dashboard`);
 
       setDashboardData({
         worldRiskData: response.data.world_risk_data || {},
@@ -64,8 +65,8 @@ export const DashboardProvider = ({ children }) => {
   // Load reports
   const loadReports = async () => {
     try {
-      console.log("Fetching reports from http://localhost:8000/api/reports");
-      const response = await axios.get("http://localhost:8000/api/reports");
+      console.log(`Fetching reports from ${config.API_URL}/api/reports`);
+      const response = await axios.get(`${config.API_URL}/api/reports`);
       const allReports = response.data.reports || [];
 
       // Filter reports by current session if we have one
@@ -94,7 +95,7 @@ export const DashboardProvider = ({ children }) => {
     setChatMessages((prev) => [...prev, userMessage]);
 
     try {
-      const response = await axios.post("http://localhost:8000/api/query", {
+      const response = await axios.post(`${config.API_URL}/api/query`, {
         query: message,
         session_id: sessionId,
       });
@@ -131,7 +132,7 @@ export const DashboardProvider = ({ children }) => {
   const downloadReport = async (reportId) => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/reports/${reportId}/download`,
+        `${config.API_URL}/api/reports/${reportId}/download`,
         {
           responseType: "blob",
         }
@@ -153,7 +154,7 @@ export const DashboardProvider = ({ children }) => {
   const uploadShipmentData = async (data) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/shipment/upload",
+        `${config.API_URL}/api/shipment/upload`,
         { data }
       );
       await loadDashboardData();
@@ -167,7 +168,7 @@ export const DashboardProvider = ({ children }) => {
   const generateCombinedReport = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/report/combined"
+        `${config.API_URL}/api/report/combined`
       );
       await loadReports();
       return response.data;
@@ -180,7 +181,7 @@ export const DashboardProvider = ({ children }) => {
   // Session Management Functions
   const loadSessions = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/sessions");
+      const response = await axios.get(`${config.API_URL}/api/sessions`);
       setSessions(response.data.sessions || []);
     } catch (error) {
       console.error("Error loading sessions:", error);
@@ -189,7 +190,7 @@ export const DashboardProvider = ({ children }) => {
 
   const createSession = async (name, description = "") => {
     try {
-      const response = await axios.post("http://localhost:8000/api/sessions", {
+      const response = await axios.post(`${config.API_URL}/api/sessions`, {
         name,
         description,
       });
@@ -205,7 +206,7 @@ export const DashboardProvider = ({ children }) => {
   const switchToSession = async (sessionId) => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/sessions/${sessionId}`
+        `${config.API_URL}/api/sessions/${sessionId}`
       );
       const session = response.data.session;
       setCurrentSession(session);
@@ -225,7 +226,7 @@ export const DashboardProvider = ({ children }) => {
   const updateSession = async (sessionId, updates) => {
     try {
       const response = await axios.put(
-        `http://localhost:8000/api/sessions/${sessionId}`,
+        `${config.API_URL}/api/sessions/${sessionId}`,
         updates
       );
       const updatedSession = response.data.session;
@@ -247,7 +248,7 @@ export const DashboardProvider = ({ children }) => {
 
   const deleteSession = async (sessionId) => {
     try {
-      await axios.delete(`http://localhost:8000/api/sessions/${sessionId}`);
+      await axios.delete(`${config.API_URL}/api/sessions/${sessionId}`);
       setSessions((prev) => prev.filter((s) => s.session_id !== sessionId));
 
       // If we're deleting the current session, create a new one

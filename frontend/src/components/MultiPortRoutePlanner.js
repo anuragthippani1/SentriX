@@ -13,6 +13,7 @@ import {
   Ship,
   Anchor,
 } from "lucide-react";
+import config from "../config";
 
 const MultiPortRoutePlanner = () => {
   const [ports, setPorts] = useState(["", ""]);
@@ -30,7 +31,7 @@ const MultiPortRoutePlanner = () => {
 
   const fetchAvailablePorts = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/route/ports");
+      const response = await fetch(`${config.API_URL}/api/route/ports`);
       const data = await response.json();
       setAvailablePorts(data.ports || []);
     } catch (err) {
@@ -68,7 +69,7 @@ const MultiPortRoutePlanner = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:8000/api/route/plan-multi-port",
+        `${config.API_URL}/api/route/plan-multi-port`,
         {
           method: "POST",
           headers: {
