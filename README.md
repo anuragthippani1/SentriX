@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="frontend/public/logo.png" alt="SentriX Logo" width="200"/>
+</div>
+
 # SentriX - Multi-Agent Supply Chain Risk Intelligence Platform
 
 SentriX is a proof-of-concept Agentic AI application for real-time supply chain risk intelligence, built using only free agents and APIs. It helps expeditors monitor and assess supply chain risks across multiple domains in near real time.
