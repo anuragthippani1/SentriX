@@ -190,7 +190,7 @@ MIT License - see LICENSE file for details.
 
 For issues or questions:
 1. Check the sample data is loading correctly
-2. Verify API keys are properly configured
+2. Verify the API keys are properly configured
 3. Ensure MongoDB is running (or using file fallback)
 4. Check browser console for frontend errors
 5. Check backend logs for API errors
